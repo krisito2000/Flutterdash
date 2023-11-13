@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "725939278282",
+    "firebase_url": "https://flutterdash-a2191-default-rtdb.europe-west1.firebasedatabase.app/",
+    "project_id": "flutterdash-a2191",
+    "storage_bucket": "flutterdash-a2191.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:725939278282:android:928fc5c1666f85521cbf33",
+        "android_client_info": {
+          "package_name": "flutterdash.com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCXgRI3On80F7zOokczaT2qiO68Q8pnfSA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

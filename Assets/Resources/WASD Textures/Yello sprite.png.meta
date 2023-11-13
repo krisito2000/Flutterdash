@@ -1,0 +1,1469 @@
+fileFormatVersion: 2
+guid: 6804642f8f8d72d46b0ba7e6d329a72e
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Server
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Yello sprite_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1137.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4274f362eb559fe4295f478470ff00d0
+      internalID: 1063422263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_1
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 1137.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 388a8fd5a5dbed748883bd16b229cdc6
+      internalID: -12143946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_2
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 1137.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 80a53b3c470f48c49ad8e6054dd7020d
+      internalID: -900370347
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_3
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 1137.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70c8e6946eb84094aa41965badde426e
+      internalID: 2136673229
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_4
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 1137.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 83ad0292dee010c45b2eb4c00ec4f775
+      internalID: -1010726316
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_5
+      rect:
+        serializedVersion: 2
+        x: 710
+        y: 1137.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cce90e4ba50523b49b0c495a2ffda2b9
+      internalID: -1100658183
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_6
+      rect:
+        serializedVersion: 2
+        x: 852
+        y: 1137.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e450998c9f665d5418bf6bde1cf1a54a
+      internalID: 1113658907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_7
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 995.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 22a1753016c46d743adff42957e7fd56
+      internalID: -371532935
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_8
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 995.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6aeb3709f7e0f544eb60715cfb349afa
+      internalID: -1782729032
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_9
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 995.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 382dcf196e089e844886a6b9d7ff2a58
+      internalID: -1791892280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_10
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 995.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4f61d2491764c440bac7ccfc7c9eef4
+      internalID: 530218369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_11
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 995.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 13f43e03574442949b7b6e7d56c03855
+      internalID: -1112274696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_12
+      rect:
+        serializedVersion: 2
+        x: 710
+        y: 995.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 379a2e6efb15904498ce3d259e154467
+      internalID: 616687652
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_13
+      rect:
+        serializedVersion: 2
+        x: 852
+        y: 995.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee5b9129d4ffd9d46982edd71fd4a9e6
+      internalID: -1403771004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_14
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 853.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: df9054ceefa4bea498d147df52e3da79
+      internalID: 1673854703
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_15
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 853.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 747b3e2b6f3b9964498dc1943bc6e9ff
+      internalID: -1270272694
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_16
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 853.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 10fbc6508c78f92498d42273790ce6ff
+      internalID: -685206145
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_17
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 853.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c08b0d465671e4d4db57fd892a5ea2ab
+      internalID: -118250470
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_18
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 853.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c192b21eda4b9048b620f8a718be187
+      internalID: 119587118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_19
+      rect:
+        serializedVersion: 2
+        x: 710
+        y: 853.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 15f6e943d2c845c44a8e01d75b28e507
+      internalID: -111454991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_20
+      rect:
+        serializedVersion: 2
+        x: 852
+        y: 853.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4aa25fe90d7b4f48a9d35dffcd003f4
+      internalID: -414449942
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_21
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 711.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc972bbecfba30a4f9cfd8b882220e1f
+      internalID: 888312859
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_22
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 711.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a58c723eb5833f745b74695522854c79
+      internalID: -1982311134
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_23
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 711.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c9173b0a61a4a74fbb5d4de86a565a9
+      internalID: 848594168
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_24
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 711.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 56dcea0ed711c234eab7bffded61b756
+      internalID: 579212612
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_25
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 711.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a1f7cfa635ca824abbcb942d10c964b
+      internalID: 1588619520
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_26
+      rect:
+        serializedVersion: 2
+        x: 710
+        y: 711.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a9e39989b10c1f3419e5b70610f44cf1
+      internalID: -968402987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_27
+      rect:
+        serializedVersion: 2
+        x: 852
+        y: 711.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 607dce617e1542041aba12004df2371a
+      internalID: -1572578064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_28
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 569.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 714186b8a448c42479648737265519e9
+      internalID: 780077904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_29
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 569.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d2317ca400a327245af00d7e272dec83
+      internalID: 733497506
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_30
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 569.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6fe3ebcdc21f4de43bf88269b9930f71
+      internalID: -994975010
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_31
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 569.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ecec2a162da6ba640bb9ff9035ce9931
+      internalID: 331730887
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_32
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 569.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ed882ecf31f13a24583cdf7800a83a40
+      internalID: 867014980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_33
+      rect:
+        serializedVersion: 2
+        x: 710
+        y: 569.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c6510bdffadfbc3449d713173c92e423
+      internalID: -909868028
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_34
+      rect:
+        serializedVersion: 2
+        x: 852
+        y: 569.7778
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a7e8b3490f607fa4ebcb50b8487beb02
+      internalID: -1615265904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_35
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 427.77777
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 367cf143837bf8d488f8cb412a1f1bb3
+      internalID: 1115164765
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_36
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 427.77777
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c64df8a8f0500849a602154a08ba93b
+      internalID: -1299577352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_37
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 427.77777
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dd32261b0e99d9d4da7467f6053a31aa
+      internalID: 196381400
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_38
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 427.77777
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: baf115ae47e655e41bfadb7602e6b1fe
+      internalID: 1305594870
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_39
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 427.77777
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f583b7aa7325e8d4dac2d2f610632380
+      internalID: 1885564132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_40
+      rect:
+        serializedVersion: 2
+        x: 710
+        y: 427.77777
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6fee9478b3529e344a567ff585079233
+      internalID: 961620921
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_41
+      rect:
+        serializedVersion: 2
+        x: 852
+        y: 427.77777
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d6377357a8455ac4bb30d7d6d4e4f0b5
+      internalID: -1997945951
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_42
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 285.77777
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 83412c3a5272b5d4ba08f13a7a81dc65
+      internalID: 789937389
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_43
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 285.77777
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 253e92081161f6d41949729ee4c61a3c
+      internalID: -442480552
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_44
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 285.77777
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 430a756ab2eae0a469cd5520c1545ea9
+      internalID: 1353954253
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_45
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 285.77777
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: decbffc01c3e11a47b3783d1303f44d1
+      internalID: 491980560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_46
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 285.77777
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 297e6f8ef347fd743ad752f935538479
+      internalID: -1100864359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_47
+      rect:
+        serializedVersion: 2
+        x: 710
+        y: 285.77777
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ad7553a0ecfaea241af493736da4ae1b
+      internalID: -1079361409
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_48
+      rect:
+        serializedVersion: 2
+        x: 852
+        y: 285.77777
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff618977132326940a7bcd5965c5e135
+      internalID: 2058949092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_49
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 143.77777
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 78c29221a4bcc804a9ac2162f0442048
+      internalID: 562358932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_50
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 143.77777
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b65411e5b7a58dd4894bc055e00bb5be
+      internalID: -1602397086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_51
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 143.77777
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c7b1a140983ac7a46aecb1bdc6af74bf
+      internalID: 373156119
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_52
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 143.77777
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d7361106b080a5468311d9b64318888
+      internalID: -604321291
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_53
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 143.77777
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 614f32fc1955e52478fccb471f4a8c98
+      internalID: -372790139
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_54
+      rect:
+        serializedVersion: 2
+        x: 710
+        y: 143.77777
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ec909d40151d2bf4fb48ea0efc903e5e
+      internalID: 505920827
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_55
+      rect:
+        serializedVersion: 2
+        x: 852
+        y: 143.77777
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 57d48290c6b584d46bb8d10ea66267ff
+      internalID: -700330263
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_56
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1.777771
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b265b7b97f1dd8c499521b42fa283786
+      internalID: -1310835134
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_57
+      rect:
+        serializedVersion: 2
+        x: 142
+        y: 1.777771
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 922bb85aa5602f0489fe6ede960ad851
+      internalID: -1784398026
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_58
+      rect:
+        serializedVersion: 2
+        x: 284
+        y: 1.777771
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9d6741a751b55d0488871bd3d411351a
+      internalID: -377772107
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_59
+      rect:
+        serializedVersion: 2
+        x: 426
+        y: 1.777771
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a8f39ac8464e1984ba3d72f53264ce29
+      internalID: -192351134
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Yello sprite_60
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 1.777771
+        width: 142.14285
+        height: 142.22223
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 205b37d1ce7ff8e4e99a37c4da3fdba3
+      internalID: 1544337357
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Yello sprite_0: 1063422263
+      Yello sprite_1: -12143946
+      Yello sprite_10: 530218369
+      Yello sprite_11: -1112274696
+      Yello sprite_12: 616687652
+      Yello sprite_13: -1403771004
+      Yello sprite_14: 1673854703
+      Yello sprite_15: -1270272694
+      Yello sprite_16: -685206145
+      Yello sprite_17: -118250470
+      Yello sprite_18: 119587118
+      Yello sprite_19: -111454991
+      Yello sprite_2: -900370347
+      Yello sprite_20: -414449942
+      Yello sprite_21: 888312859
+      Yello sprite_22: -1982311134
+      Yello sprite_23: 848594168
+      Yello sprite_24: 579212612
+      Yello sprite_25: 1588619520
+      Yello sprite_26: -968402987
+      Yello sprite_27: -1572578064
+      Yello sprite_28: 780077904
+      Yello sprite_29: 733497506
+      Yello sprite_3: 2136673229
+      Yello sprite_30: -994975010
+      Yello sprite_31: 331730887
+      Yello sprite_32: 867014980
+      Yello sprite_33: -909868028
+      Yello sprite_34: -1615265904
+      Yello sprite_35: 1115164765
+      Yello sprite_36: -1299577352
+      Yello sprite_37: 196381400
+      Yello sprite_38: 1305594870
+      Yello sprite_39: 1885564132
+      Yello sprite_4: -1010726316
+      Yello sprite_40: 961620921
+      Yello sprite_41: -1997945951
+      Yello sprite_42: 789937389
+      Yello sprite_43: -442480552
+      Yello sprite_44: 1353954253
+      Yello sprite_45: 491980560
+      Yello sprite_46: -1100864359
+      Yello sprite_47: -1079361409
+      Yello sprite_48: 2058949092
+      Yello sprite_49: 562358932
+      Yello sprite_5: -1100658183
+      Yello sprite_50: -1602397086
+      Yello sprite_51: 373156119
+      Yello sprite_52: -604321291
+      Yello sprite_53: -372790139
+      Yello sprite_54: 505920827
+      Yello sprite_55: -700330263
+      Yello sprite_56: -1310835134
+      Yello sprite_57: -1784398026
+      Yello sprite_58: -377772107
+      Yello sprite_59: -192351134
+      Yello sprite_6: 1113658907
+      Yello sprite_60: 1544337357
+      Yello sprite_7: -371532935
+      Yello sprite_8: -1782729032
+      Yello sprite_9: -1791892280
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
