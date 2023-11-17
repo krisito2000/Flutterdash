@@ -7,34 +7,29 @@ public class AnimationManager : MonoBehaviour
     public enum AnimationType { SongShower, FadeAnimation }
     public AnimationType animationtype;
     public Animator transition;
-    public float fadeTime;
-    public float songShowerTime;
+    public float fadeTimer;
+    public float songShowerTimer;
 
-    void Start()
+    void Update()
     {
-        switch (animationtype)
+        // Wait for the music to start
+        if (GameManager.instance.music.enabled == true)
         {
-            case AnimationType.SongShower:
-                StartCoroutine(SongShower(songShowerTime));
-                break;
-            case AnimationType.FadeAnimation:
-                StartCoroutine(FadeAnimation(fadeTime));
-                break;
+            switch (animationtype)
+            {
+                case AnimationType.SongShower:
+                    StartCoroutine(AnimationTrigger(songShowerTimer));
+                    break;
+                case AnimationType.FadeAnimation:
+                    StartCoroutine(AnimationTrigger(fadeTimer));
+                    break;
+            }
         }
     }
-
-    public IEnumerator FadeAnimation(float fadeTime)
+    public IEnumerator AnimationTrigger(float timer)
     {
         // Wait for the specified fadeTime
-        yield return new WaitForSeconds(fadeTime);
-
-        // Set the transition trigger after the delay
-        transition.SetBool("isTriggered", true);
-    }
-    public IEnumerator SongShower(float songShowerTime)
-    {
-        // Wait for the specified songShowerTime
-        yield return new WaitForSeconds(songShowerTime);
+        yield return new WaitForSeconds(timer);
 
         // Set the transition trigger after the delay
         transition.SetBool("isTriggered", true);

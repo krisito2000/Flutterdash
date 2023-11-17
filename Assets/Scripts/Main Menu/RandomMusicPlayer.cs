@@ -1,0 +1,30 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class RandomMusicPlayer : MonoBehaviour
+{
+    public AudioClip[] MusicArray;
+    private AudioSource audioSource;
+
+    private AudioClip GetRandomClip()
+    {
+        return MusicArray[Random.Range(0, MusicArray.Length)];
+    }
+
+    void Start()
+    {
+        audioSource = FindAnyObjectByType<AudioSource>();
+        audioSource.loop = false;
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (!audioSource.isPlaying)
+        {
+            audioSource.clip = GetRandomClip();
+            audioSource.Play();
+        }
+    }
+}

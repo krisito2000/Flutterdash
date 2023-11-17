@@ -1706,8 +1706,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animationtype: 0
   transition: {fileID: 1455827195}
-  fadeTime: 0
-  songShowerTime: 1
+  fadeTimer: 0
+  songShowerTimer: 1
 --- !u!95 &1455827195
 Animator:
   serializedVersion: 5
@@ -2307,8 +2307,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animationtype: 0
   transition: {fileID: 1800289869}
-  fadeTime: 1
-  songShowerTime: 0
+  fadeTimer: 10
+  songShowerTimer: 0
 --- !u!95 &1800289869
 Animator:
   serializedVersion: 5

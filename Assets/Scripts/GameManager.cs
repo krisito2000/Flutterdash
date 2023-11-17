@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
+using System.Drawing.Printing;
 using UnityEngine;
 using UnityEngine.TerrainTools;
 using UnityEngine.UI;
@@ -22,15 +23,19 @@ public class GameManager : MonoBehaviour
     private int scorePerNote;
     // Purfect            light blue  500
     // EPurfect/LPurfect  green       350
-    // Early/Late         yellow      200
+    // Early/Late         yellow      100
     // Missed             red         0
+    private int scoreEarly;
+    private int scoreEarlyPurfect;
     private int scorePerfect;
-    private int scoreELPurfect;
-    private int scoreEL;
+    private int scoreLatePurfect;
+    private int scoreLate;
 
+    public int earlyCounter;
+    public int earlyPurfectCounter;
     public int purfectCounter;
-    public int eLPurfecyCounter;
-    public int eLCounter;
+    public int latePurfectCounter;
+    public int lateCounter;
     public int missedCounter;
 
     public Text multiplierText;
@@ -43,6 +48,10 @@ public class GameManager : MonoBehaviour
     public GameObject Hearth2;
     public GameObject Hearth3;
     public GameObject Hearth4;
+    public Animator Hearth1Fade;
+    public Animator Hearth2Fade;
+    public Animator Hearth3Fade;
+    public Animator Hearth4Fade;
     private int currentDamageTaken;
     private float damageTracker;
     public GameObject Notes;
@@ -55,9 +64,11 @@ public class GameManager : MonoBehaviour
         //music.volume = //audio mixer;
 
         scoreText.text = "0";
+        scoreEarly = 100;
+        scoreEarlyPurfect = 350;
         scorePerfect = 500;
-        scoreELPurfect = 350;
-        scoreEL = 200;
+        scoreLatePurfect = 350;
+        scoreLate = 100;
         currentMultiplier = 1;
     }
 
@@ -82,38 +93,39 @@ public class GameManager : MonoBehaviour
 
     public void DamageTake()
     {
-        //// Death indicator
-        //if (currentDamageTaken <= damageThresholds.Length)
-        //{
-        //    currentDamageTaken++;
+        // Death indicator
+        if (currentDamageTaken <= damageThresholds.Length)
+        {
+            currentDamageTaken++;
 
-        //    //Removing hearths
-        //    if (currentDamageTaken == 1)
-        //    {
-        //        Hearth1.SetActive(false);
-        //    }
-        //    else if (currentDamageTaken == 2)
-        //    {
-        //        Hearth2.SetActive(false);
-        //    }
-        //    else if (currentDamageTaken == 3)
-        //    {
-        //        Hearth3.SetActive(false);
-        //    }
-        //    else if (currentDamageTaken == 4)
-        //    {
-        //        Hearth4.SetActive(false);
-        //        Notes.SetActive(false);
+            //Removing hearths
+            if (currentDamageTaken == 1)
+            {
+                Hearth1Fade.SetBool("isTriggered", true);
+            }
+            else if (currentDamageTaken == 2)
+            {
+                Hearth2Fade.SetBool("isTriggered", true);
+            }
+            else if (currentDamageTaken == 3)
+            {
+                Hearth3Fade.SetBool("isTriggered", true);
+            }
+            else if (currentDamageTaken == 4)
+            {
+                Hearth4Fade.SetBool("isTriggered", true);
+                Notes.SetActive(false);
+                music.Stop();
 
-        //        currentDamageTaken = 0;
+                currentDamageTaken = 0;
 
-        //        pressAnyKey.text = "You're Dead";
-        //    }
-        //}
-        //else
-        //{
-        //    Debug.Log("Something went wrong with the damage tracker");
-        //}
+                pressAnyKey.text = "You're Dead";
+            }
+        }
+        else
+        {
+            Debug.Log("Something went wrong with the damage tracker");
+        }
     }
     public void DamageHeal()
     {
@@ -181,43 +193,83 @@ public class GameManager : MonoBehaviour
         noteHitSound.Play();
     }
 
-    public void NotePurfect()
+    public void EarlyHit()
     {
-        purfectCounter++;
+        earlyCounter++;
 
-        currentScore += scorePerfect * currentMultiplier;
+        currentScore += scoreEarly * currentMultiplier;
         NoteHit();
 
-        // 2 notes heal 1 hearth
-        // but for now is 1 for 1
         if (currentDamageTaken != 0)
         {
             currentDamageTaken--;
             DamageHeal();
         }
 
-        Debug.Log("Purfect");
+        Debug.Log("Early Hit");
     }
 
-    public void NoteELPurfect()
+    public void EarlyPurfectHit()
     {
-        eLPurfecyCounter++;
+        earlyPurfectCounter++;
 
-        currentScore += scoreELPurfect * currentMultiplier;
+        currentScore += scoreEarlyPurfect * currentMultiplier;
         NoteHit();
 
+        if (currentDamageTaken != 0)
+        {
+            currentDamageTaken--;
+            DamageHeal();
+        }
 
-        Debug.Log("ELPurfect");
+        Debug.Log("Early Purfect Hit");
     }
 
-    public void NoteEL()
+    public void PurfectHit()
     {
-        eLCounter++;
+        purfectCounter++;
 
-        currentScore += scoreEL * currentMultiplier;
+        currentScore += scorePerfect * currentMultiplier;
         NoteHit();
 
-        Debug.Log("EL");
+        if (currentDamageTaken != 0)
+        {
+            currentDamageTaken--;
+            DamageHeal();
+        }
+
+        Debug.Log("Purfect Hit");
+    }
+
+    public void LatePurfectHit()
+    {
+        latePurfectCounter++;
+
+        currentScore += scoreLatePurfect * currentMultiplier;
+        NoteHit();
+
+        if (currentDamageTaken != 0)
+        {
+            currentDamageTaken--;
+            DamageHeal();
+        }
+
+        Debug.Log("Late Purfect Hit");
+    }
+    public void LateHit()
+    {
+        lateCounter++;
+
+        currentScore += scoreLate * currentMultiplier;
+        NoteHit();
+
+        if (currentDamageTaken != 0)
+        {
+            currentDamageTaken--;
+            DamageHeal();
+        }
+
+        Debug.Log("Late Hit");
     }
 
     public void NoteMissed()

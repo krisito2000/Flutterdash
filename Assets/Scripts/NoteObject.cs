@@ -9,10 +9,14 @@ public class NoteObject : MonoBehaviour
     public Transform circle;
 
     private static List<NoteObject> activeNotes = new List<NoteObject>();
+    public float noteID;
 
     void Start()
     {
         activeNotes.Add(this);
+
+        // Assign an ID based on Z-axis
+        noteID = transform.position.z * 1000;
     }
 
     void Update()
@@ -23,7 +27,7 @@ public class NoteObject : MonoBehaviour
         {
             NoteObject closestNote = GetClosestNote();
 
-            if (closestNote == this) 
+            if (closestNote == this)
             {
                 NoteAccuracy();
             }
@@ -33,33 +37,10 @@ public class NoteObject : MonoBehaviour
         {
             Debug.Log("Note missed: " + this.gameObject.name);
             GameManager.instance.NoteMissed();
+            activeNotes.Remove(this);
             gameObject.SetActive(false);
         }
     }
-
-    //private NoteObject DivideDifferentCircles()
-    //{
-    //    Debug.Log("findCircle: " + findCircle);
-
-    //    Debug.Log("activeNotesA count: " + activeNotesA.Count);
-    //    Debug.Log("activeNotesW count: " + activeNotesW.Count);
-    //    Debug.Log("activeNotesS count: " + activeNotesS.Count);
-    //    Debug.Log("activeNotesD count: " + activeNotesD.Count);
-
-    //    switch (findCircle)
-    //    {
-    //        case WhichCircle.W:
-    //            return FindClosestNote(activeNotesW);
-    //        case WhichCircle.A:
-    //            return FindClosestNote(activeNotesA);
-    //        case WhichCircle.S:
-    //            return FindClosestNote(activeNotesS);
-    //        case WhichCircle.D:
-    //            return FindClosestNote(activeNotesD);
-    //        default:
-    //            return null;
-    //    }
-    //}
 
     private NoteObject GetClosestNote()
     {
@@ -87,54 +68,38 @@ public class NoteObject : MonoBehaviour
         return closestNote;
     }
 
-
-
     private void NoteAccuracy()
     {
         float distanceDetection = Vector2.Distance(transform.position, circle.position);
 
         // EL
-        if (distanceDetection >= 1.987153)
+        if (distanceDetection >= 2.25)
         {
-            GameManager.instance.NoteEL();
+            GameManager.instance.EarlyHit();
             this.gameObject.SetActive(false);
         }
         // ELPurfect
-        else if (distanceDetection >= 0.7786305)
+        else if (distanceDetection >= 2.77)
         {
-            GameManager.instance.NoteELPurfect();
+            GameManager.instance.EarlyPurfectHit();
             this.gameObject.SetActive(false);
         }
         // Purfect
         else
         {
-            GameManager.instance.NotePurfect();
+            GameManager.instance.PurfectHit();
             this.gameObject.SetActive(false);
         }
+        activeNotes.Remove(this);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (other is CircleCollider2D)
-        {
-            purfectTrigger = true;
-        }
-        else if (other is BoxCollider2D)
-        {
-            purfectTrigger = false;
-        }
+        purfectTrigger = true;
     }
 
     private void OnTriggerExit2D(Collider2D other)
     {
-        if (other is CircleCollider2D)
-        {
-            purfectTrigger = false;
-        }
-        else if (other is BoxCollider2D)
-        {
-            purfectTrigger = false;
-        }
+        purfectTrigger = false;
     }
-
 }
