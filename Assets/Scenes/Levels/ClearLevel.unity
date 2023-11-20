@@ -447,7 +447,7 @@ Transform:
   m_GameObject: {fileID: 528697067}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.3835586, y: -1.184347, z: 5.424385}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -867,9 +867,11 @@ MonoBehaviour:
   NoteMovement: {fileID: 1969340224}
   pressAnyKey: {fileID: 1235038915}
   scoreText: {fileID: 1996963774}
+  earlyCounter: 0
+  earlyPurfectCounter: 0
   purfectCounter: 0
-  eLPurfecyCounter: 0
-  eLCounter: 0
+  latePurfectCounter: 0
+  lateCounter: 0
   missedCounter: 0
   multiplierText: {fileID: 1519696274}
   multiplierBackground: {fileID: 1533226211}
@@ -878,6 +880,10 @@ MonoBehaviour:
   Hearth2: {fileID: 975725309}
   Hearth3: {fileID: 1956403469}
   Hearth4: {fileID: 1421308512}
+  Hearth1Fade: {fileID: 0}
+  Hearth2Fade: {fileID: 0}
+  Hearth3Fade: {fileID: 0}
+  Hearth4Fade: {fileID: 0}
   Notes: {fileID: 0}
   damageThresholds: 00000000000000000000000000000000
 --- !u!4 &719843713
@@ -1215,7 +1221,7 @@ Transform:
   m_GameObject: {fileID: 1126425008}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.3835586, y: -1.184347, z: 5.424385}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1426,7 +1432,7 @@ Transform:
   m_GameObject: {fileID: 1408357614}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.3835586, y: 1.184347, z: -5.424385}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

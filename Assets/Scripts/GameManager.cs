@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Drawing.Printing;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.TerrainTools;
 using UnityEngine.UI;
@@ -19,10 +20,11 @@ public class GameManager : MonoBehaviour
     public Text pressAnyKey;
 
     public Text scoreText;
+    public Text resultsScoreText;
     private int currentScore;
     private int scorePerNote;
     // Purfect            light blue  500
-    // EPurfect/LPurfect  green       350
+    // EPurfect/LPurfect  green       250
     // Early/Late         yellow      100
     // Missed             red         0
     private int scoreEarly;
@@ -31,18 +33,25 @@ public class GameManager : MonoBehaviour
     private int scoreLatePurfect;
     private int scoreLate;
 
+    public Text multiplierText;
+    public SpriteRenderer multiplierBackground;
+    private int currentMultiplier;
+    private int multiplierTracker;
+    public int[] multiplierThresholds;
+
+    public Animator resultsAnimation;
     public int earlyCounter;
     public int earlyPurfectCounter;
     public int purfectCounter;
     public int latePurfectCounter;
     public int lateCounter;
     public int missedCounter;
-
-    public Text multiplierText;
-    public SpriteRenderer multiplierBackground;
-    private int currentMultiplier;
-    private int multiplierTracker;
-    public int[] multiplierThresholds;
+    public Text earlyText;
+    public Text earlyPurfectText;
+    public Text purfectText;
+    public Text latePurfectText;
+    public Text lateText;
+    public Text missedText;
 
     public GameObject Hearth1;
     public GameObject Hearth2;
@@ -65,9 +74,9 @@ public class GameManager : MonoBehaviour
 
         scoreText.text = "0";
         scoreEarly = 100;
-        scoreEarlyPurfect = 350;
+        scoreEarlyPurfect = 250;
         scorePerfect = 500;
-        scoreLatePurfect = 350;
+        scoreLatePurfect = 250;
         scoreLate = 100;
         currentMultiplier = 1;
     }
@@ -89,60 +98,27 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-    }
-
-    public void DamageTake()
-    {
-        // Death indicator
-        if (currentDamageTaken <= damageThresholds.Length)
-        {
-            currentDamageTaken++;
-
-            //Removing hearths
-            if (currentDamageTaken == 1)
-            {
-                Hearth1Fade.SetBool("isTriggered", true);
-            }
-            else if (currentDamageTaken == 2)
-            {
-                Hearth2Fade.SetBool("isTriggered", true);
-            }
-            else if (currentDamageTaken == 3)
-            {
-                Hearth3Fade.SetBool("isTriggered", true);
-            }
-            else if (currentDamageTaken == 4)
-            {
-                Hearth4Fade.SetBool("isTriggered", true);
-                Notes.SetActive(false);
-                music.Stop();
-
-                currentDamageTaken = 0;
-
-                pressAnyKey.text = "You're Dead";
-            }
-        }
         else
         {
-            Debug.Log("Something went wrong with the damage tracker");
+            if (!music.isPlaying)
+            {
+                Statistics();
+                resultsAnimation.SetBool("isTriggered", true);
+            }
         }
     }
-    public void DamageHeal()
+
+    private void Statistics()
     {
-        //Get hearths
-        if (currentDamageTaken == 0)
-        {
-            Hearth1.SetActive(true);
-        }
-        else if (currentDamageTaken == 1)
-        {
-            Hearth2.SetActive(true);
-        }
-        else if (currentDamageTaken == 2)
-        {
-            Hearth3.SetActive(true);
-        }
+        earlyText.text = earlyCounter.ToString();
+        earlyPurfectText.text = earlyPurfectCounter.ToString();
+        purfectText.text = purfectCounter.ToString();
+        latePurfectText.text = latePurfectCounter.ToString();
+        lateText.text = lateCounter.ToString();
+        missedText.text = missedCounter.ToString();
+        resultsScoreText.text = currentScore.ToString();
     }
+
     public void MultiplyerBackground()
     {
         //Multiplier background color change
@@ -282,6 +258,59 @@ public class GameManager : MonoBehaviour
 
         multiplierText.text = "x" + currentMultiplier;
         Debug.Log("Missed");
+    }
+
+    public void DamageTake()
+    {
+        //// Death indicator
+        //if (currentDamageTaken <= damageThresholds.Length)
+        //{
+        //    currentDamageTaken++;
+
+        //    //Removing hearths
+        //    if (currentDamageTaken == 1)
+        //    {
+        //        Hearth1Fade.SetBool("isTriggered", true);
+        //    }
+        //    else if (currentDamageTaken == 2)
+        //    {
+        //        Hearth2Fade.SetBool("isTriggered", true);
+        //    }
+        //    else if (currentDamageTaken == 3)
+        //    {
+        //        Hearth3Fade.SetBool("isTriggered", true);
+        //    }
+        //    else if (currentDamageTaken == 4)
+        //    {
+        //        Hearth4Fade.SetBool("isTriggered", true);
+        //        Notes.SetActive(false);
+        //        music.Stop();
+
+        //        currentDamageTaken = 0;
+
+        //        pressAnyKey.text = "You're Dead";
+        //    }
+        //}
+        //else
+        //{
+        //    Debug.Log("Something went wrong with the damage tracker");
+        //}
+    }
+    public void DamageHeal()
+    {
+        //Get hearths
+        if (currentDamageTaken == 0)
+        {
+            Hearth1.SetActive(true);
+        }
+        else if (currentDamageTaken == 1)
+        {
+            Hearth2.SetActive(true);
+        }
+        else if (currentDamageTaken == 2)
+        {
+            Hearth3.SetActive(true);
+        }
     }
 
     void Awake()

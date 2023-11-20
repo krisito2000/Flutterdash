@@ -340,7 +340,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 51
+    m_FontSize: 45
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -351,7 +351,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Login
+  m_Text: 'Register
+
+'
 --- !u!222 &93587364
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -888,7 +890,7 @@ GameObject:
   - component: {fileID: 1266331589}
   - component: {fileID: 1266331588}
   m_Layer: 5
-  m_Name: LoginButton
+  m_Name: RegisterButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1180,7 +1182,7 @@ GameObject:
   - component: {fileID: 1443559192}
   - component: {fileID: 1443559191}
   m_Layer: 5
-  m_Name: LoginText
+  m_Name: RegisterText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1238,7 +1240,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Login
+  m_Text: Register
 --- !u!222 &1443559192
 CanvasRenderer:
   m_ObjectHideFlags: 0

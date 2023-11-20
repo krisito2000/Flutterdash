@@ -124,7 +124,6 @@ MonoBehaviour:
   direction: 3
   growthRate: 1
   gameStart: 0
-  bpm: 94
 --- !u!114 &7485066177503996557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -137,9 +136,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1f0ea3b37db2d44087e094e31d7d9f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  purfectTrigger: 0
+  circleTrigger: 0
+  circleCollider: {fileID: 727594019006753399, guid: bc6f33e4db38fad448d0baa78e567484, type: 3}
   keyToPress: 100
   circle: {fileID: 7494824699669170502, guid: bc6f33e4db38fad448d0baa78e567484, type: 3}
+  noteID: 0
 --- !u!58 &79495029753654431
 CircleCollider2D:
   m_ObjectHideFlags: 0

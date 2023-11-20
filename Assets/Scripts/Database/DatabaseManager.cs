@@ -4,6 +4,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Windows;
+using System.Security.Cryptography;
+using System.Text;
 
 public class DatabaseManager : MonoBehaviour
 {
@@ -26,11 +29,15 @@ public class DatabaseManager : MonoBehaviour
     }
     public void CreateUser()
     {
-        User newUser = new User(Username.text, Password.text);
+        // Hash the password before storing it
+        string hashedPassword = PasswordHashSystem.HashPassword(Password.text);
+
+        User newUser = new User(Username.text, hashedPassword);
         string json = JsonUtility.ToJson(newUser);
 
-        databaseReference.Child("users").Child(userID).SetRawJsonValueAsync(json);
+        databaseReference.Child("Users").Child(userID).Child("Authentication").SetRawJsonValueAsync(json);
     }
+
 
     public void GetUserInfo()
     {
@@ -52,25 +59,51 @@ public class DatabaseManager : MonoBehaviour
 
     public IEnumerator GetUsername(Action<string> onCallBack)
     {
-        var userNameData = databaseReference.Child("users").Child(userID).Child("username").GetValueAsync();
+        var userNameData = databaseReference.Child("Users").Child(userID).Child("Authentication").Child("username").GetValueAsync();
+
         yield return new WaitUntil(() => userNameData.IsCompleted);
 
-        if (userNameData != null)
+        if (userNameData.Exception != null)
         {
-            DataSnapshot snapshot = userNameData.Result;
+            Debug.LogError("Failed to retrieve username: " + userNameData.Exception.Message);
+            yield break;
+        }
+
+        DataSnapshot snapshot = userNameData.Result;
+
+        if (snapshot != null && snapshot.Exists)
+        {
             onCallBack.Invoke(snapshot.Value.ToString());
         }
+        else
+        {
+            Debug.LogWarning("Username data does not exist.");
+        }
     }
+
 
     public IEnumerator GetPassword(Action<string> onCallBack)
     {
-        var userPasswordData = databaseReference.Child("users").Child(userID).Child("password").GetValueAsync();
+        var userPasswordData = databaseReference.Child("Users").Child(userID).Child("Authentication").Child("password").GetValueAsync();
+
         yield return new WaitUntil(() => userPasswordData.IsCompleted);
 
-        if (userPasswordData != null)
+        if (userPasswordData.Exception != null)
         {
-            DataSnapshot snapshot = userPasswordData.Result;
+            Debug.LogError("Failed to retrieve password: " + userPasswordData.Exception.Message);
+            yield break;
+        }
+
+        DataSnapshot snapshot = userPasswordData.Result;
+
+        if (snapshot != null && snapshot.Exists)
+        {
             onCallBack.Invoke(snapshot.Value.ToString());
         }
+        else
+        {
+            Debug.LogWarning("Password data does not exist.");
+        }
     }
+
 }

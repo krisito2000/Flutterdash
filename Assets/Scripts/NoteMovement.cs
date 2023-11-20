@@ -66,7 +66,7 @@ public class NoteMovement : MonoBehaviour
         }
     }
 
-    //validating the movement direction
+    // Validating the movement direction
     private Vector3 GetMovementDirection()
     {
         Vector3 movementDirection = Vector3.zero;
