@@ -4,19 +4,27 @@ using UnityEngine;
 
 public class NoteObject : MonoBehaviour
 {
+    public static NoteObject instance;
+
+    [Header("------- Note verification -------")]
     public bool circleTrigger = false;
     public CircleCollider2D circleCollider;
     public KeyCode keyToPress;
     public Transform circle;
 
-    //public bool haveAnimation;
-    //public Animator noteAnimation;
+    [Header("------- Animation -------")]
+    public bool noteAnimation;
+    public enum SpinDirection { Left, Right }
+    public SpinDirection direction;
 
+    [Header("------- Note indentification -------")]
     private static List<NoteObject> activeNotes = new List<NoteObject>();
     public float noteID;
 
     void Start()
     {
+        instance = this;
+
         // Assign an ID based on Z-axis
         noteID = transform.position.z * 1000;
     }
@@ -78,25 +86,31 @@ public class NoteObject : MonoBehaviour
     {
         float distanceDetection = Vector2.Distance(transform.position, circle.position);
 
+        if (noteAnimation)
+        {
+            AnimationManager.instance.NoteAnimation();
+        }
+
         // EL
         if (distanceDetection >= 1.187)
         {
             GameManager.instance.EarlyHit();
             this.gameObject.SetActive(false);
         }
-        // ELPurfect
+        // ELPerfect
         else if (distanceDetection >= 0.874)
         {
-            GameManager.instance.EarlyPurfectHit();
+            GameManager.instance.EarlyPerfectHit();
             this.gameObject.SetActive(false);
         }
-        // Purfect
+        // Perfect
         else
         {
-            GameManager.instance.PurfectHit();
+            GameManager.instance.PerfectHit();
             this.gameObject.SetActive(false);
         }
-        // TODO: Create Late and Late Purfect
+        // TODO: Create Late and Late Perfect
+
     }
 
     private void OnTriggerEnter2D(Collider2D other)

@@ -1,14 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class AnimationManager : MonoBehaviour
 {
-    public enum AnimationType { SongShower, FadeAnimation }
+    public static AnimationManager instance;
+
+    public enum AnimationType { SongShower, FadeAnimation}
     public AnimationType animationtype;
     public Animator transition;
     public float fadeTimer;
     public float songShowerTimer;
+
+    public Animator circleAnimation;
+
+    void Start()
+    {
+        instance = this;
+        transition = GetComponent<Animator>();
+
+    }
 
     void Update()
     {
@@ -23,6 +35,9 @@ public class AnimationManager : MonoBehaviour
                 case AnimationType.FadeAnimation:
                     StartCoroutine(AnimationTrigger(fadeTimer));
                     break;
+                //case AnimationType.NoteAnimation:
+                //    StartCoroutine(NoteAnimation());
+                //    break;
             }
         }
     }
@@ -33,5 +48,21 @@ public class AnimationManager : MonoBehaviour
 
         // Set the transition trigger after the delay
         transition.SetBool("isTriggered", true);
+    }
+
+    public IEnumerator NoteAnimation()
+    {
+        if (!gameObject.activeSelf)
+        {
+            switch (NoteObject.instance.direction)
+            {
+                case NoteObject.SpinDirection.Left:
+                    circleAnimation.SetBool("triggerLeft", true);
+                    yield break;
+                case NoteObject.SpinDirection.Right:
+                    circleAnimation.SetBool("triggerRight", true);
+                    yield break;
+            }
+        }
     }
 }
