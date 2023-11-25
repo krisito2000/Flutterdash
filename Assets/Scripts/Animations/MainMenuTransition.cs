@@ -94,6 +94,8 @@ public class MainMenuTransition : MonoBehaviour
     public void PlayButton()
     {
         animator.SetBool("PlayTrigger", true);
+        animator.SetBool("SettingsTrigger", false);
+        animator.SetBool("SyncTrigger", false);
     }
 
     public void BackMainMenuLevelSelection()
@@ -105,6 +107,8 @@ public class MainMenuTransition : MonoBehaviour
     public void SettingsButton()
     {
         animator.SetBool("SettingsTrigger", true);
+        animator.SetBool("SyncTrigger", false);
+        animator.SetBool("PlayTrigger", false);
     }
 
     public void BackMainMenuSettings()
@@ -116,6 +120,8 @@ public class MainMenuTransition : MonoBehaviour
     public void SyncButton()
     {
         animator.SetBool("SyncTrigger", true);
+        animator.SetBool("SettingsTrigger", false);
+        animator.SetBool("PlayTrigger", false);
     }
 
     public void BackMainMenuSync()
