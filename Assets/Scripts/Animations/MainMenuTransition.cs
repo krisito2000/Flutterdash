@@ -128,4 +128,19 @@ public class MainMenuTransition : MonoBehaviour
     {
         animator.SetBool("SyncTrigger", false);
     }
+
+    public void LoginButton()
+    {
+        animator.SetBool("isTriggered", true);
+    }
+    public void LoginReturnButton()
+    {
+        animator.SetBool("isTriggered", false);
+    }
+
+    public void RegisterButton()
+    {
+        
+    }
+
 }

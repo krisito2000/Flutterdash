@@ -35,9 +35,6 @@ public class AnimationManager : MonoBehaviour
                 case AnimationType.FadeAnimation:
                     StartCoroutine(AnimationTrigger(fadeTimer));
                     break;
-                //case AnimationType.NoteAnimation:
-                //    StartCoroutine(NoteAnimation());
-                //    break;
             }
         }
     }
@@ -63,6 +60,18 @@ public class AnimationManager : MonoBehaviour
                     circleAnimation.SetBool("triggerRight", true);
                     yield break;
             }
+        }
+    }
+
+    public void LoginAnimation()
+    {
+        if (!transition.GetBool("isTriggered"))
+        {
+            transition.SetBool("isTriggered", true);
+        }
+        else
+        {
+            transition.SetBool("isTriggered", false);
         }
     }
 }
