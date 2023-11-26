@@ -11,59 +11,68 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    [Header("------- Sound -------")]
     public AudioSource music;
-    public AudioSource noteHitSound;
+    //public AudioSource noteHitSound;
 
+    [Header("------- Note manager -------")]
     public float bpm;
-    public bool startMusic;
+    private bool startMusic;
+    public GameObject Notes;
     public NoteMovement NoteMovement;
     public Text pressAnyKey;
 
+    [Header("------- Score -------")]
     public Text scoreText;
     public Text resultsScoreText;
     private int currentScore;
     private int scorePerNote;
-    // Purfect            light blue  500
-    // EPurfect/LPurfect  green       250
+    // Perfect            light blue  500
+    // EPerfect/LPerfect  green       250
     // Early/Late         yellow      100
     // Missed             red         0
     private int scoreEarly;
-    private int scoreEarlyPurfect;
+    private int scoreEarlyPerfect;
     private int scorePerfect;
-    private int scoreLatePurfect;
+    private int scoreLatePerfect;
     private int scoreLate;
 
+    [Header("------- Multiplier -------")]
     public Text multiplierText;
     public SpriteRenderer multiplierBackground;
     private int currentMultiplier;
     private int multiplierTracker;
     public int[] multiplierThresholds;
 
+    [Header("------- Results -------")]
     public Animator resultsAnimation;
-    public int earlyCounter;
-    public int earlyPurfectCounter;
-    public int purfectCounter;
-    public int latePurfectCounter;
-    public int lateCounter;
-    public int missedCounter;
+    private int earlyCounter;
+    private int earlyPerfectCounter;
+    private int perfectCounter;
+    private int latePerfectCounter;
+    private int lateCounter;
+    private int missedCounter;
     public Text earlyText;
-    public Text earlyPurfectText;
-    public Text purfectText;
-    public Text latePurfectText;
+    public Text earlyPerfectText;
+    public Text perfectText;
+    public Text latePerfectText;
     public Text lateText;
     public Text missedText;
 
+    [Header("------- Hearths -------")]
     public GameObject Hearth1;
     public GameObject Hearth2;
     public GameObject Hearth3;
     public GameObject Hearth4;
+
+    [Header("------- Hearths animation -------")]
     public Animator Hearth1Fade;
     public Animator Hearth2Fade;
     public Animator Hearth3Fade;
     public Animator Hearth4Fade;
+
+    [Header("------- Damage -------")]
     private int currentDamageTaken;
-    private float damageTracker;
-    public GameObject Notes;
     public int[] damageThresholds;
 
     void Start()
@@ -74,9 +83,9 @@ public class GameManager : MonoBehaviour
 
         scoreText.text = "0";
         scoreEarly = 100;
-        scoreEarlyPurfect = 250;
+        scoreEarlyPerfect = 250;
         scorePerfect = 500;
-        scoreLatePurfect = 250;
+        scoreLatePerfect = 250;
         scoreLate = 100;
         currentMultiplier = 1;
     }
@@ -111,9 +120,9 @@ public class GameManager : MonoBehaviour
     private void Statistics()
     {
         earlyText.text = earlyCounter.ToString();
-        earlyPurfectText.text = earlyPurfectCounter.ToString();
-        purfectText.text = purfectCounter.ToString();
-        latePurfectText.text = latePurfectCounter.ToString();
+        earlyPerfectText.text = earlyPerfectCounter.ToString();
+        perfectText.text = perfectCounter.ToString();
+        latePerfectText.text = latePerfectCounter.ToString();
         lateText.text = lateCounter.ToString();
         missedText.text = missedCounter.ToString();
         resultsScoreText.text = currentScore.ToString();
@@ -166,7 +175,6 @@ public class GameManager : MonoBehaviour
 
         currentScore += scorePerNote * currentMultiplier;
         scoreText.text = $"{currentScore}";
-        noteHitSound.Play();
     }
 
     public void EarlyHit()
@@ -185,11 +193,11 @@ public class GameManager : MonoBehaviour
         Debug.Log("Early Hit");
     }
 
-    public void EarlyPurfectHit()
+    public void EarlyPerfectHit()
     {
-        earlyPurfectCounter++;
+        earlyPerfectCounter++;
 
-        currentScore += scoreEarlyPurfect * currentMultiplier;
+        currentScore += scoreEarlyPerfect * currentMultiplier;
         NoteHit();
 
         if (currentDamageTaken != 0)
@@ -198,12 +206,12 @@ public class GameManager : MonoBehaviour
             DamageHeal();
         }
 
-        Debug.Log("Early Purfect Hit");
+        Debug.Log("Early Perfect Hit");
     }
 
-    public void PurfectHit()
+    public void PerfectHit()
     {
-        purfectCounter++;
+        perfectCounter++;
 
         currentScore += scorePerfect * currentMultiplier;
         NoteHit();
@@ -214,14 +222,14 @@ public class GameManager : MonoBehaviour
             DamageHeal();
         }
 
-        Debug.Log("Purfect Hit");
+        Debug.Log("Perfect Hit");
     }
 
-    public void LatePurfectHit()
+    public void LatePerfectHit()
     {
-        latePurfectCounter++;
+        latePerfectCounter++;
 
-        currentScore += scoreLatePurfect * currentMultiplier;
+        currentScore += scoreLatePerfect * currentMultiplier;
         NoteHit();
 
         if (currentDamageTaken != 0)
@@ -230,7 +238,7 @@ public class GameManager : MonoBehaviour
             DamageHeal();
         }
 
-        Debug.Log("Late Purfect Hit");
+        Debug.Log("Late Perfect Hit");
     }
     public void LateHit()
     {
