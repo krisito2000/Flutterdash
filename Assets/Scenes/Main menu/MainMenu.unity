@@ -378,10 +378,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b8c8f209bdaff4419911447660cdad4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Username: {fileID: 330831763}
-  Email: {fileID: 1370756677}
-  Password: {fileID: 919588194}
-  LoginAs: {fileID: 1947034322}
+  registerUsername: {fileID: 330831763}
+  registerEmail: {fileID: 1370756677}
+  registerPassword: {fileID: 919588194}
+  registerConfirmPassword: {fileID: 5133621}
+  loginUsername: {fileID: 645757545}
+  loginPassword: {fileID: 1987656863}
+  loginButtonText: {fileID: 1153227554}
 --- !u!114 &68746766
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -900,9 +903,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MainMenuTransition, Assembly-CSharp
-        m_MethodName: LoginButton
+      - m_Target: {fileID: 68746765}
+        m_TargetAssemblyTypeName: DatabaseManager, Assembly-CSharp
+        m_MethodName: LoginUser
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1195,6 +1198,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 266498120}
   inAuthentication: 0
+  LoginAs: {fileID: 1947034322}
+  ErrorMessage: {fileID: 234029932}
 --- !u!1 &330831759
 GameObject:
   m_ObjectHideFlags: 0
@@ -3637,7 +3642,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
   movementAnimatorController: {fileID: 9100000, guid: 3231d55b6622a1545becfff52612391d, type: 2}
-  authentication: {fileID: 0}
+  mainMenuCanvas: {fileID: 1939340784}
 --- !u!95 &856469775
 Animator:
   serializedVersion: 5
@@ -3692,7 +3697,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1153227552}
-  - {fileID: 1947034321}
   m_Father: {fileID: 1939340783}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -7211,6 +7215,7 @@ RectTransform:
   - {fileID: 1606832869}
   - {fileID: 2123848301}
   - {fileID: 2067940682}
+  - {fileID: 1947034321}
   - {fileID: 858855967}
   - {fileID: 262927680}
   m_Father: {fileID: 266498119}
@@ -7262,11 +7267,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 858855967}
+  m_Father: {fileID: 1939340783}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.000061035156, y: 256}
+  m_AnchoredPosition: {x: 782.0001, y: -202.35}
   m_SizeDelta: {x: 360.43, y: 365.13}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1947034322
