@@ -10,100 +10,105 @@ using System.Text;
 
 public class DatabaseManager : MonoBehaviour
 {
-    public InputField Username;
-    public InputField Password;
+    public static DatabaseManager instance;
 
-    public Text UsernameText;
-    public Text PasswordText;
+    public InputField registerUsername;
+    public InputField registerEmail;
+    public InputField registerPassword;
+    public InputField registerConfirmPassword;
 
-    // Make a unice id
-    private string userID;
-    // Reference to the database
+    public InputField loginUsername;
+    public InputField loginPassword;
+    public Text loginButtonText;
+
     private DatabaseReference databaseReference;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        userID = SystemInfo.deviceUniqueIdentifier;
+        instance = this;
         databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
     }
+
     public void CreateUser()
     {
-        // Hash the password before storing it
-        string hashedPassword = PasswordHashSystem.HashPassword(Password.text);
+        string hashedPassword = PasswordHashSystem.HashPassword(registerPassword.text);
 
-        User newUser = new User(Username.text, hashedPassword);
+        User newUser = new User(registerUsername.text, registerEmail.text, hashedPassword);
         string json = JsonUtility.ToJson(newUser);
 
-        databaseReference.Child("Users").Child(userID).Child("Authentication").SetRawJsonValueAsync(json);
+        databaseReference.Child("Users").Child(newUser.username).Child("Authentication").SetRawJsonValueAsync(json);
     }
 
-
-    public void GetUserInfo()
+    public void LoginUser()
     {
-        StartCoroutine(GetUsername((string username) =>
-        {
-            UsernameText.text = username;
-        }));
+        string enteredUsername = loginUsername.text;
+        string enteredPassword = PasswordHashSystem.HashPassword(loginPassword.text);
+        loginButtonText.text = "Logout";
 
-        StartCoroutine(GetPassword((string password) =>
-        {
-            PasswordText.text = password;
-        }));
+        StartCoroutine(GetUserAndPassword(enteredUsername, enteredPassword));
     }
 
-    //private void StartCoroutine(IEnumerable enumerable)
-    //{
-    //    throw new NotImplementedException();
-    //}
-
-    public IEnumerator GetUsername(Action<string> onCallBack)
+    public void LogoutUser()
     {
-        var userNameData = databaseReference.Child("Users").Child(userID).Child("Authentication").Child("username").GetValueAsync();
+        // Clear the logged-in user's information
+        Authentication.instance.LoginAs.text = "Login as Guest";
+        loginButtonText.text = "Login";
+        Authentication.instance.animator.SetBool("login", true);
+        Authentication.instance.inAuthentication = true;
 
-        yield return new WaitUntil(() => userNameData.IsCompleted);
+        // Hide the error message if it's shown
+        HideErrorMessage();
+    }
 
-        if (userNameData.Exception != null)
+    void HideErrorMessage()
+    {
+        Authentication.instance.ErrorMessage.alpha = 0;
+        Authentication.instance.ErrorMessage.interactable = false;
+        Authentication.instance.ErrorMessage.blocksRaycasts = false;
+        // Hide the error message text in your Canvas Group
+    }
+
+    private IEnumerator GetUserAndPassword(string username, string enteredPassword)
+    {
+        var userData = databaseReference.Child("Users").Child(username).Child("Authentication").GetValueAsync();
+
+        yield return new WaitUntil(() => userData.IsCompleted);
+
+        if (userData.Exception != null)
         {
-            Debug.LogError("Failed to retrieve username: " + userNameData.Exception.Message);
+            Debug.LogError("Failed to retrieve user data: " + userData.Exception.Message);
             yield break;
         }
 
-        DataSnapshot snapshot = userNameData.Result;
+        DataSnapshot snapshot = userData.Result;
 
         if (snapshot != null && snapshot.Exists)
         {
-            onCallBack.Invoke(snapshot.Value.ToString());
+            string storedPassword = snapshot.Child("password").Value.ToString();
+
+            if (storedPassword == enteredPassword)
+            {
+                Authentication.instance.animator.SetBool("login", false);
+                Authentication.instance.inAuthentication = false;
+                Authentication.instance.LoginAs.text = username;
+            }
+            else
+            {
+                ShowErrorMessage("Incorrect username or password!");
+            }
         }
         else
         {
-            Debug.LogWarning("Username data does not exist.");
+            ShowErrorMessage("User does not exist!");
         }
     }
 
-
-    public IEnumerator GetPassword(Action<string> onCallBack)
+    void ShowErrorMessage(string message)
     {
-        var userPasswordData = databaseReference.Child("Users").Child(userID).Child("Authentication").Child("password").GetValueAsync();
-
-        yield return new WaitUntil(() => userPasswordData.IsCompleted);
-
-        if (userPasswordData.Exception != null)
-        {
-            Debug.LogError("Failed to retrieve password: " + userPasswordData.Exception.Message);
-            yield break;
-        }
-
-        DataSnapshot snapshot = userPasswordData.Result;
-
-        if (snapshot != null && snapshot.Exists)
-        {
-            onCallBack.Invoke(snapshot.Value.ToString());
-        }
-        else
-        {
-            Debug.LogWarning("Password data does not exist.");
-        }
+        Authentication.instance.ErrorMessage.alpha = 1;
+        Authentication.instance.ErrorMessage.interactable = true;
+        Authentication.instance.ErrorMessage.blocksRaycasts = true;
+        // Show the error message text in your Canvas Group
     }
 
 }

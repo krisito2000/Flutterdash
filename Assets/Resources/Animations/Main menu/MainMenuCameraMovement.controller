@@ -28,7 +28,7 @@ AnimatorStateTransition:
 --- !u!1102 &-8363391374125884816
 AnimatorState:
   serializedVersion: 6
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
@@ -63,6 +63,12 @@ AnimatorStateTransition:
   m_Conditions:
   - m_ConditionMode: 2
     m_ConditionEvent: PlayTrigger
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: LevelSelectionXSettingsTrigger
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: LevelSelectionXSyncTrigger
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -3201352975090237267}
@@ -221,6 +227,12 @@ AnimatorStateTransition:
   m_Name: 
   m_Conditions:
   - m_ConditionMode: 2
+    m_ConditionEvent: PlayTrigger
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
+    m_ConditionEvent: SettingsTrigger
+    m_EventTreshold: 0
+  - m_ConditionMode: 1
     m_ConditionEvent: LevelSelectionXSettingsTrigger
     m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
@@ -605,10 +617,10 @@ AnimatorStateMachine:
     m_Position: {x: -260, y: 530, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -322159865216573567}
-    m_Position: {x: -260, y: 320, z: 0}
+    m_Position: {x: -210, y: 320, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3201352975090237267}
-    m_Position: {x: -270, y: 230, z: 0}
+    m_Position: {x: -310, y: 230, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 8300397051514489785}
     m_Position: {x: 110, y: 470, z: 0}
@@ -632,7 +644,7 @@ AnimatorStateMachine:
     m_Position: {x: -590, y: 340, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -1307623048381571181}
-    m_Position: {x: -490, y: 470, z: 0}
+    m_Position: {x: -480, y: 460, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -701,6 +713,12 @@ AnimatorStateTransition:
   m_PrefabAsset: {fileID: 0}
   m_Name: 
   m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: PlayTrigger
+    m_EventTreshold: 0
+  - m_ConditionMode: 2
+    m_ConditionEvent: SettingsTrigger
+    m_EventTreshold: 0
   - m_ConditionMode: 1
     m_ConditionEvent: LevelSelectionXSettingsTrigger
     m_EventTreshold: 0
