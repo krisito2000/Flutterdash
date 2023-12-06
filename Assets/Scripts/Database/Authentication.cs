@@ -7,9 +7,10 @@ public class Authentication : MonoBehaviour
 {
     public static Authentication instance;
 
+    [Header("------- Animaton -------")]
     public Animator animator;
-    public bool inAuthentication;
-    public Text LoginAs;
+
+    [Header("------- Error message -------")]
     public CanvasGroup ErrorMessage;
 
     void Start()
@@ -19,30 +20,26 @@ public class Authentication : MonoBehaviour
 
     public void LoginButton()
     {
-        if (LoginAs.text == "Login as Guest")
+        if (Guest.instance.guest == true)
         {
             animator.SetBool("login", true);
-            inAuthentication = true;
         }
         else
         {
             DatabaseManager.instance.LogoutUser();
-            DatabaseManager.instance.loginButtonText.text = "Logout";
+            Guest.instance.guest = true;
         }
     }
     public void LoginReturnButton()
     {
         animator.SetBool("login", false);
-        inAuthentication = false;
     }
     public void RegisterButton()
     {
         animator.SetBool("register", true);
-        inAuthentication = true;
     }
     public void RegisterReturnButton()
     {
         animator.SetBool("register", false);
-        inAuthentication = true;
     }
 }

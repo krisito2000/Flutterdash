@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RandomMusicPlayer : MonoBehaviour
 {
+    [Header("------- Music -------")]
     public AudioClip[] MusicArray;
     private AudioSource audioSource;
 

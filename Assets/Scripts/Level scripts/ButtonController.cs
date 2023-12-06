@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class NewBehaviourScript : MonoBehaviour
 {
+    [Header("------- Imges -------")]
     private SpriteRenderer theSR;
     public Sprite defaultImg;
     public Sprite pressedImg;
 
+    [Header("------- Keys -------")]
     public KeyCode keyToPress;
 
    //Getting the SpriteRenderer of the component

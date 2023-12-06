@@ -7,12 +7,16 @@ public class AnimationManager : MonoBehaviour
 {
     public static AnimationManager instance;
 
-    public enum AnimationType { SongShower, FadeAnimation}
+    [Header("------- Animaton -------")]
     public AnimationType animationtype;
+    public enum AnimationType { SongShower, FadeAnimation }
     public Animator transition;
+
+    [Header("------- Animaton time -------")]
     public float fadeTimer;
     public float songShowerTimer;
 
+    [Header("------- Objects -------")]
     public Animator circleAnimation;
 
     void Start()

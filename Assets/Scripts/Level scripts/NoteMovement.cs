@@ -8,9 +8,14 @@ public class NoteMovement : MonoBehaviour
 {
     public static NoteMovement instance;
 
-    public enum MovementDirection { Up, Left, Down, Right }
+    [Header("------- Direction -------")]
     public MovementDirection direction;
+    public enum MovementDirection { Up, Left, Down, Right }
+
+    [Header("------- Growth -------")]
     public float growthRate = 0.001f;
+
+    [Header("------- Started -------")]
     public bool gameStart = false;
 
     private float bpm;

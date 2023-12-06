@@ -7,16 +7,22 @@ using UnityEngine.UI;
 
 public class MainMenuTransition : MonoBehaviour
 {
+    public static MainMenuTransition instance;
+
+    [Header("------- Animaton -------")]
     // Reference to the Animator component
     public Animator animator;
 
     // Reference to your AnimatorController
     public AnimatorController movementAnimatorController;
 
+    [Header("------- Canvases -------")]
     public CanvasGroup mainMenuCanvas;
 
     void Start()
     {
+        instance = this;
+
         // Access the Animator component from this GameObject
         animator = GetComponent<Animator>();
 
@@ -27,115 +33,120 @@ public class MainMenuTransition : MonoBehaviour
 
     void Update()
     {
-        if (mainMenuCanvas.alpha == 1)
+        if (mainMenuCanvas.alpha == 1 && !animator.GetBool("GuestPlayTrigger"))
         {
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
-                if (!animator.GetBool("SettingsTrigger") && !animator.GetBool("SyncTrigger") && !animator.GetBool("PlayTrigger"))
+                if (!GetSettings() && !GetSync() && !GetPlay())
                 {
+                    if (Guest.instance.guest)
+                    {
+                        animator.SetBool("GuestPlayTrigger", true);
+                        Guest.instance.guestCanvas.alpha = 1;
+                    }
                     PlayButton();
                 }
-                if (animator.GetBool("LevelSelectionXSettingsTrigger"))
+                if (GetTransitionSettings())
                 {
-                    if (animator.GetBool("SettingsTrigger"))
+                    if (GetSettings())
                     {
                         BackMainMenuSettings();
                         PlayButton();
                     }
                 }
-                if (animator.GetBool("SettingsTrigger"))
+                if (GetSettings())
                 {
-                    animator.SetBool("LevelSelectionXSettingsTrigger", true);
+                    SetTransitionSettings(true);
                     BackMainMenuSettings();
                     PlayButton();
                 }
-                if (animator.GetBool("LevelSelectionXSyncTrigger"))
+                if (GetTransitionSync())
                 {
-                    if (animator.GetBool("SyncTrigger"))
+                    if (GetSync())
                     {
                         BackMainMenuSync();
                         PlayButton();
                     }
                 }
-                if (animator.GetBool("SyncTrigger"))
+                if (GetSync())
                 {
-                    animator.SetBool("LevelSelectionXSyncTrigger", true);
+                    SetTransitionSync(true);
                     BackMainMenuSync();
                     PlayButton();
                 }
             }
             else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
             {
-                if (!animator.GetBool("SettingsTrigger") && !animator.GetBool("SyncTrigger") && !animator.GetBool("PlayTrigger"))
+                if (!GetSettings() && !GetSync() && !GetPlay())
                 {
                     SettingsButton();
                 }
-                else if (animator.GetBool("SyncTrigger"))
+                else if (GetSync())
                 {
                     BackMainMenuSync();
-                    animator.SetBool("LevelSelectionXSyncTrigger", false);
-                    animator.SetBool("LevelSelectionXSettingsTrigger", false);
+                    SetTransitionSync(false);
+                    SetTransitionSettings(false);
                 }
-                if (animator.GetBool("LevelSelectionXSettingsTrigger"))
+                if (GetTransitionSettings())
                 {
-                    if (animator.GetBool("PlayTrigger"))
+                    if (GetPlay())
                     {
                         BackMainMenuPlay();
-                        animator.SetBool("LevelSelectionXSettingsTrigger", true);
+                        SetTransitionSettings(true);
                         SettingsButton();
                     }
                 }
                 else
                 {
-                    if (animator.GetBool("PlayTrigger"))
+                    if (GetPlay())
                     {
                         BackMainMenuPlay();
-                        animator.SetBool("LevelSelectionXSettingsTrigger", true);
+                        SetTransitionSettings(true);
                         SettingsButton();
                     }
                 }
             }
             else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
-                if (!animator.GetBool("SyncTrigger") && !animator.GetBool("SettingsTrigger"))
+                if (!GetSync() && !GetSettings() && !GetPlay())
                 {
                     SyncButton();
                     BackMainMenuPlay();
-                    animator.SetBool("LevelSelectionXSyncTrigger", false);
-                    animator.SetBool("LevelSelectionXSettingsTrigger", false);
+                    SetTransitionSync(false);
+                    SetTransitionSettings(false);
                 }
-                else if (animator.GetBool("SettingsTrigger"))
+                else if (GetSettings())
                 {
                     BackMainMenuSettings();
-                    animator.SetBool("LevelSelectionXSyncTrigger", false);
-                    animator.SetBool("LevelSelectionXSettingsTrigger", false);
+                    SetTransitionSync(false);
+                    SetTransitionSettings(false);
                 }
-                if (animator.GetBool("LevelSelectionXSyncTrigger"))
+                else if (GetTransitionSync())
                 {
-                    if (animator.GetBool("PlayTrigger"))
+                    if (GetPlay())
                     {
                         BackMainMenuPlay();
-                        animator.SetBool("LevelSelectionXSyncTrigger", true);
+                        SetTransitionSync(true);
                         SyncButton();
                     }
                 }
                 else
                 {
-                    if (animator.GetBool("PlayTrigger"))
+                    if (GetPlay())
                     {
                         BackMainMenuPlay();
-                        animator.SetBool("LevelSelectionXSettingsTrigger", true);
-                        SettingsButton();
+                        SetTransitionSync(true);
+                        SetSync(true);
                     }
                 }
             }
             else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             {
-                if (animator.GetBool("PlayTrigger"))
+                if (GetPlay())
                 {
                     BackMainMenuPlay();
-                    animator.SetBool("LevelSelectionXSyncTrigger", false);
-                    animator.SetBool("LevelSelectionXSettingsTrigger", false);
+                    SetTransitionSync(false);
+                    SetTransitionSettings(false);
                 }
             }
         }
@@ -144,37 +155,81 @@ public class MainMenuTransition : MonoBehaviour
     // Level Selection
     public void PlayButton()
     {
-        animator.SetBool("PlayTrigger", true);
+        SetPlay(true);
+        SetSettings(false);
+        SetSync(false);
+    }
+    public bool GetPlay()
+    {
+        return animator.GetBool("PlayTrigger");
+    }
+    public void SetPlay(bool trigger)
+    {
+        animator.SetBool("PlayTrigger", trigger);
     }
 
     public void BackMainMenuPlay()
     {
-        animator.SetBool("PlayTrigger", false);
+        SetPlay(false);
     }
 
     // Settings
     public void SettingsButton()
     {
-        animator.SetBool("SettingsTrigger", true);
-        animator.SetBool("SyncTrigger", false);
-        animator.SetBool("PlayTrigger", false);
+        SetPlay(false);
+        SetSettings(true);
+        SetSync(false);
     }
-
+    public bool GetSettings()
+    {
+        return animator.GetBool("SettingsTrigger");
+    }
+    public void SetSettings(bool trigger)
+    {
+        animator.SetBool("SettingsTrigger", trigger);
+    }
     public void BackMainMenuSettings()
     {
-        animator.SetBool("SettingsTrigger", false);
+        SetSettings(false);
     }
 
     // Sync
     public void SyncButton()
     {
-        animator.SetBool("SyncTrigger", true);
-        animator.SetBool("SettingsTrigger", false);
-        animator.SetBool("PlayTrigger", false);
+        SetPlay(false);
+        SetSync(true);
+        SetSettings(false);
+    }
+    public bool GetSync()
+    {
+        return animator.GetBool("SyncTrigger");
+    }
+    public void SetSync(bool trigger)
+    {
+        animator.SetBool("SyncTrigger", trigger);
     }
 
     public void BackMainMenuSync()
     {
-        animator.SetBool("SyncTrigger", false);
+        SetSync(false);
+    }
+
+    // Transitions
+    public bool GetTransitionSettings()
+    {
+        return animator.GetBool("LevelSelectionXSettingsTrigger");
+    }
+    public void SetTransitionSettings(bool trigger)
+    {
+        animator.SetBool("LevelSelectionXSettingsTrigger", trigger);
+    }
+
+    public bool GetTransitionSync()
+    {
+        return animator.GetBool("LevelSelectionXSyncTrigger");
+    }
+    public void SetTransitionSync(bool trigger)
+    {
+        animator.SetBool("LevelSelectionXSyncTrigger", trigger);
     }
 }

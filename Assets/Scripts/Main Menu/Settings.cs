@@ -5,6 +5,7 @@ using UnityEngine.Audio;
 
 public class Settings : MonoBehaviour
 {
+    [Header("------- Audio -------")]
     public AudioMixer audioMixer;
 
     public void SetVolume (float volume)
