@@ -22,7 +22,7 @@ public class RandomMusicPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!audioSource.isPlaying)
+        if (!audioSource.isPlaying && !PauseMenu.gameIsPaused)
         {
             audioSource.clip = GetRandomClip();
             audioSource.Play();

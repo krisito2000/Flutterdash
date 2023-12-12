@@ -8367,12 +8367,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   music: {fileID: 1491944993}
-  noteHitSound: {fileID: 439835915}
   bpm: 120
+  Notes: {fileID: 975520316}
   NoteMovement: {fileID: 1420531617}
   pressAnyKey: {fileID: 1339535207}
   scoreText: {fileID: 1426851216}
-  resultsScoreText: {fileID: 0}
+  resultsScoreText: {fileID: 2027101582}
   multiplierText: {fileID: 1511027003}
   multiplierBackground: {fileID: 1831022437}
   multiplierThresholds: 0100000001000000010000000100000001000000
@@ -8392,7 +8392,6 @@ MonoBehaviour:
   Hearth3Fade: {fileID: 428646061}
   Hearth4Fade: {fileID: 1613625812}
   damageThresholds: 01000000010000000100000001000000
-  Notes: {fileID: 975520316}
 --- !u!4 &1420531616
 Transform:
   m_ObjectHideFlags: 0
