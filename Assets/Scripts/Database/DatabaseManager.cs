@@ -76,7 +76,7 @@ public class DatabaseManager : MonoBehaviour
                 }
             }
 
-            //Email
+            // Email
             if (!Validations.instance.ValidateEmail())
             {
                 if (string.IsNullOrEmpty(RegisterEmailField.text))
@@ -91,7 +91,7 @@ public class DatabaseManager : MonoBehaviour
                 }
             }
 
-            //Password
+            // Password
             if (!Validations.instance.ValidatePassword())
             {
                 if (RegisterPasswordField.text.Length < 6)

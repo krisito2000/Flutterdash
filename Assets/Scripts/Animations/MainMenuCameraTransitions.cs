@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
-using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,11 +9,7 @@ public class MainMenuTransition : MonoBehaviour
     public static MainMenuTransition instance;
 
     [Header("------- Animaton -------")]
-    // Reference to the Animator component
     public Animator animator;
-
-    // Reference to your AnimatorController
-    public AnimatorController movementAnimatorController;
 
     [Header("------- Canvases -------")]
     public CanvasGroup mainMenuCanvas;
@@ -22,13 +17,6 @@ public class MainMenuTransition : MonoBehaviour
     void Start()
     {
         instance = this;
-
-        // Access the Animator component from this GameObject
-        animator = GetComponent<Animator>();
-
-        // Assign the AnimatorController to the Animator component
-        animator.runtimeAnimatorController = movementAnimatorController;
-
     }
 
     void Update()
@@ -38,7 +26,7 @@ public class MainMenuTransition : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
                 SetTutorial(false);
-                if (!GetSettings() && !GetSync() && !GetPlay())
+                if (!GetSettings() && !GetCustomSong() && !GetPlay())
                 {
                     if (Guest.instance.guest)
                     {
@@ -53,6 +41,7 @@ public class MainMenuTransition : MonoBehaviour
                     {
                         BackMainMenuSettings();
                         PlayButton();
+                        animator.SetBool("GuestPlayTrigger", false);
                     }
                 }
                 if (GetSettings())
@@ -60,36 +49,39 @@ public class MainMenuTransition : MonoBehaviour
                     SetTransitionSettings(true);
                     BackMainMenuSettings();
                     PlayButton();
+                    animator.SetBool("GuestPlayTrigger", false);
                 }
-                if (GetTransitionSync())
+                if (GetTransitionCustom())
                 {
-                    if (GetSync())
+                    if (GetCustomSong())
                     {
-                        BackMainMenuSync();
+                        BackMainMenuCustomSong();
                         PlayButton();
+                        animator.SetBool("GuestPlayTrigger", false);
                     }
                 }
-                if (GetSync())
+                if (GetCustomSong())
                 {
-                    SetTransitionSync(true);
-                    BackMainMenuSync();
+                    SetTransitionCustom(true);
+                    BackMainMenuCustomSong();
                     PlayButton();
+                    animator.SetBool("GuestPlayTrigger", false);
                 }
             }
             else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
             {
                 SetTutorial(false);
-                if (!GetSettings() && !GetSync() && !GetPlay())
+                if (!GetSettings() && !GetCustomSong() && !GetPlay())
                 {
                     SettingsButton();
                 }
-                else if (GetSync())
+                else if (GetCustomSong())
                 {
-                    BackMainMenuSync();
-                    SetTransitionSync(false);
+                    BackMainMenuCustomSong();
+                    SetTransitionCustom(false);
                     SetTransitionSettings(false);
                 }
-                if (GetTransitionSettings())
+                else if (GetTransitionSettings())
                 {
                     if (GetPlay())
                     {
@@ -97,6 +89,11 @@ public class MainMenuTransition : MonoBehaviour
                         SetTransitionSettings(true);
                         SettingsButton();
                     }
+                }
+                else if (GetSettings() && !GetSync())
+                {
+                    SetSync(true);
+                    SetSettings(false);
                 }
                 else
                 {
@@ -111,59 +108,65 @@ public class MainMenuTransition : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 SetTutorial(false);
-                if (!GetSync() && !GetSettings() && !GetPlay())
+                if (!GetCustomSong() && !GetSettings() && !GetPlay() && !GetSync())
                 {
-                    SyncButton();
+                    CustomSongButton();
                     BackMainMenuPlay();
-                    SetTransitionSync(false);
+                    SetTransitionCustom(false);
                     SetTransitionSettings(false);
                 }
                 else if (GetSettings())
                 {
                     BackMainMenuSettings();
-                    SetTransitionSync(false);
+                    SetTransitionCustom(false);
                     SetTransitionSettings(false);
                 }
-                else if (GetTransitionSync())
+                else if (GetTransitionCustom())
                 {
                     if (GetPlay())
                     {
                         BackMainMenuPlay();
-                        SetTransitionSync(true);
-                        SyncButton();
+                        SetTransitionCustom(true);
+                        CustomSongButton();
                     }
+                }
+                else if (GetSync() && !GetSettings())
+                {
+                    SetSync(false);
+                    SetSettings(true);
                 }
                 else
                 {
                     if (GetPlay())
                     {
                         BackMainMenuPlay();
-                        SetTransitionSync(true);
-                        SetSync(true);
+                        SetTransitionCustom(true);
+                        SetCustomSong(true);
                     }
                 }
             }
             else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             {
                 SetTutorial(false);
+                Guest.instance.guestCanvas.alpha = 0;
                 if (GetPlay())
                 {
                     BackMainMenuPlay();
-                    SetTransitionSync(false);
+                    SetTransitionCustom(false);
                     SetTransitionSettings(false);
+                    
                 }
             }
         }
     }
-
     // Level Selection
     public void PlayButton()
     {
         SetPlay(true);
         SetSettings(false);
-        SetSync(false);
+        SetCustomSong(false);
 
-        if (animator.GetBool("isGuest"))
+        if (animator.GetBool("isGuest") && !GetCustomSong() && !GetSettings())
         {
             animator.SetBool("GuestPlayTrigger", true);
             Guest.instance.guestCanvas.alpha = 1;
@@ -189,11 +192,11 @@ public class MainMenuTransition : MonoBehaviour
     }
     public bool GetTutorial()
     {
-        return animator.GetBool("Tutorial");
+        return animator.GetBool("TutorialTrigger");
     }
     public void SetTutorial(bool trigger)
     {
-        animator.SetBool("Tutorial", trigger);
+        animator.SetBool("TutorialTrigger", trigger);
     }
 
     // Settings
@@ -201,7 +204,7 @@ public class MainMenuTransition : MonoBehaviour
     {
         SetPlay(false);
         SetSettings(true);
-        SetSync(false);
+        SetCustomSong(false);
     }
     public bool GetSettings()
     {
@@ -216,10 +219,30 @@ public class MainMenuTransition : MonoBehaviour
         SetSettings(false);
     }
 
-    // Sync
-    public void SyncButton()
+    // Custom Song creation
+    public void CustomSongButton()
     {
         SetPlay(false);
+        SetCustomSong(true);
+        SetSettings(false);
+    }
+    public bool GetCustomSong()
+    {
+        return animator.GetBool("CustomTrigger");
+    }
+    public void SetCustomSong(bool trigger)
+    {
+        animator.SetBool("CustomTrigger", trigger);
+    }
+
+    public void BackMainMenuCustomSong()
+    {
+        SetCustomSong(false);
+    }
+
+    // Song synchronization
+    public void SyncButton()
+    {
         SetSync(true);
         SetSettings(false);
     }
@@ -232,11 +255,6 @@ public class MainMenuTransition : MonoBehaviour
         animator.SetBool("SyncTrigger", trigger);
     }
 
-    public void BackMainMenuSync()
-    {
-        SetSync(false);
-    }
-
     // Transitions
     public bool GetTransitionSettings()
     {
@@ -247,12 +265,12 @@ public class MainMenuTransition : MonoBehaviour
         animator.SetBool("LevelSelectionXSettingsTrigger", trigger);
     }
 
-    public bool GetTransitionSync()
+    public bool GetTransitionCustom()
     {
-        return animator.GetBool("LevelSelectionXSyncTrigger");
+        return animator.GetBool("LevelSelectionXCustomTrigger");
     }
-    public void SetTransitionSync(bool trigger)
+    public void SetTransitionCustom(bool trigger)
     {
-        animator.SetBool("LevelSelectionXSyncTrigger", trigger);
+        animator.SetBool("LevelSelectionXCustomTrigger", trigger);
     }
 }

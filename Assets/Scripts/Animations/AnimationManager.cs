@@ -55,6 +55,7 @@ public class AnimationManager : MonoBehaviour
     {
         if (!gameObject.activeSelf)
         {
+            // Circle rotation
             switch (NoteObject.instance.direction)
             {
                 case NoteObject.SpinDirection.Left:

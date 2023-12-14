@@ -12,13 +12,13 @@ public class NewBehaviourScript : MonoBehaviour
     [Header("------- Keys -------")]
     public KeyCode keyToPress;
 
-   //Getting the SpriteRenderer of the component
+   // Getting the SpriteRenderer of the component
     void Start()
     {
         theSR = GetComponent<SpriteRenderer>();
     }
 
-    //Checking if the button on the keyboard is pressed and changing the img
+    // Checking if the button on the keyboard is pressed and changing the img
     void Update()
     {
         if(Input.GetKeyDown(keyToPress))

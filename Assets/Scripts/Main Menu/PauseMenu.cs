@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.Policy;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -62,6 +63,9 @@ public class PauseMenu : MonoBehaviour
 
     public void QuitGame()
     {
-        SceneLoader.instance.MoveToScene(0);
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        SceneManager.LoadScene(currentSceneName);
+
+        Resume();
     }
 }

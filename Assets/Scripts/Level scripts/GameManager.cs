@@ -27,9 +27,9 @@ public class GameManager : MonoBehaviour
     public Text resultsScoreText;
     private int currentScore;
     private int scorePerNote;
-    // Perfect            light blue  500
-    // EPerfect/LPerfect  green       250
-    // Early/Late         yellow      100
+    // Perfect            light blue  350
+    // EPerfect/LPerfect  green       150
+    // Early/Late         yellow      75
     // Missed             red         0
     private int scoreEarly;
     private int scoreEarlyPerfect;
@@ -82,11 +82,11 @@ public class GameManager : MonoBehaviour
         //music.volume = //audio mixer;
 
         scoreText.text = "0";
-        scoreEarly = 100;
-        scoreEarlyPerfect = 250;
-        scorePerfect = 500;
-        scoreLatePerfect = 250;
-        scoreLate = 100;
+        scoreEarly = 75;
+        scoreEarlyPerfect = 150;
+        scorePerfect = 350;
+        scoreLatePerfect = 150;
+        scoreLate = 75;
         currentMultiplier = 1;
     }
 
@@ -309,7 +309,7 @@ public class GameManager : MonoBehaviour
     }
     public void DamageHeal()
     {
-        //Get hearths
+        // Get hearths
         if (currentDamageTaken == 0)
         {
             Hearth1.SetActive(true);

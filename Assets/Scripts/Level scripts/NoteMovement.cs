@@ -1,7 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.TerrainTools;
-using UnityEditorInternal;
 using UnityEngine;
 
 public class NoteMovement : MonoBehaviour
