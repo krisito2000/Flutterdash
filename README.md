@@ -2,6 +2,13 @@
 
 ## Usage Policy
 
+Moments (Acoustic Version) by Robbie Rosen, Lost Identities
+
+Song: Lost Identities x Robbie Rosen - Moments (Acoustic Version) [NCS Release]
+Music provided by NoCopyrightSounds
+Free Download/Stream: http://ncs.io/MomentsAcoustic
+Watch: http://youtu.be/
+
 Street trap
 
 Music: Street Trap by WinnieTheMoog
