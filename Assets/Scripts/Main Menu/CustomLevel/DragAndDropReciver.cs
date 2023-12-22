@@ -1,77 +1,81 @@
-using B83.Win32;
-using System;
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Networking;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using UnityEngine;
+using System;
+using B83.Win32;
 
-public class DragAndDropReciver : MonoBehaviour
+public class DragAndDropReceiver : MonoBehaviour
 {
     [SerializeField]
     [Tooltip("Renderer target")]
     public AudioSource audioSource;
 
-    // Start is called before the first frame update
+    public Text musicName;
+
     void Start()
     {
         UnityDragAndDropHook.InstallHook();
         UnityDragAndDropHook.OnDroppedFiles += OnDroppedFiles;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
-    private void OnDestroy()
+    void OnDestroy()
     {
         UnityDragAndDropHook.UninstallHook();
     }
-    // Function to handle dropped music files
+
     private void OnDroppedFiles(List<string> aPathNames, POINT aDropPoint)
     {
         string musicFileName = null;
-        // Loop through the dropped files
-        foreach (string receivedFile in aPathNames)
+        string receivedFile = null;
+
+        foreach (string file in aPathNames)
         {
-            FileInfo fileInfo = new FileInfo(receivedFile);
+            FileInfo fileInfo = new FileInfo(file);
             string ext = fileInfo.Extension.ToLower();
 
             // Check if the file extension is for a supported music format (e.g., mp3, wav)
             if (ext == ".mp3" || ext == ".wav" || ext == ".webm")
             {
                 musicFileName = fileInfo.Name; // Store the file name
+                receivedFile = file; // Store the full file path
                 break; // Found a valid music file, stop checking other files
             }
         }
 
-        // Load the music file if a valid one was found
+        // If a valid music file was found, change the text and play the music
         if (!string.IsNullOrEmpty(musicFileName))
         {
-            string path = Path.Combine(Path.Combine(Application.dataPath, "Sound"), "music");
-            LoadMusic(path);
+            musicName.text = musicFileName; // Set the Text component to display the file name
+            LoadMusic(receivedFile);
         }
     }
 
     public void LoadMusic(string file)
     {
-        // Load and play the music file
         StartCoroutine(LoadAudio(file));
     }
+
     private IEnumerator LoadAudio(string filePath)
     {
-        var www = new WWW("file://" + filePath); // Load the file using WWW
-        yield return www;
+        // Convert local file path to URI format
+        string fileUri = new Uri(filePath).AbsoluteUri;
 
-        if (www.error != null)
+        using (UnityWebRequest www = UnityWebRequestMultimedia.GetAudioClip(fileUri, AudioType.UNKNOWN))
         {
-            Debug.LogError("Error loading audio: " + www.error);
-        }
-        else
-        {
-            audioSource.clip = www.GetAudioClip(false, false); // Set the audio clip to AudioSource
-            audioSource.Play(); // Play the loaded audio
+            yield return www.SendWebRequest();
+
+            if (www.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Error loading audio: " + www.error);
+            }
+            else
+            {
+                audioSource.clip = DownloadHandlerAudioClip.GetContent(www); // Set the audio clip to AudioSource
+                audioSource.Play(); // Play the loaded audio
+            }
         }
     }
 }

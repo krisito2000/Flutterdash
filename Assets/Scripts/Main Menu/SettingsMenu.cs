@@ -27,7 +27,7 @@ public class SettingsMenu : MonoBehaviour
     [Header("------- Animations -------")]
     public Animator ButtonAnimator;
 
-
+    [System.Obsolete]
     public void Start()
     {
         // Resoluton
@@ -118,6 +118,7 @@ public class SettingsMenu : MonoBehaviour
         QualitySettings.SetQualityLevel(qualityIndex);
     }
 
+    [System.Obsolete]
     public void VSync()
     {
         if (vSyncToggle.isOn)

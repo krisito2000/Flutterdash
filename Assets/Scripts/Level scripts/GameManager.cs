@@ -92,8 +92,6 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-
-
         if (!startMusic)
         {
             if (Input.anyKeyDown)
