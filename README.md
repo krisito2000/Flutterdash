@@ -2,6 +2,13 @@
 
 ## Usage Policy
 
+No Way by BIMINI
+
+Song: BIMINI - No Way (with Avi Snow) [NCS Release]
+Music provided by NoCopyrightSounds
+Free Download/Stream: http://ncs.io/noway
+Watch: AT/youtube
+
 Moments (Acoustic Version) by Robbie Rosen, Lost Identities
 
 Song: Lost Identities x Robbie Rosen - Moments (Acoustic Version) [NCS Release]
