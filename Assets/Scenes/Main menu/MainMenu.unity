@@ -495,8 +495,8 @@ RectTransform:
   m_LocalScale: {x: 0.008979999, y: 0.008979999, z: 0.008979999}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1927481235}
   - {fileID: 1544795107}
+  - {fileID: 1927481235}
   - {fileID: 2114189057}
   m_Father: {fileID: 266498119}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4709,6 +4709,7 @@ GameObject:
   m_Component:
   - component: {fileID: 506491547}
   - component: {fileID: 506491546}
+  - component: {fileID: 506491548}
   m_Layer: 0
   m_Name: CustomSongManager
   m_TagString: Untagged
@@ -4745,6 +4746,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &506491548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 506491545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d42b3cc76bc71c4b83fe9be2341d305, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statusText1: {fileID: 1544795108}
+  statusText2: {fileID: 1927481236}
 --- !u!1 &524601309
 GameObject:
   m_ObjectHideFlags: 0
@@ -16511,7 +16526,6 @@ GameObject:
   - component: {fileID: 2114189061}
   - component: {fileID: 2114189060}
   - component: {fileID: 2114189059}
-  - component: {fileID: 2114189058}
   m_Layer: 5
   m_Name: PlayCustomSong
   m_TagString: Untagged
@@ -16539,18 +16553,6 @@ RectTransform:
   m_AnchoredPosition: {x: -0.00012207, y: -236}
   m_SizeDelta: {x: 588.96, y: 155.92}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2114189058
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2114189056}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7ed729f7a05731243b2226cdff2ca883, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &2114189059
 MonoBehaviour:
   m_ObjectHideFlags: 0

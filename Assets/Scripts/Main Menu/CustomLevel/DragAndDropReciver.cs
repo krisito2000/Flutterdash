@@ -85,10 +85,6 @@ public class DragAndDropReceiver : MonoBehaviour
     // Method to call the CopyAndSaveCustomLevel method from CustomLevelCreator
     public void CreateCustomLevel()
     {
-#if UNITY_EDITOR
         levelCreator.CopyAndSaveCustomLevel();
-        // After the scene is copied, you can optionally show a message or handle other logic here.
-        Debug.Log("Creating custom level...");
-#endif
     }
 }
