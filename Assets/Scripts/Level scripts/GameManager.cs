@@ -4,6 +4,7 @@ using System.ComponentModel.Design;
 using System.Drawing.Printing;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.TerrainTools;
 using UnityEngine.UI;
 
@@ -320,6 +321,19 @@ public class GameManager : MonoBehaviour
         {
             Hearth3.SetActive(true);
         }
+    }
+
+    public void RestartScene()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
+        Destroy(gameObject);
+    }
+
+    public void LoadMainMenu()
+    {
+        SceneManager.LoadScene(0);
+        Destroy(gameObject);
     }
 
     void Awake()
