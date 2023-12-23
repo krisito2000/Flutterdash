@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System;
 using B83.Win32;
+using UnityEngine.SceneManagement;
 
 public class DragAndDropReceiver : MonoBehaviour
 {
@@ -14,6 +15,8 @@ public class DragAndDropReceiver : MonoBehaviour
     public AudioSource audioSource;
 
     public Text musicName;
+
+    private CustomLevelCreator levelCreator = new CustomLevelCreator();
 
     void Start()
     {
@@ -77,5 +80,15 @@ public class DragAndDropReceiver : MonoBehaviour
                 audioSource.Play(); // Play the loaded audio
             }
         }
+    }
+
+    // Method to call the CopyAndSaveCustomLevel method from CustomLevelCreator
+    public void CreateCustomLevel()
+    {
+#if UNITY_EDITOR
+        levelCreator.CopyAndSaveCustomLevel();
+        // After the scene is copied, you can optionally show a message or handle other logic here.
+        Debug.Log("Creating custom level...");
+#endif
     }
 }
