@@ -634,7 +634,7 @@ MonoBehaviour:
   resultsScoreText: {fileID: 1439296705}
   multiplierText: {fileID: 1397697434}
   multiplierBackground: {fileID: 1202443989}
-  multiplierThresholds: 0100000001000000010000000100000001000000
+  multiplierThresholds: 0200000004000000080000001000000018000000
   resultsAnimation: {fileID: 1156354414}
   earlyText: {fileID: 884683111}
   earlyPerfectText: {fileID: 248370258}
