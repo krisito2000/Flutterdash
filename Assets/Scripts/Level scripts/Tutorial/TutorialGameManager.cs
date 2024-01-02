@@ -18,8 +18,8 @@ public class TutorialGameManager : MonoBehaviour
     [Header("------- Note manager -------")]
     public float bpm;
     public bool readyToPlay;
+    public bool tryNotes;
     public GameObject Notes;
-    public NoteMovement NoteMovement;
     public Text pressAnyKey;
 
     [Header("------- Score -------")]
@@ -93,11 +93,16 @@ public class TutorialGameManager : MonoBehaviour
 
     void Update()
     {
+        if(tryNotes)
+        {
+            TutorialNoteMovement.instance.gameStart = true;
+        }
+
         if (readyToPlay)
         {
             if (Input.anyKeyDown)
             {
-                NoteMovement.gameStart = true;
+                TutorialNoteMovement.instance.gameStart = true;
                 music.enabled = true;
                 readyToPlay = false;
                 if (pressAnyKey != null)
@@ -129,52 +134,58 @@ public class TutorialGameManager : MonoBehaviour
 
     public void MultiplierBackground()
     {
-        //Multiplier background color change
-        if (currentMultiplier == 1)
+        if (readyToPlay)
         {
-            multiplierBackground.color = Color.gray;
-            multiplierText.color = Color.white;
-        }
-        else if (currentMultiplier == 2)
-        {
-            multiplierBackground.color = Color.green;
-            multiplierText.color = Color.black;
-        }
-        else if (currentMultiplier == 4)
-        {
-            multiplierBackground.color = Color.blue;
-            multiplierText.color = Color.black;
-        }
-        else if (currentMultiplier == 8)
-        {
-            multiplierBackground.color = Color.red;
-            multiplierText.color = Color.black;
-        }
-        else if (currentMultiplier >= 16)
-        {
-            multiplierBackground.color = Color.yellow;
-            multiplierText.color = Color.black;
+            //Multiplier background color change
+            if (currentMultiplier == 1)
+            {
+                multiplierBackground.color = Color.gray;
+                multiplierText.color = Color.white;
+            }
+            else if (currentMultiplier == 2)
+            {
+                multiplierBackground.color = Color.green;
+                multiplierText.color = Color.black;
+            }
+            else if (currentMultiplier == 4)
+            {
+                multiplierBackground.color = Color.blue;
+                multiplierText.color = Color.black;
+            }
+            else if (currentMultiplier == 8)
+            {
+                multiplierBackground.color = Color.red;
+                multiplierText.color = Color.black;
+            }
+            else if (currentMultiplier >= 16)
+            {
+                multiplierBackground.color = Color.yellow;
+                multiplierText.color = Color.black;
+            }
         }
     }
 
     public void NoteHit()
     {
-        if (currentMultiplier / 2 < multiplierThresholds.Length)
+        if (readyToPlay)
         {
-            multiplierTracker++;
-
-            if (multiplierThresholds[currentMultiplier / 2] <= multiplierTracker)
+            if (currentMultiplier / 2 < multiplierThresholds.Length)
             {
-                multiplierTracker = 0;
-                currentMultiplier *= 2;
+                multiplierTracker++;
+
+                if (multiplierThresholds[currentMultiplier / 2] <= multiplierTracker)
+                {
+                    multiplierTracker = 0;
+                    currentMultiplier *= 2;
+                }
             }
+
+            multiplierText.text = "x" + currentMultiplier;
+
+            currentScore += scorePerNote * currentMultiplier;
+            scoreText.text = $"{currentScore}";
+            MultiplierBackground();
         }
-
-        multiplierText.text = "x" + currentMultiplier;
-
-        currentScore += scorePerNote * currentMultiplier;
-        scoreText.text = $"{currentScore}";
-        MultiplierBackground();
     }
 
     public void EarlyHit()
@@ -258,22 +269,25 @@ public class TutorialGameManager : MonoBehaviour
 
     public void NoteMissed()
     {
-        missedCounter++;
-        DamageTake();
+        if (readyToPlay)
+        {
+            missedCounter++;
+            DamageTake();
 
-        currentMultiplier = 1;
-        multiplierTracker = 0;
-        multiplierBackground.color = Color.gray;
-        multiplierText.color = Color.white;
+            currentMultiplier = 1;
+            multiplierTracker = 0;
+            multiplierBackground.color = Color.gray;
+            multiplierText.color = Color.white;
 
-        multiplierText.text = "x" + currentMultiplier;
-        Debug.Log("Missed");
+            multiplierText.text = "x" + currentMultiplier;
+            Debug.Log("Missed");
+        }
     }
 
     public void DamageTake()
     {
         // Death indicator
-        if (currentDamageTaken <= damageThresholds.Length)
+        if (currentDamageTaken <= damageThresholds.Length && readyToPlay)
         {
             currentDamageTaken++;
 

@@ -16,8 +16,8 @@ public class AnimationManager : MonoBehaviour
     public float fadeTimer;
     public float songShowerTimer;
 
-    [Header("------- Objects -------")]
-    public Animator circleAnimation;
+    //[Header("------- Objects -------")]
+    //public Animator circleAnimation;
 
     void Start()
     {
@@ -51,22 +51,22 @@ public class AnimationManager : MonoBehaviour
         transition.SetBool("isTriggered", true);
     }
 
-    public IEnumerator NoteAnimation()
-    {
-        if (!gameObject.activeSelf)
-        {
-            // Circle rotation
-            switch (NoteObject.instance.direction)
-            {
-                case NoteObject.SpinDirection.Left:
-                    circleAnimation.SetBool("triggerLeft", true);
-                    yield break;
-                case NoteObject.SpinDirection.Right:
-                    circleAnimation.SetBool("triggerRight", true);
-                    yield break;
-            }
-        }
-    }
+    //public IEnumerator NoteAnimation()
+    //{
+    //    if (!gameObject.activeSelf)
+    //    {
+    //        // Circle rotation
+    //        switch (NoteObject.instance.direction)
+    //        {
+    //            case NoteObject.SpinDirection.Left:
+    //                circleAnimation.SetBool("triggerLeft", true);
+    //                yield break;
+    //            case NoteObject.SpinDirection.Right:
+    //                circleAnimation.SetBool("triggerRight", true);
+    //                yield break;
+    //        }
+    //    }
+    //}
 
     public void LoginAnimation()
     {

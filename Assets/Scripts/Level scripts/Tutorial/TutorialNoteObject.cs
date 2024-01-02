@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
-public class NoteObject : MonoBehaviour
+public class TutorialNoteObject : MonoBehaviour
 {
-    public static NoteObject instance;
+    public static TutorialNoteObject instance;
 
     [Header("------- Note verification -------")]
     public bool circleTrigger = false;
@@ -12,13 +13,8 @@ public class NoteObject : MonoBehaviour
     public KeyCode keyToPress;
     public Transform circle;
 
-    [Header("------- Animation -------")]
-    public bool noteAnimation;
-    public enum SpinDirection { Left, Right }
-    public SpinDirection direction;
-
     [Header("------- Note indentification -------")]
-    private static List<NoteObject> activeNotes = new List<NoteObject>();
+    private static List<TutorialNoteObject> activeNotes = new List<TutorialNoteObject>();
     public float noteID;
 
     void Start()
@@ -35,7 +31,7 @@ public class NoteObject : MonoBehaviour
 
         if (Input.GetKeyDown(keyToPress))
         {
-            NoteObject closestNote = GetClosestNote();
+            TutorialNoteObject closestNote = GetClosestNote();
 
             if (closestNote == this)
             {
@@ -50,19 +46,19 @@ public class NoteObject : MonoBehaviour
         if (distanceDetection > 4)
         {
             Debug.Log("Note missed: " + this.gameObject.name);
-            GameManager.instance.NoteMissed();
+            TutorialGameManager.instance.NoteMissed();
             activeNotes.Remove(this);
             gameObject.SetActive(false);
         }
     }
 
-    private NoteObject GetClosestNote()
+    private TutorialNoteObject GetClosestNote()
     {
-        NoteObject closestNote = null;
+        TutorialNoteObject closestNote = null;
         float closestDistance = float.MaxValue;
         Vector2 circlePosition = circle.position;
 
-        foreach (NoteObject note in activeNotes)
+        foreach (TutorialNoteObject note in activeNotes)
         {
             if (!note.circleTrigger)
             {
@@ -94,19 +90,19 @@ public class NoteObject : MonoBehaviour
         // EL
         if (distanceDetection >= 1.187)
         {
-            GameManager.instance.EarlyHit();
+            TutorialGameManager.instance.EarlyHit();
             this.gameObject.SetActive(false);
         }
         // ELPerfect
         else if (distanceDetection >= 0.874)
         {
-            GameManager.instance.EarlyPerfectHit();
+            TutorialGameManager.instance.EarlyPerfectHit();
             this.gameObject.SetActive(false);
         }
         // Perfect
         else
         {
-            GameManager.instance.PerfectHit();
+            TutorialGameManager.instance.PerfectHit();
             this.gameObject.SetActive(false);
         }
         // TODO: Create Late and Late Perfect
