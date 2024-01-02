@@ -139,7 +139,10 @@ MonoBehaviour:
   circleTrigger: 0
   circleCollider: {fileID: 1368442145591834260, guid: 9aed1a8fe91c6564ab5353054eeb556c, type: 3}
   keyToPress: 97
+  secondaryKey: 276
   circle: {fileID: 2720664786835466717, guid: 9aed1a8fe91c6564ab5353054eeb556c, type: 3}
+  noteAnimation: 0
+  direction: 0
   noteID: 0
 --- !u!58 &6192495185340787191
 CircleCollider2D:

@@ -11,8 +11,9 @@ public class NewBehaviourScript : MonoBehaviour
 
     [Header("------- Keys -------")]
     public KeyCode keyToPress;
+    public KeyCode secondaryKey;
 
-   // Getting the SpriteRenderer of the component
+    // Getting the SpriteRenderer of the component
     void Start()
     {
         theSR = GetComponent<SpriteRenderer>();
@@ -21,12 +22,12 @@ public class NewBehaviourScript : MonoBehaviour
     // Checking if the button on the keyboard is pressed and changing the img
     void Update()
     {
-        if(Input.GetKeyDown(keyToPress))
+        if(Input.GetKeyDown(keyToPress) || Input.GetKeyDown(secondaryKey))
         {
             theSR.sprite = pressedImg;
         }
 
-        if (Input.GetKeyUp(keyToPress))
+        if (Input.GetKeyUp(keyToPress) || Input.GetKeyUp(secondaryKey))
         {
             theSR.sprite = defaultImg;
         }

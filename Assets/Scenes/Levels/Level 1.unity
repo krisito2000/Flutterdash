@@ -1401,6 +1401,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1011226673}
     m_Modifications:
+    - target: {fileID: 1239072487010522270, guid: cfd796c09303ce14899eb64ed2f8042c, type: 3}
+      propertyPath: noteAnimation
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1991639542663830699, guid: cfd796c09303ce14899eb64ed2f8042c, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -1588,7 +1592,6 @@ MonoBehaviour:
   transition: {fileID: 0}
   fadeTimer: 10
   songShowerTimer: 0
-  circleAnimation: {fileID: 0}
 --- !u!95 &201349482
 Animator:
   serializedVersion: 5
@@ -1753,6 +1756,10 @@ PrefabInstance:
     - target: {fileID: 7581781775850032206, guid: caccd27d3a7027d4a83f23bcda005caf, type: 3}
       propertyPath: m_Radius
       value: 6.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8668913115523104742, guid: caccd27d3a7027d4a83f23bcda005caf, type: 3}
+      propertyPath: secondaryKey
+      value: 274
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10717,6 +10724,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3468748959927338065, guid: 9aed1a8fe91c6564ab5353054eeb556c, type: 3}
+      propertyPath: secondaryKey
+      value: 276
+      objectReference: {fileID: 0}
     - target: {fileID: 6028832578958085711, guid: 9aed1a8fe91c6564ab5353054eeb556c, type: 3}
       propertyPath: m_Name
       value: A
@@ -11525,7 +11536,6 @@ MonoBehaviour:
   transition: {fileID: 1986090387}
   fadeTimer: 0
   songShowerTimer: 1
-  circleAnimation: {fileID: 0}
 --- !u!95 &1986090387
 Animator:
   serializedVersion: 5
@@ -12153,6 +12163,10 @@ PrefabInstance:
       propertyPath: m_Radius
       value: 6.5
       objectReference: {fileID: 0}
+    - target: {fileID: 2756219374420275438, guid: 6790bbc324e1f8841a81e28f329d7e28, type: 3}
+      propertyPath: secondaryKey
+      value: 273
+      objectReference: {fileID: 0}
     - target: {fileID: 3343094082376175234, guid: 6790bbc324e1f8841a81e28f329d7e28, type: 3}
       propertyPath: m_Name
       value: W
@@ -12271,6 +12285,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1227511185}
     m_Modifications:
+    - target: {fileID: 427437415386072395, guid: bc6f33e4db38fad448d0baa78e567484, type: 3}
+      propertyPath: secondaryKey
+      value: 275
+      objectReference: {fileID: 0}
     - target: {fileID: 727594019006753399, guid: bc6f33e4db38fad448d0baa78e567484, type: 3}
       propertyPath: m_Radius
       value: 6.5

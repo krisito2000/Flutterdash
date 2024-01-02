@@ -63,9 +63,43 @@ public class PauseMenu : MonoBehaviour
 
     public void QuitGame()
     {
-        string currentSceneName = SceneManager.GetActiveScene().name;
-        SceneManager.LoadScene(currentSceneName);
+        GameObject gameManager = GameObject.Find("GameManager");
+
+        if (SceneManager.GetActiveScene().buildIndex == 0)
+        {
+            SceneLoader.instance.QuitGame();
+        }
+        else
+        {
+            if (gameManager != null)
+            {
+                Destroy(gameManager);
+            }
+            else
+            {
+                Debug.Log("GameManager not found in the scene.");
+            }
+            SceneLoader.instance.MoveToScene(0);
+        }
 
         Resume();
+    }
+
+    void Awake()
+    {
+        // Ensure there is only one instance of the GameManager script in the scene.
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            // Destroy this instance if there is already another one in the scene.
+            Destroy(gameObject);
+            return;
+        }
+
+        // Keep this GameObject alive throughout the entire game.
+        DontDestroyOnLoad(gameObject);
     }
 }

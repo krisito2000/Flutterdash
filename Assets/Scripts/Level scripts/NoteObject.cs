@@ -10,6 +10,7 @@ public class NoteObject : MonoBehaviour
     public bool circleTrigger = false;
     public CircleCollider2D circleCollider;
     public KeyCode keyToPress;
+    public KeyCode secondaryKey;
     public Transform circle;
 
     [Header("------- Animation -------")]
@@ -33,7 +34,7 @@ public class NoteObject : MonoBehaviour
     {
         float distanceDetection = Vector2.Distance(transform.position, circle.position);
 
-        if (Input.GetKeyDown(keyToPress))
+        if (Input.GetKeyDown(keyToPress) || Input.GetKeyDown(secondaryKey))
         {
             NoteObject closestNote = GetClosestNote();
 

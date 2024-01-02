@@ -95,11 +95,12 @@ public class GameManager : MonoBehaviour
     {
         if (!startMusic)
         {
-            if (Input.anyKeyDown)
+            if (Input.anyKeyDown && !Input.GetKeyDown(KeyCode.Escape))
             {
-                NoteMovement.gameStart = true;
-                music.enabled = true;
+                // Music just started
                 startMusic = true;
+                NoteMovement.gameStart = true; // Assuming this starts the game
+                music.enabled = true;
                 if (pressAnyKey != null)
                 {
                     pressAnyKey.text = string.Empty;
@@ -108,8 +109,9 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            if (!music.isPlaying)
+            if (!music.isPlaying && !PauseMenu.gameIsPaused && !PauseMenu.instance.pauseMenuCanvas.activeSelf)
             {
+                // Music stopped and game is not paused via the pause menu
                 Statistics();
                 resultsAnimation.SetBool("isTriggered", true);
             }
