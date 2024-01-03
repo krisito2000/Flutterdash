@@ -19,6 +19,7 @@ public class TutorialGameManager : MonoBehaviour
     public float bpm;
     public bool readyToPlay;
     public bool tryNotes;
+    public bool tutorialDone;
     public GameObject Notes;
     public Text pressAnyKey;
 
@@ -96,6 +97,10 @@ public class TutorialGameManager : MonoBehaviour
         if(tryNotes)
         {
             TutorialNoteMovement.instance.gameStart = true;
+        }
+        if (tutorialDone)
+        {
+            SceneLoader.instance.LoadScene(0);
         }
 
         if (readyToPlay)

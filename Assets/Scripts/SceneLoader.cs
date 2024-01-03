@@ -12,7 +12,7 @@ public class SceneLoader : MonoBehaviour
         instance = this;
     }
 
-    public void MoveToScene(int sceneID)
+    public void LoadScene(int sceneID)
     {
         SceneManager.LoadScene(sceneID);
     }
