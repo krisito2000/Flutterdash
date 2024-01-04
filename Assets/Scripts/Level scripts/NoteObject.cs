@@ -111,7 +111,6 @@ public class NoteObject : MonoBehaviour
             this.gameObject.SetActive(false);
         }
         // TODO: Create Late and Late Perfect
-
     }
 
     private void OnTriggerEnter2D(Collider2D other)
