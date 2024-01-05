@@ -21,6 +21,8 @@ public class MainMenuTransition : MonoBehaviour
 
     void Update()
     {
+        if (mainMenuCanvas == null) return;
+
         if (mainMenuCanvas.alpha == 1 && !animator.GetBool("GuestPlayTrigger"))
         {
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
