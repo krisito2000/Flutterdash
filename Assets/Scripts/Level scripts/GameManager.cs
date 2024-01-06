@@ -28,15 +28,15 @@ public class GameManager : MonoBehaviour
     public Text resultsScoreText;
     private int currentScore;
     private int scorePerNote;
-    // Perfect            light blue  350
-    // EPerfect/LPerfect  green       150
-    // Early/Late         yellow      75
-    // Missed             red         0
+
     private int scoreEarly;
     private int scoreEarlyPerfect;
     private int scorePerfect;
     private int scoreLatePerfect;
     private int scoreLate;
+
+    public int noteStreak;
+    public Text streakText;
 
     [Header("------- Multiplier -------")]
     public Text multiplierText;
@@ -66,14 +66,14 @@ public class GameManager : MonoBehaviour
     public GameObject Hearth3;
     public GameObject Hearth4;
 
-    [Header("------- Hearths animation -------")]
-    public Animator Hearth1Fade;
-    public Animator Hearth2Fade;
-    public Animator Hearth3Fade;
-    public Animator Hearth4Fade;
+    //[Header("------- Heal -------")]
+    //private int currenthealth;
+    //private int healTracker;
+    //public int[] healThresholds;
 
     [Header("------- Damage -------")]
     private int currentDamageTaken;
+    private int damageTracker;
     public int[] damageThresholds;
 
     void Start()
@@ -82,7 +82,14 @@ public class GameManager : MonoBehaviour
         music.enabled = false;
         //music.volume = //audio mixer;
 
+        // Perfect            light blue  350
+        // EPerfect/LPerfect  green       150
+        // Early/Late         yellow      75
+        // Missed             red         0
+
         scoreText.text = "0";
+        noteStreak = 0;
+
         scoreEarly = 75;
         scoreEarlyPerfect = 150;
         scorePerfect = 350;
@@ -111,10 +118,18 @@ public class GameManager : MonoBehaviour
         {
             if (!music.isPlaying && !PauseMenu.gameIsPaused && !PauseMenu.instance.pauseMenuCanvas.activeSelf)
             {
-                // Music stopped and game is not paused via the pause menu
                 Statistics();
-                resultsAnimation.SetBool("isTriggered", true);
+
+                if (resultsAnimation != null)
+                {
+                    resultsAnimation.SetBool("isTriggered", true);
+                }
+                else
+                {
+                    Debug.Log("resultsAnimation is null. Cannot set animation parameter.");
+                }
             }
+
         }
     }
 
@@ -128,150 +143,6 @@ public class GameManager : MonoBehaviour
         missedText.text = missedCounter.ToString();
         resultsScoreText.text = currentScore.ToString();
     }
-
-    public void MultiplierBackground()
-    {
-        //Multiplier background color change
-        if (currentMultiplier == 1)
-        {
-            multiplierBackground.color = Color.gray;
-            multiplierText.color = Color.white;
-        }
-        else if (currentMultiplier == 2)
-        {
-            multiplierBackground.color = Color.green;
-            multiplierText.color = Color.black;
-        }
-        else if (currentMultiplier == 4)
-        {
-            multiplierBackground.color = Color.blue;
-            multiplierText.color = Color.black;
-        }
-        else if (currentMultiplier == 8)
-        {
-            multiplierBackground.color = Color.red;
-            multiplierText.color = Color.black;
-        }
-        else if (currentMultiplier >= 16)
-        {
-            multiplierBackground.color = Color.yellow;
-            multiplierText.color = Color.black;
-        }
-    }
-
-    public void NoteHit()
-    {
-        if (currentMultiplier / 2 < multiplierThresholds.Length)
-        {
-            multiplierTracker++;
-
-            if (multiplierThresholds[currentMultiplier / 2] <= multiplierTracker)
-            {
-                multiplierTracker = 0;
-                currentMultiplier *= 2;
-            }
-        }
-
-        multiplierText.text = "x" + currentMultiplier;
-
-        currentScore += scorePerNote * currentMultiplier;
-        scoreText.text = $"{currentScore}";
-        MultiplierBackground();
-    }
-
-    public void EarlyHit()
-    {
-        earlyCounter++;
-
-        currentScore += scoreEarly * currentMultiplier;
-        NoteHit();
-
-        if (currentDamageTaken != 0)
-        {
-            currentDamageTaken--;
-            DamageHeal();
-        }
-
-        Debug.Log("Early Hit");
-    }
-
-    public void EarlyPerfectHit()
-    {
-        earlyPerfectCounter++;
-
-        currentScore += scoreEarlyPerfect * currentMultiplier;
-        NoteHit();
-
-        if (currentDamageTaken != 0)
-        {
-            currentDamageTaken--;
-            DamageHeal();
-        }
-
-        Debug.Log("Early Perfect Hit");
-    }
-
-    public void PerfectHit()
-    {
-        perfectCounter++;
-
-        currentScore += scorePerfect * currentMultiplier;
-        NoteHit();
-
-        if (currentDamageTaken != 0)
-        {
-            currentDamageTaken--;
-            DamageHeal();
-        }
-
-        Debug.Log("Perfect Hit");
-    }
-
-    public void LatePerfectHit()
-    {
-        latePerfectCounter++;
-
-        currentScore += scoreLatePerfect * currentMultiplier;
-        NoteHit();
-
-        if (currentDamageTaken != 0)
-        {
-            currentDamageTaken--;
-            DamageHeal();
-        }
-
-        Debug.Log("Late Perfect Hit");
-    }
-    public void LateHit()
-    {
-        lateCounter++;
-
-        currentScore += scoreLate * currentMultiplier;
-        NoteHit();
-
-        if (currentDamageTaken != 0)
-        {
-            currentDamageTaken--;
-            DamageHeal();
-        }
-
-        Debug.Log("Late Hit");
-    }
-
-    public void NoteMissed()
-    {
-        missedCounter++;
-        DamageTake();
-
-        currentMultiplier = 1;
-        multiplierTracker = 0;
-        multiplierBackground.color = Color.gray;
-        multiplierText.color = Color.white;
-
-        multiplierText.text = "x" + currentMultiplier;
-        Debug.Log("Missed");
-    }
-
     public void DamageTake()
     {
         // Death indicator
@@ -323,6 +194,161 @@ public class GameManager : MonoBehaviour
         {
             Hearth3.SetActive(true);
         }
+    }
+
+
+
+    public void MultiplierBackground()
+    {
+        //Multiplier background color change
+        if (currentMultiplier == 1)
+        {
+            multiplierBackground.color = Color.gray;
+            multiplierText.color = Color.white;
+        }
+        else if (currentMultiplier == 2)
+        {
+            multiplierBackground.color = Color.green;
+            multiplierText.color = Color.black;
+        }
+        else if (currentMultiplier == 4)
+        {
+            multiplierBackground.color = Color.blue;
+            multiplierText.color = Color.black;
+        }
+        else if (currentMultiplier == 8)
+        {
+            multiplierBackground.color = Color.red;
+            multiplierText.color = Color.black;
+        }
+        else if (currentMultiplier >= 16)
+        {
+            multiplierBackground.color = Color.yellow;
+            multiplierText.color = Color.black;
+        }
+    }
+
+    public void NoteHit()
+    {
+        // Multiplier
+        if (currentMultiplier / 2 < multiplierThresholds.Length)
+        {
+            multiplierTracker++;
+
+            if (multiplierThresholds[currentMultiplier / 2] <= multiplierTracker)
+            {
+                multiplierTracker = 0;
+                currentMultiplier *= 2;
+            }
+        }
+
+        multiplierText.text = "x" + currentMultiplier;
+
+        currentScore += scorePerNote * currentMultiplier;
+        scoreText.text = $"{currentScore}";
+        MultiplierBackground();
+
+        streakText.text = noteStreak + "x";
+    }
+
+    public void EarlyHit()
+    {
+        earlyCounter++;
+        noteStreak = 0;
+
+        currentScore += scoreEarly * currentMultiplier;
+        NoteHit();
+
+        if (currentDamageTaken != 0)
+        {
+            currentDamageTaken--;
+            DamageHeal();
+        }
+
+        Debug.Log("Early Hit");
+    }
+
+    public void EarlyPerfectHit()
+    {
+        earlyPerfectCounter++;
+        noteStreak ++;
+
+        currentScore += scoreEarlyPerfect * currentMultiplier;
+        NoteHit();
+
+        if (currentDamageTaken != 0)
+        {
+            currentDamageTaken--;
+            DamageHeal();
+        }
+
+        Debug.Log("Early Perfect Hit");
+    }
+
+    public void PerfectHit()
+    {
+        perfectCounter++;
+        noteStreak++;
+
+        currentScore += scorePerfect * currentMultiplier;
+        NoteHit();
+
+        if (currentDamageTaken != 0)
+        {
+            currentDamageTaken--;
+            DamageHeal();
+        }
+
+        Debug.Log("Perfect Hit");
+    }
+
+    public void LatePerfectHit()
+    {
+        latePerfectCounter++;
+        noteStreak++;
+
+        currentScore += scoreLatePerfect * currentMultiplier;
+        NoteHit();
+
+        if (currentDamageTaken != 0)
+        {
+            currentDamageTaken--;
+            DamageHeal();
+        }
+
+        Debug.Log("Late Perfect Hit");
+    }
+    public void LateHit()
+    {
+        lateCounter++;
+        noteStreak = 0;
+
+        currentScore += scoreLate * currentMultiplier;
+        NoteHit();
+
+        if (currentDamageTaken != 0)
+        {
+            currentDamageTaken--;
+            DamageHeal();
+        }
+
+        Debug.Log("Late Hit");
+    }
+
+    public void NoteMissed()
+    {
+        missedCounter++;
+        noteStreak = 0;
+        streakText.text = noteStreak + "x";
+        DamageTake();
+
+        currentMultiplier = 1;
+        multiplierTracker = 0;
+        multiplierBackground.color = Color.gray;
+        multiplierText.color = Color.white;
+
+        multiplierText.text = "x" + currentMultiplier;
+        Debug.Log("Missed");
     }
 
     public void RestartScene()

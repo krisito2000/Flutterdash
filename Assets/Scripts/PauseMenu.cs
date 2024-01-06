@@ -79,7 +79,8 @@ public class PauseMenu : MonoBehaviour
             {
                 Debug.Log("GameManager not found in the scene.");
             }
-            SceneLoader.instance.LoadScene(0);
+            SceneManager.LoadScene(0);
+            //SceneLoader.instance.LoadScene(0);
         }
 
         Resume();

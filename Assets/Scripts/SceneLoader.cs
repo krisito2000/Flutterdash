@@ -29,7 +29,7 @@ public class SceneLoader : MonoBehaviour
         CanvasGroup canvasGroup = MainMenuTransition.instance.mainMenuCanvas.GetComponent<CanvasGroup>();
         canvasGroup.gameObject.SetActive(false);
 
-        LoadingScreen.instance.DeleteOrDeactivate();
+        LoadingScreen.instance.DeleteObjects();
 
         operation = SceneManager.LoadSceneAsync(sceneID);
 

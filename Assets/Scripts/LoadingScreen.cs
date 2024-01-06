@@ -18,7 +18,7 @@ public class LoadingScreen : MonoBehaviour
     {
         instance = this;
     }
-    public void DeleteOrDeactivate()
+    public void DeleteObjects()
     {
         childrenToKeep.Clear(); // Clear the list before populating it again
 
@@ -37,13 +37,19 @@ public class LoadingScreen : MonoBehaviour
             // Loop through the objects in the scene
             foreach (GameObject obj in allObjects)
             {
-                if (obj != mainCamera.gameObject && !IsThisObject(obj) && !IsChildOfThisObject(obj))
+                if (obj != mainCamera.gameObject && !IsThisObject(obj) && !IsChildOfThisObject(obj) && !IsPauseCanvas(obj))
                 {
                     Destroy(obj);
                 }
             }
         }
     }
+
+    bool IsPauseCanvas(GameObject obj)
+    {
+        return obj.name == "PauseCanvas";
+    }
+
     bool IsThisObject(GameObject obj)
     {
         return obj == gameObject;

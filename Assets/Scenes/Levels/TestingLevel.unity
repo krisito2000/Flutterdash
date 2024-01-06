@@ -606,6 +606,85 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2856994210981791608, guid: cfd796c09303ce14899eb64ed2f8042c, type: 3}
   m_PrefabInstance: {fileID: 1365831329}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &52613997
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 52613998}
+  - component: {fileID: 52614000}
+  - component: {fileID: 52613999}
+  m_Layer: 5
+  m_Name: Streak
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &52613998
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52613997}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 124122420}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -691, y: -456}
+  m_SizeDelta: {x: 488.5, y: 132.55}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &52613999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52613997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 67
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 6
+    m_MaxSize: 67
+    m_Alignment: 6
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 0x
+--- !u!222 &52614000
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52613997}
+  m_CullTransparentMesh: 1
 --- !u!4 &55590309 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2856994210981791608, guid: cfd796c09303ce14899eb64ed2f8042c, type: 3}
@@ -720,6 +799,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DNote (Note 61)
       objectReference: {fileID: 0}
+    - target: {fileID: 4823105947715267692, guid: b11d4dda37e9c644d8c80793c88ffb7a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7485066177503996557, guid: b11d4dda37e9c644d8c80793c88ffb7a, type: 3}
       propertyPath: direction
       value: 1
@@ -753,7 +836,6 @@ MonoBehaviour:
   transition: {fileID: 0}
   fadeTimer: 0
   songShowerTimer: 0
-  circleAnimation: {fileID: 0}
 --- !u!1 &71557948
 GameObject:
   m_ObjectHideFlags: 0
@@ -927,7 +1009,6 @@ MonoBehaviour:
   transition: {fileID: 0}
   fadeTimer: 0
   songShowerTimer: 0
-  circleAnimation: {fileID: 93760642}
 --- !u!95 &93760642
 Animator:
   serializedVersion: 5
@@ -1287,6 +1368,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1426851215}
+  - {fileID: 52613998}
   - {fileID: 1339535206}
   - {fileID: 1743468834}
   - {fileID: 647405960}
@@ -1549,7 +1631,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1081515706300857431, guid: b11d4dda37e9c644d8c80793c88ffb7a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.7940035
+      value: 2.108
       objectReference: {fileID: 0}
     - target: {fileID: 1081515706300857431, guid: b11d4dda37e9c644d8c80793c88ffb7a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1582,6 +1664,10 @@ PrefabInstance:
     - target: {fileID: 4823105947715267692, guid: b11d4dda37e9c644d8c80793c88ffb7a, type: 3}
       propertyPath: m_Name
       value: DNote (Note 63)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4823105947715267692, guid: b11d4dda37e9c644d8c80793c88ffb7a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -2244,7 +2330,6 @@ MonoBehaviour:
   transition: {fileID: 302661569}
   fadeTimer: 0
   songShowerTimer: 1
-  circleAnimation: {fileID: 0}
 --- !u!225 &302661571
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -4516,7 +4601,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7581781775850032206, guid: caccd27d3a7027d4a83f23bcda005caf, type: 3}
       propertyPath: m_Radius
-      value: 25
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581781775850032206, guid: caccd27d3a7027d4a83f23bcda005caf, type: 3}
+      propertyPath: m_Offset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8668913115523104742, guid: caccd27d3a7027d4a83f23bcda005caf, type: 3}
+      propertyPath: secondaryKey
+      value: 274
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4800,7 +4893,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 390727578346334344, guid: 6790bbc324e1f8841a81e28f329d7e28, type: 3}
       propertyPath: m_Radius
-      value: 25
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 390727578346334344, guid: 6790bbc324e1f8841a81e28f329d7e28, type: 3}
+      propertyPath: m_Offset.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2756219374420275438, guid: 6790bbc324e1f8841a81e28f329d7e28, type: 3}
+      propertyPath: secondaryKey
+      value: 273
       objectReference: {fileID: 0}
     - target: {fileID: 3343094082376175234, guid: 6790bbc324e1f8841a81e28f329d7e28, type: 3}
       propertyPath: m_Name
@@ -7785,7 +7886,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1368442145591834260, guid: 9aed1a8fe91c6564ab5353054eeb556c, type: 3}
       propertyPath: m_Radius
-      value: 25
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1368442145591834260, guid: 9aed1a8fe91c6564ab5353054eeb556c, type: 3}
+      propertyPath: m_Offset.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2720664786835466717, guid: 9aed1a8fe91c6564ab5353054eeb556c, type: 3}
       propertyPath: m_RootOrder
@@ -7830,6 +7935,10 @@ PrefabInstance:
     - target: {fileID: 2720664786835466717, guid: 9aed1a8fe91c6564ab5353054eeb556c, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3468748959927338065, guid: 9aed1a8fe91c6564ab5353054eeb556c, type: 3}
+      propertyPath: secondaryKey
+      value: 276
       objectReference: {fileID: 0}
     - target: {fileID: 6028832578958085711, guid: 9aed1a8fe91c6564ab5353054eeb556c, type: 3}
       propertyPath: m_Name
@@ -8427,6 +8536,8 @@ MonoBehaviour:
   pressAnyKey: {fileID: 1339535207}
   scoreText: {fileID: 1426851216}
   resultsScoreText: {fileID: 2027101582}
+  noteStreak: 0
+  streakText: {fileID: 52613999}
   multiplierText: {fileID: 1511027003}
   multiplierBackground: {fileID: 1831022437}
   multiplierThresholds: 0100000001000000010000000100000001000000
@@ -8441,10 +8552,6 @@ MonoBehaviour:
   Hearth2: {fileID: 1849870880}
   Hearth3: {fileID: 428646058}
   Hearth4: {fileID: 1613625809}
-  Hearth1Fade: {fileID: 660703617}
-  Hearth2Fade: {fileID: 1849870883}
-  Hearth3Fade: {fileID: 428646061}
-  Hearth4Fade: {fileID: 1613625812}
   damageThresholds: 01000000010000000100000001000000
 --- !u!4 &1420531616
 Transform:
@@ -9751,7 +9858,6 @@ MonoBehaviour:
   transition: {fileID: 0}
   fadeTimer: 10
   songShowerTimer: 0
-  circleAnimation: {fileID: 0}
 --- !u!95 &1525726100
 Animator:
   serializedVersion: 5
@@ -10487,9 +10593,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1435086152}
     m_Modifications:
+    - target: {fileID: 427437415386072395, guid: bc6f33e4db38fad448d0baa78e567484, type: 3}
+      propertyPath: secondaryKey
+      value: 275
+      objectReference: {fileID: 0}
     - target: {fileID: 727594019006753399, guid: bc6f33e4db38fad448d0baa78e567484, type: 3}
       propertyPath: m_Radius
-      value: 25
+      value: 8.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 727594019006753399, guid: bc6f33e4db38fad448d0baa78e567484, type: 3}
+      propertyPath: m_Offset.x
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2230731665906789832, guid: bc6f33e4db38fad448d0baa78e567484, type: 3}
       propertyPath: m_Name

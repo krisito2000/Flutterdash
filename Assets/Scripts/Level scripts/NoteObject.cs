@@ -8,6 +8,7 @@ public class NoteObject : MonoBehaviour
 
     [Header("------- Note verification -------")]
     public bool circleTrigger = false;
+    private bool noteExited = false;
     public CircleCollider2D circleCollider;
     public KeyCode keyToPress;
     public KeyCode secondaryKey;
@@ -32,8 +33,6 @@ public class NoteObject : MonoBehaviour
 
     void Update()
     {
-        float distanceDetection = Vector2.Distance(transform.position, circle.position);
-
         if (Input.GetKeyDown(keyToPress) || Input.GetKeyDown(secondaryKey))
         {
             NoteObject closestNote = GetClosestNote();
@@ -44,16 +43,9 @@ public class NoteObject : MonoBehaviour
                 //{
                 //    noteAnimation.SetBool("isTriggered", true);
                 //}
+                noteExited = true;
                 NoteAccuracy();
             }
-        }
-
-        if (distanceDetection > 4)
-        {
-            Debug.Log("Note missed: " + this.gameObject.name);
-            GameManager.instance.NoteMissed();
-            activeNotes.Remove(this);
-            gameObject.SetActive(false);
         }
     }
 
@@ -93,18 +85,18 @@ public class NoteObject : MonoBehaviour
         //}
 
         // EL
-        if (distanceDetection >= 1.187)
+        if (distanceDetection >= 0.774)
         {
             GameManager.instance.EarlyHit();
             this.gameObject.SetActive(false);
         }
-        // ELPerfect
-        else if (distanceDetection >= 0.874)
+        // ELPerfect  0.263
+        else if (distanceDetection >= 0.263)
         {
             GameManager.instance.EarlyPerfectHit();
             this.gameObject.SetActive(false);
         }
-        // Perfect
+        // Perfect  0.116
         else
         {
             GameManager.instance.PerfectHit();
@@ -118,6 +110,7 @@ public class NoteObject : MonoBehaviour
         if (other.gameObject.CompareTag("Activator") && other.gameObject.tag == circleCollider.tag)
         {
             circleTrigger = true;
+            noteExited = false;
             if (!activeNotes.Contains(this))
             {
                 activeNotes.Add(this);
@@ -130,7 +123,14 @@ public class NoteObject : MonoBehaviour
         if (other.gameObject.CompareTag("Activator") && other.gameObject.tag == circleCollider.tag)
         {
             circleTrigger = false;
-            activeNotes.Remove(this);
+            if (!noteExited)
+            {
+                noteExited = true;
+                Debug.Log("Note missed: " + this.gameObject.name);
+                GameManager.instance.NoteMissed();
+                activeNotes.Remove(this);
+                gameObject.SetActive(false);
+            }
         }
     }
 }
