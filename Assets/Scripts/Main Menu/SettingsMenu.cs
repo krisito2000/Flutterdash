@@ -1,3 +1,5 @@
+using Firebase.Database;
+using Google.MiniJSON;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,12 +9,14 @@ using UnityEngine.UI;
 
 public class SettingsMenu : MonoBehaviour
 {
+    public static SettingsMenu instance;
+
     [Header("------- Audio -------")]
     public AudioMixer audioMixer;
 
     [Header("------- Settings -------")]
     public Toggle fullscreenToggle;
-    public Toggle vSyncToggle;
+    public Toggle VSyncToggle;
 
     [Header("------- Resolution -------")]
     public TMP_Dropdown resolutionsDropdown;
@@ -30,6 +34,7 @@ public class SettingsMenu : MonoBehaviour
     [System.Obsolete]
     public void Start()
     {
+        instance = this;
         // Resoluton
         resolutions = Screen.resolutions;
         resolutionsDropdown.ClearOptions();
@@ -65,6 +70,7 @@ public class SettingsMenu : MonoBehaviour
     {
         
     }
+
 
     // General
     public void GeneralButton()
@@ -105,23 +111,57 @@ public class SettingsMenu : MonoBehaviour
     public void SetFullscreen()
     {
         Screen.fullScreen = fullscreenToggle.isOn;
+        SaveFullscreenSetting(fullscreenToggle.isOn);
+    }
+    public void SaveFullscreenSetting(bool isFullscreen)
+    {
+        if (Guest.instance.LoginAs.text == "Login as Guest")
+        {
+            Debug.Log("User not logged in");
+        }
+        else
+        {
+            string playerUsername = Guest.instance.LoginAs.text;
+            DatabaseManager.instance.databaseReference
+                .Child("Users").Child(playerUsername).Child("Settings").Child("Display").Child("Fullscreen").SetValueAsync(isFullscreen);
+
+            Debug.Log("Fullscreen setting saved to Firebase!");
+        }
     }
 
     public void SetResolution(int resolutionIndex)
     {
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+
+        string resolutionData = $"{resolution.width}x{resolution.height}";
+        SaveResolutionSetting(resolutionData);
     }
 
     public void SetQuality(int qualityIndex)
     {
         QualitySettings.SetQualityLevel(qualityIndex);
     }
+    public void SaveResolutionSetting(string resolutionData)
+    {
+        if (Guest.instance.LoginAs.text == "Login as Guest")
+        {
+            Debug.Log("User not logged in");
+        }
+        else
+        {
+            string playerUsername = Guest.instance.LoginAs.text;
+            DatabaseManager.instance.databaseReference
+                .Child("Users").Child(playerUsername).Child("Settings").Child("Display").Child("Resolution").SetValueAsync(resolutionData);
+
+            Debug.Log("Resolution setting saved to Firebase!");
+        }
+    }
 
     [System.Obsolete]
     public void VSync()
     {
-        if (vSyncToggle.isOn)
+        if (VSyncToggle.isOn)
         {
             var refreshRate = Screen.currentResolution.refreshRate;
             Application.targetFrameRate = refreshRate;
@@ -129,6 +169,22 @@ public class SettingsMenu : MonoBehaviour
         else
         {
             Application.targetFrameRate = -1;
+        }
+        SaveVSyncSetting(VSyncToggle.isOn);
+    }
+    public void SaveVSyncSetting(bool isVSyncOn)
+    {
+        if (Guest.instance.LoginAs.text == "Login as Guest")
+        {
+            Debug.Log("User not logged in");
+        }
+        else
+        {
+            string playerUsername = Guest.instance.LoginAs.text;
+            DatabaseManager.instance.databaseReference
+                .Child("Users").Child(playerUsername).Child("Settings").Child("Display").Child("VSync").SetValueAsync(isVSyncOn);
+
+            Debug.Log("VSync setting saved to Firebase!");
         }
     }
 }

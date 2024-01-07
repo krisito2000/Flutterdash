@@ -37,7 +37,7 @@ public class DatabaseManager : MonoBehaviour
     public InputField loginPassword;
     public Text loginButtonText;
 
-    private DatabaseReference databaseReference;
+    public DatabaseReference databaseReference;
 
     private void Start()
     {
@@ -177,7 +177,58 @@ public class DatabaseManager : MonoBehaviour
         loginButtonText.text = "Logout";
 
         StartCoroutine(GetUserAndPassword(enteredUsername, hashedPassword));
+        StartCoroutine(LoadUserSettings(enteredUsername));
     }
+
+    private IEnumerator LoadUserSettings(string username)
+    {
+        var userSettings = databaseReference.Child("Users").Child(username).Child("Settings").Child("Display").GetValueAsync();
+        yield return new WaitUntil(() => userSettings.IsCompleted);
+
+        if (userSettings.Exception != null)
+        {
+            Debug.LogError("Failed to retrieve user settings: " + userSettings.Exception.Message);
+            yield break;
+        }
+
+        DataSnapshot settingsSnapshot = userSettings.Result;
+
+        if (settingsSnapshot != null && settingsSnapshot.Exists)
+        {
+            var fullscreenSnapshot = settingsSnapshot.Child("Fullscreen");
+            bool fullscreenSetting = (bool)fullscreenSnapshot.Value;
+
+            var vsyncSnapshot = settingsSnapshot.Child("VSync");
+            bool vsyncSetting = (bool)vsyncSnapshot.Value;
+
+            var resolutionSnapshot = settingsSnapshot.Child("Resolution");
+            string resolutionSetting = (string)resolutionSnapshot.Value;
+
+            // Loop through resolutions to find the index matching resolutionSetting
+            int resolutionIndex = -1;
+            for (int i = 0; i < SettingsMenu.instance.resolutions.Length; i++)
+            {
+                string resolutionOption = SettingsMenu.instance.resolutions[i].width + "x" + SettingsMenu.instance.resolutions[i].height;
+                if (resolutionOption == resolutionSetting)
+                {
+                    resolutionIndex = i;
+                    break;
+                }
+            }
+
+            if (resolutionIndex != -1)
+            {
+                // Apply the found resolution index to the dropdown
+                SettingsMenu.instance.resolutionsDropdown.value = resolutionIndex;
+                SettingsMenu.instance.resolutionsDropdown.RefreshShownValue();
+            }
+
+            // Apply other settings as needed
+            SettingsMenu.instance.fullscreenToggle.isOn = fullscreenSetting;
+            SettingsMenu.instance.VSyncToggle.isOn = vsyncSetting;
+        }
+    }
+
 
     public void LogoutUser()
     {
