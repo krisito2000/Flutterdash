@@ -22,7 +22,7 @@ public class Authentication : MonoBehaviour
     {
         if (Guest.instance.guest == true)
         {
-            animator.SetBool("login", true);
+            MainMenuTransition.instance.animator.SetBool("AuthenticationTrigger", true);
         }
         else
         {
@@ -32,7 +32,7 @@ public class Authentication : MonoBehaviour
     }
     public void LoginReturnButton()
     {
-        animator.SetBool("login", false);
+        MainMenuTransition.instance.animator.SetBool("AuthenticationTrigger", false);
     }
     public void RegisterButton()
     {

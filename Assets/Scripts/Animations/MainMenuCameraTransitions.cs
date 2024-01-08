@@ -28,7 +28,7 @@ public class MainMenuTransition : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
                 SetTutorial(false);
-                if (!GetSettings() && !GetCustomSong() && !GetPlay())
+                if (!GetSettings() && !GetCustomSong() && !GetPlay() && !GetAuthentication())
                 {
                     if (Guest.instance.guest)
                     {
@@ -36,6 +36,10 @@ public class MainMenuTransition : MonoBehaviour
                         Guest.instance.guestCanvas.alpha = 1;
                     }
                     PlayButton();
+                }
+                if (GetAuthentication())
+                {
+                    SetAuthentication(false);
                 }
                 if (GetTransitionSettings())
                 {
@@ -73,7 +77,11 @@ public class MainMenuTransition : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
             {
                 SetTutorial(false);
-                if (!GetSettings() && !GetCustomSong() && !GetPlay())
+                if (GetAuthentication())
+                {
+
+                }
+                else if (!GetSettings() && !GetCustomSong() && !GetPlay())
                 {
                     SettingsButton();
                 }
@@ -110,12 +118,20 @@ public class MainMenuTransition : MonoBehaviour
             else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 SetTutorial(false);
-                if (!GetCustomSong() && !GetSettings() && !GetPlay() && !GetSync())
+                if (GetAuthentication())
+                {
+
+                }
+                else if (!GetCustomSong() && !GetSettings() && !GetPlay() && !GetSync())
                 {
                     CustomSongButton();
                     BackMainMenuPlay();
                     SetTransitionCustom(false);
                     SetTransitionSettings(false);
+                }
+                else if (GetAuthentication())
+                {
+                    SetCustomSong(false);
                 }
                 else if (GetSettings())
                 {
@@ -151,12 +167,15 @@ public class MainMenuTransition : MonoBehaviour
             {
                 SetTutorial(false);
                 Guest.instance.guestCanvas.alpha = 0;
+                if (!GetPlay() && !GetSync() && !GetSettings())
+                {
+                    SetAuthentication(true);
+                }
                 if (GetPlay())
                 {
                     BackMainMenuPlay();
                     SetTransitionCustom(false);
                     SetTransitionSettings(false);
-                    
                 }
             }
         }
@@ -238,6 +257,25 @@ public class MainMenuTransition : MonoBehaviour
     }
 
     public void BackMainMenuCustomSong()
+    {
+        SetCustomSong(false);
+    }
+    // Authentication
+    public void AuthenticationButton()
+    {
+        SetPlay(false);
+        SetCustomSong(false);
+        SetSettings(false);
+    }
+    public bool GetAuthentication()
+    {
+        return animator.GetBool("AuthenticationTrigger");
+    }
+    public void SetAuthentication(bool trigger)
+    {
+        animator.SetBool("AuthenticationTrigger", trigger);
+    }
+    public void BackMainMenuAuthentication()
     {
         SetCustomSong(false);
     }
