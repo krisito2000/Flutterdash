@@ -10,16 +10,19 @@ using UnityEngine.SceneManagement;
 
 public class DragAndDropReceiver : MonoBehaviour
 {
+    public static DragAndDropReceiver instance;
     [SerializeField]
     [Tooltip("Renderer target")]
     public AudioSource audioSource;
 
     public Text musicName;
+    public string receivedFile = null;
 
     private CustomLevelCreator levelCreator = new CustomLevelCreator();
 
     void Start()
     {
+        instance = this;
         UnityDragAndDropHook.InstallHook();
         UnityDragAndDropHook.OnDroppedFiles += OnDroppedFiles;
     }
@@ -32,7 +35,7 @@ public class DragAndDropReceiver : MonoBehaviour
     private void OnDroppedFiles(List<string> aPathNames, POINT aDropPoint)
     {
         string musicFileName = null;
-        string receivedFile = null;
+        
 
         foreach (string file in aPathNames)
         {
@@ -42,8 +45,8 @@ public class DragAndDropReceiver : MonoBehaviour
             // Check if the file extension is for a supported music format (e.g., mp3, wav)
             if (ext == ".mp3" || ext == ".wav" || ext == ".webm")
             {
-                musicFileName = fileInfo.Name; // Store the file name
-                receivedFile = file; // Store the full file path
+                musicFileName = fileInfo.Name; // Store the file nam
+                receivedFile = file;
                 break; // Found a valid music file, stop checking other files
             }
         }
