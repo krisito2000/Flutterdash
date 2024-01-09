@@ -9,7 +9,8 @@ using UnityEngine.UI;
 public class CustomLevelCreator : MonoBehaviour
 {
     public static CustomLevelCreator instance;
-    private string copiedSceneName; // Define copiedSceneName at the class level
+    private string copiedSceneName;
+
 
 
     public Text statusText1;
