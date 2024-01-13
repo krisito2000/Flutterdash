@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 using UnityEngine.Windows;
 using System.Security.Cryptography;
 using System.Text;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 public class DatabaseManager : MonoBehaviour
 {
     public static DatabaseManager instance;
+    private string userDataFilePath = "userdata.txt";
 
     [Header("------- Register -------")]
     [Header("------- Fields -------")]
@@ -43,7 +45,77 @@ public class DatabaseManager : MonoBehaviour
     {
         instance = this;
         databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
+
+        if (!System.IO.File.Exists(userDataFilePath))
+        {
+            System.IO.File.WriteAllText(userDataFilePath, "");
+        }
+        else
+        {
+            string userData = System.IO.File.ReadAllText(userDataFilePath);
+            string[] userDataLines = userData.Split('\n');
+
+            foreach (string userDataLine in userDataLines)
+            {
+                string[] userDataParts = userDataLine.Split(':');
+                if (userDataParts.Length == 2)
+                {
+                    string username = userDataParts[0];
+                    string hashedPassword = userDataParts[1].Trim();
+
+                    StartCoroutine(CheckUserDataOnStartup(username, hashedPassword));
+                }
+            }
+        }
     }
+
+    private void SaveUserData(string username, string hashedPassword)
+    {
+        string userData = $"{username}:{hashedPassword}\n";
+        System.IO.File.AppendAllText(userDataFilePath, userData);
+    }
+
+    private void DeleteUserData()
+    {
+        System.IO.File.WriteAllText(userDataFilePath, "");
+    }
+    private IEnumerator CheckUserDataOnStartup(string username, string enteredPassword)
+    {
+        var userData = databaseReference.Child("Users").Child(username).Child("Authentication").GetValueAsync();
+
+        yield return new WaitUntil(() => userData.IsCompleted);
+
+        if (userData.Exception != null)
+        {
+            Debug.LogError("Failed to retrieve user data: " + userData.Exception.Message);
+            yield break;
+        }
+
+        DataSnapshot snapshot = userData.Result;
+
+        if (snapshot != null && snapshot.Exists)
+        {
+            string storedPassword = snapshot.Child("password").Value.ToString();
+
+            if (storedPassword == enteredPassword)
+            {
+                loginButtonText.text = "Logout";
+                Guest.instance.LoginAs.text = username;
+                StartCoroutine(LoadUserSettings(username));
+            }
+            else
+            {
+                // Password doesn't match
+                Debug.LogWarning("Stored password does not match entered password for user: " + username);
+            }
+        }
+        else
+        {
+            // User does not exist in the database
+            Debug.LogWarning("User does not exist in the database: " + username);
+        }
+    }
+
 
     public void CreateUser()
     {
@@ -163,6 +235,7 @@ public class DatabaseManager : MonoBehaviour
             string json = JsonUtility.ToJson(newUser);
 
             databaseReference.Child("Users").Child(newUser.username).Child("Authentication").SetRawJsonValueAsync(json);
+            SaveUserData(RegisterUsernameField.text, PasswordHashSystem.HashPassword(RegisterPasswordField.text));
 
             Authentication.instance.RegisterReturnButton();
             Authentication.instance.LoginReturnButton();
@@ -172,10 +245,9 @@ public class DatabaseManager : MonoBehaviour
 
     public void LoginUser()
     {
+        DeleteUserData();
         string enteredUsername = loginUsername.text;
         string hashedPassword = PasswordHashSystem.HashPassword(loginPassword.text);
-        loginButtonText.text = "Logout";
-        
 
         StartCoroutine(GetUserAndPassword(enteredUsername, hashedPassword));
         StartCoroutine(LoadUserSettings(enteredUsername));
@@ -306,6 +378,7 @@ public class DatabaseManager : MonoBehaviour
         loginButtonText.text = "Login";
         Authentication.instance.animator.SetBool("login", true);
 
+        DeleteUserData();
         HideErrorMessage();
     }
 
@@ -339,7 +412,10 @@ public class DatabaseManager : MonoBehaviour
             {
                 Authentication.instance.animator.SetBool("login", false);
                 Guest.instance.LoginAs.text = username;
+                loginButtonText.text = "Logout";
                 MainMenuTransition.instance.animator.SetBool("AuthenticationTrigger", false);
+                DeleteUserData();
+                SaveUserData(loginUsername.text, PasswordHashSystem.HashPassword(loginPassword.text));
             }
             else
             {
@@ -359,5 +435,4 @@ public class DatabaseManager : MonoBehaviour
         Authentication.instance.ErrorMessage.blocksRaycasts = true;
         // Show the error message text in your Canvas Group
     }
-
 }
