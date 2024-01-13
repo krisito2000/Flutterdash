@@ -38,8 +38,6 @@ public class SceneLoader : MonoBehaviour
             LoadingScreen.instance.LoadingScreenCanvas.SetActive(false);
             yield return null;
         }
-
-        
     }
 
 

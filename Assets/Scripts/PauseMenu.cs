@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Security.Policy;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -33,6 +34,19 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
+    public void Pause()
+    {
+        pauseMenuCanvas.SetActive(true);
+        Time.timeScale = 0f;
+        gameIsPaused = true;
+
+        AudioSource[] audios = FindObjectsOfType<AudioSource>();
+
+        foreach (AudioSource audio in audios)
+        {
+            audio.Pause();
+        }
+    }
     public void Resume()
     {
         pauseMenuCanvas.SetActive(false);
@@ -46,19 +60,11 @@ public class PauseMenu : MonoBehaviour
             audio.Play();
         }
     }
-
-    public void Pause()
+    public void Retry()
     {
-        pauseMenuCanvas.SetActive(true);
-        Time.timeScale = 0f;
-        gameIsPaused = true;
-
-        AudioSource[] audios = FindObjectsOfType<AudioSource>();
-
-        foreach (AudioSource audio in audios) 
-        { 
-            audio.Pause();
-        }
+        Scene currentScene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(currentScene.name);
+        Resume();
     }
 
     public void QuitGame()

@@ -175,6 +175,7 @@ public class DatabaseManager : MonoBehaviour
         string enteredUsername = loginUsername.text;
         string hashedPassword = PasswordHashSystem.HashPassword(loginPassword.text);
         loginButtonText.text = "Logout";
+        
 
         StartCoroutine(GetUserAndPassword(enteredUsername, hashedPassword));
         StartCoroutine(LoadUserSettings(enteredUsername));
@@ -182,7 +183,7 @@ public class DatabaseManager : MonoBehaviour
 
     private IEnumerator LoadUserSettings(string username)
     {
-        var userSettings = databaseReference.Child("Users").Child(username).Child("Settings").Child("Display").GetValueAsync();
+        var userSettings = databaseReference.Child("Users").Child(username).Child("Settings").GetValueAsync();
         yield return new WaitUntil(() => userSettings.IsCompleted);
 
         if (userSettings.Exception != null)
@@ -195,37 +196,105 @@ public class DatabaseManager : MonoBehaviour
 
         if (settingsSnapshot != null && settingsSnapshot.Exists)
         {
-            var fullscreenSnapshot = settingsSnapshot.Child("Fullscreen");
-            bool fullscreenSetting = (bool)fullscreenSnapshot.Value;
-
-            var vsyncSnapshot = settingsSnapshot.Child("VSync");
-            bool vsyncSetting = (bool)vsyncSnapshot.Value;
-
-            var resolutionSnapshot = settingsSnapshot.Child("Resolution");
-            string resolutionSetting = (string)resolutionSnapshot.Value;
-
-            // Loop through resolutions to find the index matching resolutionSetting
-            int resolutionIndex = -1;
-            for (int i = 0; i < SettingsMenu.instance.resolutions.Length; i++)
+            var displaySnapshot = settingsSnapshot.Child("Display");
+            if (displaySnapshot.Exists)
             {
-                string resolutionOption = SettingsMenu.instance.resolutions[i].width + "x" + SettingsMenu.instance.resolutions[i].height;
-                if (resolutionOption == resolutionSetting)
+                var fullscreenSnapshot = displaySnapshot.Child("Fullscreen");
+                bool fullscreenSetting = (bool)fullscreenSnapshot.Value;
+
+                var resolutionSnapshot = displaySnapshot.Child("Resolution");
+                string resolutionSetting = (string)resolutionSnapshot.Value;
+
+                var vsyncSnapshot = displaySnapshot.Child("VSync");
+                bool vsyncSetting = (bool)vsyncSnapshot.Value;
+
+                // Loop through resolutions to find the index matching resolutionSetting
+                int resolutionIndex = -1;
+                for (int i = 0; i < SettingsMenu.instance.resolutions.Length; i++)
                 {
-                    resolutionIndex = i;
-                    break;
+                    string resolutionOption = SettingsMenu.instance.resolutions[i].width + "x" + SettingsMenu.instance.resolutions[i].height;
+                    if (resolutionOption == resolutionSetting)
+                    {
+                        resolutionIndex = i;
+                        break;
+                    }
+                }
+
+                if (resolutionIndex != -1)
+                {
+                    // Apply the found resolution index to the dropdown
+                    SettingsMenu.instance.resolutionsDropdown.value = resolutionIndex;
+                    SettingsMenu.instance.resolutionsDropdown.RefreshShownValue();
+                }
+
+                // Apply other display settings as needed
+                SettingsMenu.instance.fullscreenToggle.isOn = fullscreenSetting;
+                SettingsMenu.instance.VSyncToggle.isOn = vsyncSetting;
+            }
+
+            // Volume setting
+            var volumeSnapshot = settingsSnapshot.Child("Volume");
+            if (volumeSnapshot.Exists)
+            {
+                var masterSnapshot = volumeSnapshot.Child("Master");
+                var musicSnapshot = volumeSnapshot.Child("Music");
+                var hitSoundSnapshot = volumeSnapshot.Child("HitSound");
+
+                // Extract values from the snapshots
+                float masterVolumeSetting = float.Parse(masterSnapshot.Value.ToString());
+                float musicVolumeSetting = float.Parse(musicSnapshot.Value.ToString());
+                float hitSoundVolumeSetting = float.Parse(hitSoundSnapshot.Value.ToString());
+
+                // Check if SettingsMenu.instance is not null before accessing members
+                if (SettingsMenu.instance != null)
+                {
+                    // Check if masterSlider is not null before accessing its members
+                    if (SettingsMenu.instance.masterSlider != null)
+                    {
+                        // Apply the loaded volume setting to the master slider
+                        SettingsMenu.instance.masterSlider.value = masterVolumeSetting;
+
+                        // Call the respective method to set the volume in SettingsMenu
+                        SettingsMenu.instance.SetMasterVolume(masterVolumeSetting);
+                    }
+                    else
+                    {
+                        Debug.LogError("masterSlider is null in SettingsMenu.");
+                    }
+
+                    // Check if musicSlider is not null before accessing its members
+                    if (SettingsMenu.instance.musicSlider != null)
+                    {
+                        // Apply the loaded volume setting to the music slider
+                        SettingsMenu.instance.musicSlider.value = musicVolumeSetting;
+
+                        // Call the respective method to set the volume in SettingsMenu
+                        SettingsMenu.instance.SetMusicVolume(musicVolumeSetting);
+                    }
+                    else
+                    {
+                        Debug.LogError("musicSlider is null in SettingsMenu.");
+                    }
+
+                    // Check if hitSoundSlider is not null before accessing its members
+                    if (SettingsMenu.instance.hitSoundSlider != null)
+                    {
+                        // Apply the loaded volume setting to the hitSound slider
+                        SettingsMenu.instance.hitSoundSlider.value = hitSoundVolumeSetting;
+
+                        // Call the respective method to set the volume in SettingsMenu
+                        SettingsMenu.instance.SetHitSoundVolume(hitSoundVolumeSetting);
+                    }
+                    else
+                    {
+                        Debug.LogError("hitSoundSlider is null in SettingsMenu.");
+                    }
+                }
+                else
+                {
+                    Debug.LogError("SettingsMenu.instance is null.");
                 }
             }
-
-            if (resolutionIndex != -1)
-            {
-                // Apply the found resolution index to the dropdown
-                SettingsMenu.instance.resolutionsDropdown.value = resolutionIndex;
-                SettingsMenu.instance.resolutionsDropdown.RefreshShownValue();
-            }
-
-            // Apply other settings as needed
-            SettingsMenu.instance.fullscreenToggle.isOn = fullscreenSetting;
-            SettingsMenu.instance.VSyncToggle.isOn = vsyncSetting;
         }
     }
 
@@ -270,6 +339,7 @@ public class DatabaseManager : MonoBehaviour
             {
                 Authentication.instance.animator.SetBool("login", false);
                 Guest.instance.LoginAs.text = username;
+                MainMenuTransition.instance.animator.SetBool("AuthenticationTrigger", false);
             }
             else
             {

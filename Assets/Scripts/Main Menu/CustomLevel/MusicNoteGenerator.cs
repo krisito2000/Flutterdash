@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MusicNoteGenerator : MonoBehaviour
 {
+    public static MusicNoteGenerator instance;
+
     public AudioSource musicSource;
 
     // Notes for creating the custom map
@@ -18,6 +20,16 @@ public class MusicNoteGenerator : MonoBehaviour
 
     void Start()
     {
+        instance = this;
+    }
+
+    void Update()
+    {
+        AnalyzeAudio();
+    }
+
+    void LoadObjects()
+    {
         musicSource = GetComponent<AudioSource>();
         spawnPosition.position = Vector3.zero;
 
@@ -25,11 +37,6 @@ public class MusicNoteGenerator : MonoBehaviour
         {
             Debug.LogError("No AudioSource found on this GameObject!");
         }
-    }
-
-    void Update()
-    {
-        AnalyzeAudio();
     }
 
     void AnalyzeAudio()
@@ -68,5 +75,23 @@ public class MusicNoteGenerator : MonoBehaviour
             sum += spectrumData[i];
         }
         return sum / spectrumData.Length;
+    }
+
+    void Awake()
+    {
+        // Ensure there is only one instance of the GameManager script in the scene.
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            // Destroy this instance if there is already another one in the scene.
+            Destroy(gameObject);
+            return;
+        }
+
+        // Keep this GameObject alive throughout the entire game.
+        DontDestroyOnLoad(gameObject);
     }
 }

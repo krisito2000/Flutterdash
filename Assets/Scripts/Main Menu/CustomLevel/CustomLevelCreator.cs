@@ -92,6 +92,8 @@ public class CustomLevelCreator : MonoBehaviour
     private void LoadCopiedScene(string sceneName)
     {
         SceneManager.LoadScene("Scenes/Levels/CustomLevels/" + sceneName, LoadSceneMode.Single);
+
+
     }
 
     private void OnEnable()

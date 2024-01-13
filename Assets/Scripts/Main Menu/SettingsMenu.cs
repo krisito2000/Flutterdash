@@ -1,10 +1,12 @@
 using Firebase.Database;
 using Google.MiniJSON;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class SettingsMenu : MonoBehaviour
@@ -13,6 +15,12 @@ public class SettingsMenu : MonoBehaviour
 
     [Header("------- Audio -------")]
     public AudioMixer audioMixer;
+    public Slider masterSlider;
+    public Slider musicSlider;
+    public Slider hitSoundSlider;
+    public Text syncText;
+    public Slider syncSlider;
+    public UnityEvent<float> onSliderValueChanged = new UnityEvent<float>();
 
     [Header("------- Settings -------")]
     public Toggle fullscreenToggle;
@@ -35,10 +43,17 @@ public class SettingsMenu : MonoBehaviour
     public void Start()
     {
         instance = this;
-        // Resoluton
+
+        // Volume
+
+        onSliderValueChanged.AddListener(SetMasterVolume);
+        onSliderValueChanged.AddListener(SetMusicVolume);
+        onSliderValueChanged.AddListener(SetHitSoundVolume);
+
+        // Resolution
         resolutions = Screen.resolutions;
         resolutionsDropdown.ClearOptions();
-        // Turning the array in to a list
+        // Turning the array into a list
         List<string> resolutionOptions = new List<string>();
 
         int currentResolutionIndex = 0;
@@ -54,7 +69,7 @@ public class SettingsMenu : MonoBehaviour
         }
 
         resolutionsDropdown.AddOptions(resolutionOptions);
-        resolutionsDropdown.value = currentResolutionIndex;
+        //resolutionsDropdown.value = currentResolutionIndex;
         resolutionsDropdown.RefreshShownValue();
 
         // Buttons
@@ -62,8 +77,7 @@ public class SettingsMenu : MonoBehaviour
         ButtonAnimator.SetBool("Input", false);
         ButtonAnimator.SetBool("Audio", false);
         ButtonAnimator.SetBool("Display", false);
-        // Settigs
-        fullscreenToggle.isOn = true;
+
         VSync();
     }
     public void Update()
@@ -96,9 +110,74 @@ public class SettingsMenu : MonoBehaviour
         ButtonAnimator.SetBool("Audio", true);
         ButtonAnimator.SetBool("Display", false);
     }
-    public void SetVolume(float volume)
+    public void SetMasterVolume(float volume)
     {
-        audioMixer.SetFloat("Volume", volume);
+        volume = masterSlider.value;
+        audioMixer.SetFloat("Master", volume);
+        SaveMasterVolumeSetting(volume);
+    }
+    public void SaveMasterVolumeSetting(float masterVolume)
+    {
+        if (Guest.instance.LoginAs.text == "Login as Guest")
+        {
+            Debug.Log("User not logged in");
+        }
+        else
+        {
+            string playerUsername = Guest.instance.LoginAs.text;
+            DatabaseManager.instance.databaseReference
+                .Child("Users").Child(playerUsername).Child("Settings").Child("Volume").Child("Master").SetValueAsync(masterVolume);
+
+            Debug.Log("Master volume setting saved to Firebase!");
+        }
+    }
+    public void SetMusicVolume(float volume)
+    {
+        volume = musicSlider.value;
+        audioMixer.SetFloat("Music", volume);
+        SaveMusicVolumeSetting(volume);
+    }
+    public void SaveMusicVolumeSetting(float musicVolume)
+    {
+        if (Guest.instance.LoginAs.text == "Login as Guest")
+        {
+            Debug.Log("User not logged in");
+        }
+        else
+        {
+            string playerUsername = Guest.instance.LoginAs.text;
+            DatabaseManager.instance.databaseReference
+                .Child("Users").Child(playerUsername).Child("Settings").Child("Volume").Child("Music").SetValueAsync(musicVolume);
+
+            Debug.Log("Music volume setting saved to Firebase!");
+        }
+    }
+    public void SetHitSoundVolume(float volume)
+    {
+        volume = hitSoundSlider.value;
+        audioMixer.SetFloat("HitSound", volume);
+        SaveHitSoundVolumeSetting(volume);
+    }
+    public void SaveHitSoundVolumeSetting(float hitSoundVolume)
+    {
+        if (Guest.instance.LoginAs.text == "Login as Guest")
+        {
+            Debug.Log("User not logged in");
+        }
+        else
+        {
+            string playerUsername = Guest.instance.LoginAs.text;
+            DatabaseManager.instance.databaseReference
+                .Child("Users").Child(playerUsername).Child("Settings").Child("Volume").Child("HitSound").SetValueAsync(hitSoundVolume);
+
+            Debug.Log("HitSound volume setting saved to Firebase!");
+        }
+    }
+    public void SetSync(float ms)
+    {
+        ms = syncSlider.value;
+        ms = (float)Math.Floor(ms);
+        syncText.text = $"{ms} ms";
     }
     // Display
     public void DisplayButton()
