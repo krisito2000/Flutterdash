@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     public GameObject Notes;
     public NoteMovement NoteMovement;
     public Text pressAnyKey;
+    public Animator circleAnimator;
 
     [Header("------- Score -------")]
     public Text scoreText;
@@ -104,13 +105,16 @@ public class GameManager : MonoBehaviour
         {
             if (Input.anyKeyDown && !Input.GetKeyDown(KeyCode.Escape))
             {
-                // Music just started
                 startMusic = true;
-                NoteMovement.gameStart = true; // Assuming this starts the game
+                NoteMovement.gameStart = true;
                 music.enabled = true;
                 if (pressAnyKey != null)
                 {
                     pressAnyKey.text = string.Empty;
+                }
+                if (circleAnimator != null)
+                {
+                    circleAnimator.SetBool("isTriggered", true);
                 }
             }
         }
@@ -195,8 +199,6 @@ public class GameManager : MonoBehaviour
             Hearth3.SetActive(true);
         }
     }
-
-
 
     public void MultiplierBackground()
     {
