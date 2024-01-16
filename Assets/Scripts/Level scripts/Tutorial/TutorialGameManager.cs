@@ -32,7 +32,7 @@ public class TutorialGameManager : MonoBehaviour
         {
             TutorialNoteMovement.instance.gameStart = true;
         }
-        if (tutorialDone)
+        if (tutorialDone || Input.GetKeyDown(KeyCode.Space))
         {
             SceneManager.LoadScene(3);
         }

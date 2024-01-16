@@ -149,39 +149,39 @@ public class GameManager : MonoBehaviour
     }
     public void DamageTake()
     {
-        // Death indicator
-        if (currentDamageTaken <= damageThresholds.Length)
-        {
-            currentDamageTaken++;
+        //// Death indicator
+        //if (currentDamageTaken <= damageThresholds.Length)
+        //{
+        //    currentDamageTaken++;
 
-            //Removing hearths
-            if (currentDamageTaken == 1)
-            {
-                Hearth1.SetActive(false);
-            }
-            else if (currentDamageTaken == 2)
-            {
-                Hearth2.SetActive(false);
-            }
-            else if (currentDamageTaken == 3)
-            {
-                Hearth3.SetActive(false);
-            }
-            else if (currentDamageTaken == 4)
-            {
-                Hearth4.SetActive(false);
-                Notes.SetActive(false);
-                music.Stop();
+        //    //Removing hearths
+        //    if (currentDamageTaken == 1)
+        //    {
+        //        Hearth1.SetActive(false);
+        //    }
+        //    else if (currentDamageTaken == 2)
+        //    {
+        //        Hearth2.SetActive(false);
+        //    }
+        //    else if (currentDamageTaken == 3)
+        //    {
+        //        Hearth3.SetActive(false);
+        //    }
+        //    else if (currentDamageTaken == 4)
+        //    {
+        //        Hearth4.SetActive(false);
+        //        Notes.SetActive(false);
+        //        music.Stop();
 
-                currentDamageTaken = 0;
+        //        currentDamageTaken = 0;
 
-                pressAnyKey.text = "You're Dead";
-            }
-        }
-        else
-        {
-            Debug.Log("Something went wrong with the damage tracker");
-        }
+        //        pressAnyKey.text = "You're Dead";
+        //    }
+        //}
+        //else
+        //{
+        //    Debug.Log("Something went wrong with the damage tracker");
+        //}
     }
     public void DamageHeal()
     {
