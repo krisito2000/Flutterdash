@@ -630,6 +630,7 @@ MonoBehaviour:
   Notes: {fileID: 975520316}
   NoteMovement: {fileID: 90218440}
   pressAnyKey: {fileID: 1131223599}
+  circleAnimator: {fileID: 0}
   scoreText: {fileID: 1302902858}
   resultsScoreText: {fileID: 1439296705}
   noteStreak: 0
@@ -648,7 +649,13 @@ MonoBehaviour:
   Hearth2: {fileID: 254900684}
   Hearth3: {fileID: 1053084131}
   Hearth4: {fileID: 1782762955}
-  damageThresholds: 02000000020000000200000003000000
+  currentHealth: 0
+  earlyHitHeal: -3.5
+  earlyPerfectHitHeal: 2
+  perfectHitHeal: 7.5
+  latePerfectHitHeal: 2
+  lateHitHeal: -3.5
+  missedHitHeal: -25
 --- !u!114 &90218440
 MonoBehaviour:
   m_ObjectHideFlags: 0

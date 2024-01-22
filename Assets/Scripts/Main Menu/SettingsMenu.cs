@@ -69,6 +69,7 @@ public class SettingsMenu : MonoBehaviour
         }
 
         resolutionsDropdown.AddOptions(resolutionOptions);
+
         //resolutionsDropdown.value = currentResolutionIndex;
         resolutionsDropdown.RefreshShownValue();
 

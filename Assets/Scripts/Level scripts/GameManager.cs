@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
 
     [Header("------- Sound -------")]
     public AudioSource music;
+    public float levelSpeed;
     //public AudioSource noteHitSound;
 
     [Header("------- Note manager -------")]
@@ -36,7 +37,7 @@ public class GameManager : MonoBehaviour
     private int scoreLatePerfect;
     private int scoreLate;
 
-    public int noteStreak;
+    private int noteStreak;
     public Text streakText;
 
     [Header("------- Multiplier -------")]
@@ -48,12 +49,14 @@ public class GameManager : MonoBehaviour
 
     [Header("------- Results -------")]
     public Animator resultsAnimation;
+
     private int earlyCounter;
     private int earlyPerfectCounter;
     private int perfectCounter;
     private int latePerfectCounter;
     private int lateCounter;
     private int missedCounter;
+
     public Text earlyText;
     public Text earlyPerfectText;
     public Text perfectText;
@@ -67,19 +70,25 @@ public class GameManager : MonoBehaviour
     public GameObject Hearth3;
     public GameObject Hearth4;
 
-    //[Header("------- Heal -------")]
-    //private int currenthealth;
-    //private int healTracker;
-    //public int[] healThresholds;
+    [Header("------- Health system -------")]
+    public float currentHealth;
 
-    [Header("------- Damage -------")]
-    private int currentDamageTaken;
-    private int damageTracker;
-    public int[] damageThresholds;
+    public float earlyHitHeal;
+    public float earlyPerfectHitHeal;
+    public float perfectHitHeal;
+    public float latePerfectHitHeal;
+    public float lateHitHeal;
+    public float missedHitHeal;
 
     void Start()
     {
+        if (levelSpeed == 0)
+        {
+            levelSpeed = 1;
+        }
+
         instance = this;
+        Application.runInBackground = true;
         music.enabled = false;
         //music.volume = //audio mixer;
 
@@ -91,6 +100,8 @@ public class GameManager : MonoBehaviour
         scoreText.text = "0";
         noteStreak = 0;
 
+        currentHealth = 100f;
+
         scoreEarly = 75;
         scoreEarlyPerfect = 150;
         scorePerfect = 350;
@@ -101,6 +112,9 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
+        Time.timeScale = levelSpeed;
+        music.pitch = levelSpeed;
+
         if (!startMusic)
         {
             if (Input.anyKeyDown && !Input.GetKeyDown(KeyCode.Escape))
@@ -118,23 +132,57 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
-        else
+        if (currentHealth >= 100f)
         {
-            if (!music.isPlaying && !PauseMenu.gameIsPaused && !PauseMenu.instance.pauseMenuCanvas.activeSelf)
-            {
-                Statistics();
-
-                if (resultsAnimation != null)
-                {
-                    resultsAnimation.SetBool("isTriggered", true);
-                }
-                else
-                {
-                    Debug.Log("resultsAnimation is null. Cannot set animation parameter.");
-                }
-            }
-
+            Hearth1.SetActive(true);
+            Hearth2.SetActive(true);
+            Hearth3.SetActive(true);
+            Hearth4.SetActive(true);
         }
+        else if (currentHealth >= 75f && currentHealth < 100f)
+        {
+            Hearth1.SetActive(false);
+            Hearth2.SetActive(true);
+            Hearth3.SetActive(true);
+            Hearth4.SetActive(true);
+        }
+        else if (currentHealth >= 50f && currentHealth < 75f)
+        {
+            Hearth1.SetActive(false);
+            Hearth2.SetActive(false);
+            Hearth3.SetActive(true);
+            Hearth4.SetActive(true);
+        }
+        else if (currentHealth >= 25f && currentHealth < 0f)
+        {
+            Hearth1.SetActive(false);
+            Hearth2.SetActive(false);
+            Hearth3.SetActive(false);
+            Hearth4.SetActive(true);
+        }
+        else if (currentHealth <= 0f)
+        {
+            Statistics();
+
+            Hearth1.SetActive(false);
+            Hearth2.SetActive(false);
+            Hearth3.SetActive(false);
+            Hearth4.SetActive(false);
+            
+            Notes.SetActive(false);
+            music.Stop();
+            pressAnyKey.text = "You're Dead";
+
+            if (resultsAnimation != null)
+            {
+                resultsAnimation.SetBool("isTriggered", true);
+            }
+            else
+            {
+                Debug.Log("resultsAnimation is null. Cannot set animation parameter.");
+            }
+        }
+
     }
 
     public void Statistics()
@@ -147,56 +195,12 @@ public class GameManager : MonoBehaviour
         missedText.text = missedCounter.ToString();
         resultsScoreText.text = currentScore.ToString();
     }
-    public void DamageTake()
+    public void Heal(float damageHeal)
     {
-        //// Death indicator
-        //if (currentDamageTaken <= damageThresholds.Length)
-        //{
-        //    currentDamageTaken++;
-
-        //    //Removing hearths
-        //    if (currentDamageTaken == 1)
-        //    {
-        //        Hearth1.SetActive(false);
-        //    }
-        //    else if (currentDamageTaken == 2)
-        //    {
-        //        Hearth2.SetActive(false);
-        //    }
-        //    else if (currentDamageTaken == 3)
-        //    {
-        //        Hearth3.SetActive(false);
-        //    }
-        //    else if (currentDamageTaken == 4)
-        //    {
-        //        Hearth4.SetActive(false);
-        //        Notes.SetActive(false);
-        //        music.Stop();
-
-        //        currentDamageTaken = 0;
-
-        //        pressAnyKey.text = "You're Dead";
-        //    }
-        //}
-        //else
-        //{
-        //    Debug.Log("Something went wrong with the damage tracker");
-        //}
-    }
-    public void DamageHeal()
-    {
-        // Get hearths
-        if (currentDamageTaken == 0)
+        currentHealth += damageHeal;
+        if (currentHealth >= 100f)
         {
-            Hearth1.SetActive(true);
-        }
-        else if (currentDamageTaken == 1)
-        {
-            Hearth2.SetActive(true);
-        }
-        else if (currentDamageTaken == 2)
-        {
-            Hearth3.SetActive(true);
+            currentHealth = 100f;
         }
     }
 
@@ -260,12 +264,7 @@ public class GameManager : MonoBehaviour
 
         currentScore += scoreEarly * currentMultiplier;
         NoteHit();
-
-        if (currentDamageTaken != 0)
-        {
-            currentDamageTaken--;
-            DamageHeal();
-        }
+        Heal(earlyHitHeal);
 
         Debug.Log("Early Hit");
     }
@@ -277,12 +276,7 @@ public class GameManager : MonoBehaviour
 
         currentScore += scoreEarlyPerfect * currentMultiplier;
         NoteHit();
-
-        if (currentDamageTaken != 0)
-        {
-            currentDamageTaken--;
-            DamageHeal();
-        }
+        Heal(earlyPerfectHitHeal);
 
         Debug.Log("Early Perfect Hit");
     }
@@ -294,12 +288,7 @@ public class GameManager : MonoBehaviour
 
         currentScore += scorePerfect * currentMultiplier;
         NoteHit();
-
-        if (currentDamageTaken != 0)
-        {
-            currentDamageTaken--;
-            DamageHeal();
-        }
+        Heal(perfectHitHeal);
 
         Debug.Log("Perfect Hit");
     }
@@ -311,12 +300,7 @@ public class GameManager : MonoBehaviour
 
         currentScore += scoreLatePerfect * currentMultiplier;
         NoteHit();
-
-        if (currentDamageTaken != 0)
-        {
-            currentDamageTaken--;
-            DamageHeal();
-        }
+        Heal(latePerfectHitHeal);
 
         Debug.Log("Late Perfect Hit");
     }
@@ -327,12 +311,7 @@ public class GameManager : MonoBehaviour
 
         currentScore += scoreLate * currentMultiplier;
         NoteHit();
-
-        if (currentDamageTaken != 0)
-        {
-            currentDamageTaken--;
-            DamageHeal();
-        }
+        Heal(lateHitHeal);
 
         Debug.Log("Late Hit");
     }
@@ -342,7 +321,7 @@ public class GameManager : MonoBehaviour
         missedCounter++;
         noteStreak = 0;
         streakText.text = noteStreak + "x";
-        DamageTake();
+        Heal(missedHitHeal);
 
         currentMultiplier = 1;
         multiplierTracker = 0;

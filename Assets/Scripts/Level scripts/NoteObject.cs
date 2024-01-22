@@ -46,6 +46,10 @@ public class NoteObject : MonoBehaviour
                 noteExited = true;
                 NoteAccuracy();
             }
+            //if (!circleTrigger && transform.position.x != 0 && transform.position.y != 0)
+            //{
+            //    GameManager.instance.currentHealth += GameManager.instance.missedHitHeal;
+            //}
         }
     }
 

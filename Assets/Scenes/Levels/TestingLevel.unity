@@ -801,7 +801,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4823105947715267692, guid: b11d4dda37e9c644d8c80793c88ffb7a, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7485066177503996557, guid: b11d4dda37e9c644d8c80793c88ffb7a, type: 3}
       propertyPath: direction
@@ -1667,7 +1667,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4823105947715267692, guid: b11d4dda37e9c644d8c80793c88ffb7a, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8534,6 +8534,7 @@ MonoBehaviour:
   Notes: {fileID: 975520316}
   NoteMovement: {fileID: 1420531617}
   pressAnyKey: {fileID: 1339535207}
+  circleAnimator: {fileID: 0}
   scoreText: {fileID: 1426851216}
   resultsScoreText: {fileID: 2027101582}
   noteStreak: 0
@@ -8552,7 +8553,13 @@ MonoBehaviour:
   Hearth2: {fileID: 1849870880}
   Hearth3: {fileID: 428646058}
   Hearth4: {fileID: 1613625809}
-  damageThresholds: 01000000010000000100000001000000
+  currentHealth: 0
+  earlyHitHeal: -2.5
+  earlyPerfectHitHeal: 1.5
+  perfectHitHeal: 5
+  latePerfectHitHeal: 1.5
+  lateHitHeal: -2.5
+  missedHitHeal: -25
 --- !u!4 &1420531616
 Transform:
   m_ObjectHideFlags: 0
@@ -9253,7 +9260,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1474035591
 Transform:
   m_ObjectHideFlags: 0
@@ -9263,7 +9270,7 @@ Transform:
   m_GameObject: {fileID: 1474035590}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.375}
+  m_LocalPosition: {x: 0, y: 0, z: -10.74}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
