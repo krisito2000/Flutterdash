@@ -21,6 +21,7 @@ public class NoteObject : MonoBehaviour
 
     [Header("------- Note indentification -------")]
     private static List<NoteObject> activeNotes = new List<NoteObject>();
+    public bool isTheLastNote;
     public float noteID;
 
     void Start()
@@ -46,6 +47,7 @@ public class NoteObject : MonoBehaviour
                 noteExited = true;
                 NoteAccuracy();
             }
+            //// For when you spam the note to take damage (does not work)
             //if (!circleTrigger && transform.position.x != 0 && transform.position.y != 0)
             //{
             //    GameManager.instance.currentHealth += GameManager.instance.missedHitHeal;
@@ -82,6 +84,10 @@ public class NoteObject : MonoBehaviour
     private void NoteAccuracy()
     {
         float distanceDetection = Vector2.Distance(transform.position, circle.position);
+        if (isTheLastNote)
+        {
+            GameManager.instance.Statistics();
+        }
 
         //if (noteAnimation)
         //{
@@ -134,6 +140,10 @@ public class NoteObject : MonoBehaviour
                 GameManager.instance.NoteMissed();
                 activeNotes.Remove(this);
                 gameObject.SetActive(false);
+            }
+            if (isTheLastNote)
+            {
+                GameManager.instance.Statistics();
             }
         }
     }

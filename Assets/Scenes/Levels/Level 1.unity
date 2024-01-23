@@ -626,6 +626,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   music: {fileID: 1571495103}
+  levelSpeed: 0
   bpm: 94
   Notes: {fileID: 975520316}
   NoteMovement: {fileID: 90218440}
@@ -633,7 +634,6 @@ MonoBehaviour:
   circleAnimator: {fileID: 0}
   scoreText: {fileID: 1302902858}
   resultsScoreText: {fileID: 1439296705}
-  noteStreak: 0
   streakText: {fileID: 1218125300}
   multiplierText: {fileID: 1397697434}
   multiplierBackground: {fileID: 1202443989}
@@ -4251,6 +4251,10 @@ PrefabInstance:
     - target: {fileID: 4823105947715267692, guid: b11d4dda37e9c644d8c80793c88ffb7a, type: 3}
       propertyPath: m_Name
       value: DNote (Note 100)
+      objectReference: {fileID: 0}
+    - target: {fileID: 7485066177503996557, guid: b11d4dda37e9c644d8c80793c88ffb7a, type: 3}
+      propertyPath: isTheLastNote
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9012,7 +9016,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1539717654}
   m_Layer: 0
-  m_Name: Part4
+  m_Name: Part 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

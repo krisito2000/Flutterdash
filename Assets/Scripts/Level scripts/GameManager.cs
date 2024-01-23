@@ -162,8 +162,6 @@ public class GameManager : MonoBehaviour
         }
         else if (currentHealth <= 0f)
         {
-            Statistics();
-
             Hearth1.SetActive(false);
             Hearth2.SetActive(false);
             Hearth3.SetActive(false);
@@ -175,7 +173,7 @@ public class GameManager : MonoBehaviour
 
             if (resultsAnimation != null)
             {
-                resultsAnimation.SetBool("isTriggered", true);
+                Statistics();
             }
             else
             {
@@ -187,6 +185,8 @@ public class GameManager : MonoBehaviour
 
     public void Statistics()
     {
+        resultsAnimation.SetBool("isTriggered", true);
+
         earlyText.text = earlyCounter.ToString();
         earlyPerfectText.text = earlyPerfectCounter.ToString();
         perfectText.text = perfectCounter.ToString();

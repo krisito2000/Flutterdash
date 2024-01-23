@@ -14,7 +14,7 @@ public class MainMenuCircleTransition : MonoBehaviour
     private void Start()
     {
         instance = this;
-        StartCoroutine(ShowAnyKeyTextAfterDelay(2f));
+        StartCoroutine(ShowAnyKeyTextAfterDelay(5f));
     }
 
     private void Update()
