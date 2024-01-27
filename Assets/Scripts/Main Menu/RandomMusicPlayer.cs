@@ -17,6 +17,8 @@ public class RandomMusicPlayer : MonoBehaviour
     {
         audioSource = FindAnyObjectByType<AudioSource>();
         audioSource.loop = false;
+        Time.timeScale = 1.0f;
+        audioSource.pitch = 1.0f;
         Application.runInBackground = true;
     }
 

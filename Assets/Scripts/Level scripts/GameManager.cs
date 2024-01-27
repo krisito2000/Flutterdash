@@ -87,6 +87,9 @@ public class GameManager : MonoBehaviour
             levelSpeed = 1;
         }
 
+        Time.timeScale = levelSpeed;
+        music.pitch = levelSpeed;
+
         instance = this;
         Application.runInBackground = true;
         music.enabled = false;
@@ -112,9 +115,6 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        Time.timeScale = levelSpeed;
-        music.pitch = levelSpeed;
-
         if (!startMusic)
         {
             if (Input.anyKeyDown && !Input.GetKeyDown(KeyCode.Escape))

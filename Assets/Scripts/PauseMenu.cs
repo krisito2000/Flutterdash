@@ -50,7 +50,16 @@ public class PauseMenu : MonoBehaviour
     public void Resume()
     {
         pauseMenuCanvas.SetActive(false);
-        Time.timeScale = 1.0f;
+
+        if (GameManager.instance != null && GameManager.instance.levelSpeed != null)
+        {
+            Time.timeScale = GameManager.instance.levelSpeed;
+        }
+        else
+        {
+            Time.timeScale = 1.0f;
+        }
+
         gameIsPaused = false;
 
         AudioSource[] audios = FindObjectsOfType<AudioSource>();
@@ -58,6 +67,15 @@ public class PauseMenu : MonoBehaviour
         foreach (AudioSource audio in audios)
         {
             audio.Play();
+
+            if (GameManager.instance != null)
+            {
+                audio.pitch = GameManager.instance.levelSpeed;
+            }
+            else
+            {
+                audio.pitch = 1.0f;
+            }
         }
     }
     public void Retry()
@@ -86,6 +104,7 @@ public class PauseMenu : MonoBehaviour
                 Debug.Log("GameManager not found in the scene.");
             }
             SceneManager.LoadScene(0);
+
             //SceneLoader.instance.LoadScene(0);
         }
 
