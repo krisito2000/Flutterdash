@@ -4,18 +4,24 @@ using System.Security.Cryptography;
 using System.Security.Policy;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 
 public class PauseMenu : MonoBehaviour
 {
     public static PauseMenu instance;
 
-    public static bool gameIsPaused = false;
+    public bool gameIsPaused = false;
 
     public GameObject pauseMenuCanvas;
+    public TextMeshProUGUI speedUpText;
+    public int speedUpPercentage;
+    public GameObject speedUpMenuCanvas;
 
     void Start()
     {
         instance = this;
+        speedUpPercentage = 100;
     }
 
     // Update is called once per frame
@@ -34,6 +40,7 @@ public class PauseMenu : MonoBehaviour
         }
     }
 
+    // Pause
     public void Pause()
     {
         pauseMenuCanvas.SetActive(true);
@@ -47,11 +54,14 @@ public class PauseMenu : MonoBehaviour
             audio.Pause();
         }
     }
+
+    // Resume
     public void Resume()
     {
         pauseMenuCanvas.SetActive(false);
+        speedUpMenuCanvas.SetActive(false);
 
-        if (GameManager.instance != null && GameManager.instance.levelSpeed != null)
+        if (GameManager.instance != null)
         {
             Time.timeScale = GameManager.instance.levelSpeed;
         }
@@ -78,13 +88,67 @@ public class PauseMenu : MonoBehaviour
             }
         }
     }
-    public void Retry()
+
+    // Speed up
+    public void SpeedUpButton()
     {
-        Scene currentScene = SceneManager.GetActiveScene();
-        SceneManager.LoadScene(currentScene.name);
-        Resume();
+        pauseMenuCanvas.SetActive(false);
+        speedUpMenuCanvas.SetActive(true);
     }
 
+    public void LeftArrowButton()
+    {
+        speedUpPercentage -= 10;
+        if (speedUpPercentage <= 10)
+        {
+            speedUpPercentage = 10;
+        }
+        speedUpText.text = $"{speedUpPercentage}%";
+    }
+    public void RightArrowButton()
+    {
+        speedUpPercentage += 10;
+        if (speedUpPercentage >= 10000000)
+        {
+            speedUpPercentage = 10000000;
+        }
+        speedUpText.text = $"{speedUpPercentage}%";
+    }
+
+    // Retry
+    public void Retry()
+    {
+        // Unload unused assets
+        Resources.UnloadUnusedAssets();
+        pauseMenuCanvas.SetActive(false);
+        speedUpMenuCanvas.SetActive(false);
+        Resume();
+
+        Scene currentScene = SceneManager.GetActiveScene();
+        StartCoroutine(LoadSceneAsync(currentScene.name));
+    }
+
+    // Asynchronously loads a scene by name
+    private IEnumerator LoadSceneAsync(string sceneName)
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Single);
+        asyncLoad.allowSceneActivation = false;
+
+        // Wait until the asynchronous scene fully loads
+        while (!asyncLoad.isDone)
+        {
+            // Check if the load has finished (90% progress)
+            if (asyncLoad.progress >= 0.9f)
+            {
+                // Activate the scene
+                asyncLoad.allowSceneActivation = true;
+            }
+
+            yield return null;
+        }
+    }
+
+    // Quit
     public void QuitGame()
     {
         GameObject gameManager = GameObject.Find("GameManager");

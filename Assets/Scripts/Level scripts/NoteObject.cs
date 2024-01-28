@@ -1,6 +1,8 @@
+using Firebase.Database;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class NoteObject : MonoBehaviour
 {
@@ -86,7 +88,51 @@ public class NoteObject : MonoBehaviour
         float distanceDetection = Vector2.Distance(transform.position, circle.position);
         if (isTheLastNote)
         {
+            string currentSceneName = SceneManager.GetActiveScene().name;
+
             GameManager.instance.Statistics();
+
+            // Get the best speed location in the database
+            var speedLocation = DatabaseManager.instance.databaseReference.Child("Users")
+                                    .Child(Guest.instance.LoginAs.text)
+                                    .Child("Levels")
+                                    .Child(currentSceneName)
+                                    .Child("BestSpeed");
+
+            // Retrieve the current best speed from the database
+            speedLocation.GetValueAsync().ContinueWith(speedTask =>
+            {
+                if (speedTask.IsFaulted)
+                {
+                    Debug.LogError("Failed to retrieve best speed: " + speedTask.Exception.Message);
+                    return;
+                }
+
+                DataSnapshot speedSnapshot = speedTask.Result;
+                int databaseBestSpeed = speedSnapshot.Exists ? int.Parse(speedSnapshot.Value.ToString()) : 0;
+
+                int currentSpeed = PauseMenu.instance.speedUpPercentage;
+
+                if (currentSpeed > databaseBestSpeed)
+                {
+                    // If the current speed in the game is greater than the best speed in the database, update the database with the new speed
+                    speedLocation.SetValueAsync(currentSpeed).ContinueWith(speedSaveTask =>
+                    {
+                        if (speedSaveTask.IsFaulted)
+                        {
+                            Debug.LogError("Failed to save best speed: " + speedSaveTask.Exception.Message);
+                            return;
+                        }
+
+                        Debug.Log("Best speed saved successfully!");
+                    });
+                }
+                else
+                {
+                    // If the current speed in the game is not better, do nothing
+                    Debug.Log("Current speed is not better than the best speed in the database.");
+                }
+            });
         }
 
         //if (noteAnimation)

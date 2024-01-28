@@ -202,6 +202,85 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 12151824}
   m_CullTransparentMesh: 1
+--- !u!1 &52900087
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 52900090}
+  - component: {fileID: 52900089}
+  - component: {fileID: 52900088}
+  m_Layer: 5
+  m_Name: SpeedMultiplier
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &52900088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52900087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 58
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 6
+    m_MaxSize: 67
+    m_Alignment: 5
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 
+--- !u!222 &52900089
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52900087}
+  m_CullTransparentMesh: 1
+--- !u!224 &52900090
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 52900087}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1.00008, y: 1.00008, z: 1.00008}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1117193474}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 682, y: 381}
+  m_SizeDelta: {x: 488.5, y: 132.55}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &65559596
 GameObject:
   m_ObjectHideFlags: 0
@@ -2737,6 +2816,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 261303175}
+  - {fileID: 52900090}
   - {fileID: 1809390513}
   - {fileID: 12151825}
   - {fileID: 1155473891}
@@ -4621,17 +4701,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   music: {fileID: 642572077}
+  levelSpeed: 0
   bpm: 120
   Notes: {fileID: 795494013}
   NoteMovement: {fileID: 1954152478}
   pressAnyKey: {fileID: 12151826}
+  circleAnimator: {fileID: 0}
   scoreText: {fileID: 261303176}
   resultsScoreText: {fileID: 1141140393}
-  noteStreak: 0
+  bestStreak: 0
   streakText: {fileID: 1809390515}
   multiplierText: {fileID: 404316494}
   multiplierBackground: {fileID: 410184437}
   multiplierThresholds: 0100000001000000010000000100000001000000
+  speedMultiplier: {fileID: 52900088}
   resultsAnimation: {fileID: 1922525220}
   earlyText: {fileID: 206912552}
   earlyPerfectText: {fileID: 1937354044}
@@ -4643,7 +4726,13 @@ MonoBehaviour:
   Hearth2: {fileID: 1022700147}
   Hearth3: {fileID: 707591083}
   Hearth4: {fileID: 1639891552}
-  damageThresholds: 01000000010000000100000001000000
+  currentHealth: 0
+  earlyHitHeal: 0
+  earlyPerfectHitHeal: 0
+  perfectHitHeal: 0
+  latePerfectHitHeal: 0
+  lateHitHeal: 0
+  missedHitHeal: 0
 --- !u!114 &1954152478
 MonoBehaviour:
   m_ObjectHideFlags: 0

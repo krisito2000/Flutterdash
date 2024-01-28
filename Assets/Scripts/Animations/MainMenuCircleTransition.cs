@@ -19,7 +19,7 @@ public class MainMenuCircleTransition : MonoBehaviour
 
     private void Update()
     {
-        if (Input.anyKeyDown && !Input.GetKeyDown(KeyCode.Escape) && !Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.anyKeyDown && !Input.GetKeyDown(KeyCode.Escape) && !Input.GetKeyDown(KeyCode.Mouse0) && !PauseMenu.instance.gameIsPaused)
         {
             CircleTransition();
         }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Drawing.Printing;
+using System.Security.Policy;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -32,11 +33,11 @@ public class GameManager : MonoBehaviour
     private int currentScore;
     private int scorePerNote;
 
-    private int scoreEarly;
-    private int scoreEarlyPerfect;
-    private int scorePerfect;
-    private int scoreLatePerfect;
-    private int scoreLate;
+    private float scoreEarly;
+    private float scoreEarlyPerfect;
+    private float scorePerfect;
+    private float scoreLatePerfect;
+    private float scoreLate;
 
     private int noteStreak;
     public int bestStreak;
@@ -48,6 +49,8 @@ public class GameManager : MonoBehaviour
     private int currentMultiplier;
     private int multiplierTracker;
     public int[] multiplierThresholds;
+
+    public Text speedMultiplier;
 
     [Header("------- Results -------")]
     public Animator resultsAnimation;
@@ -84,6 +87,17 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        instance = this;
+        Application.runInBackground = true;
+        music.enabled = false;
+
+        levelSpeed = PauseMenu.instance.speedUpPercentage / 100f;
+
+        if (levelSpeed != 1)
+        {
+            speedMultiplier.text = $"x{levelSpeed}";
+        }
+
         if (levelSpeed == 0)
         {
             levelSpeed = 1;
@@ -92,9 +106,6 @@ public class GameManager : MonoBehaviour
         Time.timeScale = levelSpeed;
         music.pitch = levelSpeed;
 
-        instance = this;
-        Application.runInBackground = true;
-        music.enabled = false;
         //music.volume = //audio mixer;
 
         // Perfect            light blue  350
@@ -107,19 +118,19 @@ public class GameManager : MonoBehaviour
 
         currentHealth = 100f;
 
-        scoreEarly = 75;
-        scoreEarlyPerfect = 150;
-        scorePerfect = 350;
-        scoreLatePerfect = 150;
-        scoreLate = 75;
+        scoreEarly = 75 * levelSpeed;
+        scoreEarlyPerfect = 150 * levelSpeed;
+        scorePerfect = 350 * levelSpeed;
+        scoreLatePerfect = 150 * levelSpeed;
+        scoreLate = 75 * levelSpeed;
         currentMultiplier = 1;
     }
 
     void Update()
-    {
+    { 
         if (!startMusic)
         {
-            if (Input.anyKeyDown && !Input.GetKeyDown(KeyCode.Escape))
+            if (Input.anyKeyDown && !Input.GetKeyDown(KeyCode.Escape) && !PauseMenu.instance.gameIsPaused)
             {
                 startMusic = true;
                 NoteMovement.gameStart = true;
@@ -238,13 +249,14 @@ public class GameManager : MonoBehaviour
                 }
             });
 
-            // Only save the best streak if it's greater than the current best streak in the database
+            // Get the best streak location in the database
             var streakLocation = DatabaseManager.instance.databaseReference.Child("Users")
                                     .Child(Guest.instance.LoginAs.text)
                                     .Child("Levels")
                                     .Child(currentSceneName)
                                     .Child("BestStreak");
 
+            // Retrieve the current best streak from the database
             streakLocation.GetValueAsync().ContinueWith(streakTask =>
             {
                 if (streakTask.IsFaulted)
@@ -287,8 +299,6 @@ public class GameManager : MonoBehaviour
         missedText.text = missedCounter.ToString();
         resultsScoreText.text = currentScore.ToString();
     }
-
-
 
     private int GetScore()
     {
@@ -373,7 +383,7 @@ public class GameManager : MonoBehaviour
         earlyCounter++;
         noteStreak = 0;
 
-        currentScore += scoreEarly * currentMultiplier;
+        currentScore += (int)(scoreEarly * currentMultiplier);
         NoteHit();
         Heal(earlyHitHeal);
 
@@ -385,7 +395,7 @@ public class GameManager : MonoBehaviour
         earlyPerfectCounter++;
         noteStreak ++;
 
-        currentScore += scoreEarlyPerfect * currentMultiplier;
+        currentScore += (int)(scoreEarlyPerfect * currentMultiplier);
         NoteHit();
         Heal(earlyPerfectHitHeal);
 
@@ -397,7 +407,7 @@ public class GameManager : MonoBehaviour
         perfectCounter++;
         noteStreak++;
 
-        currentScore += scorePerfect * currentMultiplier;
+        currentScore += (int)(scorePerfect * currentMultiplier);
         NoteHit();
         Heal(perfectHitHeal);
 
@@ -409,7 +419,7 @@ public class GameManager : MonoBehaviour
         latePerfectCounter++;
         noteStreak++;
 
-        currentScore += scoreLatePerfect * currentMultiplier;
+        currentScore += (int)(scoreLatePerfect * currentMultiplier);
         NoteHit();
         Heal(latePerfectHitHeal);
 
@@ -420,7 +430,7 @@ public class GameManager : MonoBehaviour
         lateCounter++;
         noteStreak = 0;
 
-        currentScore += scoreLate * currentMultiplier;
+        currentScore += (int)(scoreLate * currentMultiplier);
         NoteHit();
         Heal(lateHitHeal);
 
@@ -461,13 +471,15 @@ public class GameManager : MonoBehaviour
         // Ensure there is only one instance of the GameManager script in the scene.
         if (instance == null)
         {
+            // Set the instance to this GameManager if it's the first one.
             instance = this;
         }
         else
         {
-            // Destroy this instance if there is already another one in the scene.
-            Destroy(gameObject);
-            return;
+            // Destroy the existing instance if a new one is detected.
+            Destroy(instance.gameObject);
+            // Set the instance to the new GameManager.
+            instance = this;
         }
 
         // Keep this GameObject alive throughout the entire game.

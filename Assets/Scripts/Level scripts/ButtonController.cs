@@ -22,14 +22,17 @@ public class NewBehaviourScript : MonoBehaviour
     // Checking if the button on the keyboard is pressed and changing the img
     void Update()
     {
-        if(Input.GetKeyDown(keyToPress) || Input.GetKeyDown(secondaryKey))
+        if (!PauseMenu.instance.gameIsPaused)
         {
-            theSR.sprite = pressedImg;
-        }
+            if (Input.GetKeyDown(keyToPress) || Input.GetKeyDown(secondaryKey))
+            {
+                theSR.sprite = pressedImg;
+            }
 
-        if (Input.GetKeyUp(keyToPress) || Input.GetKeyUp(secondaryKey))
-        {
-            theSR.sprite = defaultImg;
+            if (Input.GetKeyUp(keyToPress) || Input.GetKeyUp(secondaryKey))
+            {
+                theSR.sprite = defaultImg;
+            }
         }
     }
 }
