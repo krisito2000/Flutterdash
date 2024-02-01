@@ -10,6 +10,7 @@ using UnityEngine.Windows;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using Firebase;
 
 public class DatabaseManager : MonoBehaviour
 {
@@ -40,6 +41,17 @@ public class DatabaseManager : MonoBehaviour
     public InputField loginPassword;
     public Text loginButtonText;
 
+    [Header("------- Level stats -------")]
+    [Header("------- Tutorial level -------")]
+    public Text TutorialBestScoreText;
+    public Text TutorialBestSpeedText;
+    public Text TutorialBestStreakText;
+
+    [Header("------- Level 1 -------")]
+    public Text Level1BestScoreText;
+    public Text Level1BestSpeedText;
+    public Text Level1BestStreakText;
+
     public DatabaseReference databaseReference;
 
     private void Start()
@@ -68,6 +80,64 @@ public class DatabaseManager : MonoBehaviour
                 }
             }
         }
+
+        // Initialize Firebase
+        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
+        {
+            FirebaseApp app = FirebaseApp.DefaultInstance;
+            // Initialize the Firebase Realtime Database
+            databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
+
+            // Retrieve data for the tutorial level
+            RetrieveLevelData("TutorialLevel", (tutorialDataSnapshot) =>
+            {
+                // Handle the retrieved data for the tutorial level
+                if (tutorialDataSnapshot != null && tutorialDataSnapshot.Exists)
+                {
+                    // Retrieve best score, best speed, and best streak from the snapshot
+                    int tutorialBestScore = tutorialDataSnapshot.Child("BestScore").Exists ? int.Parse(tutorialDataSnapshot.Child("BestScore").Value.ToString()) : 0;
+                    float tutorialBestSpeed = tutorialDataSnapshot.Child("BestSpeed").Exists ? float.Parse(tutorialDataSnapshot.Child("BestSpeed").Value.ToString()) : 0;
+                    int tutorialBestStreak = tutorialDataSnapshot.Child("BestStreak").Exists ? int.Parse(tutorialDataSnapshot.Child("BestStreak").Value.ToString()) : 0;
+
+                    // Update UI or perform other actions with the retrieved data
+                    // For example:
+                    TutorialBestScoreText.text = tutorialBestScore.ToString();
+                    TutorialBestSpeedText.text = tutorialBestSpeed.ToString();
+                    TutorialBestStreakText.text = tutorialBestStreak.ToString();
+                }
+                else
+                {
+                    Debug.LogWarning("Tutorial level data not found.");
+                }
+            });
+
+            // Retrieve data for Level 1
+            RetrieveLevelData("Level1", (level1DataSnapshot) =>
+            {
+                // Handle the retrieved data for Level 1
+                if (level1DataSnapshot != null && level1DataSnapshot.Exists)
+                {
+                    // Retrieve best score, best speed, and best streak from the snapshot
+                    int level1BestScore = level1DataSnapshot.Child("BestScore").Exists ? int.Parse(level1DataSnapshot.Child("BestScore").Value.ToString()) : 0;
+                    float level1BestSpeed = level1DataSnapshot.Child("BestSpeed").Exists ? float.Parse(level1DataSnapshot.Child("BestSpeed").Value.ToString()) : 0;
+                    int level1BestStreak = level1DataSnapshot.Child("BestStreak").Exists ? int.Parse(level1DataSnapshot.Child("BestStreak").Value.ToString()) : 0;
+
+                    // Update UI or perform other actions with the retrieved data
+                    // For example:
+                    Level1BestScoreText.text = level1BestScore.ToString();
+                    Level1BestSpeedText.text = level1BestSpeed.ToString();
+                    Level1BestStreakText.text = level1BestStreak.ToString();
+                }
+                else
+                {
+                    Debug.LogWarning("Level 1 data not found.");
+                }
+            });
+        });
+    }
+    private void Update()
+    {
+        
     }
 
     private void SaveUserData(string username, string hashedPassword)
@@ -435,5 +505,32 @@ public class DatabaseManager : MonoBehaviour
         Authentication.instance.ErrorMessage.interactable = true;
         Authentication.instance.ErrorMessage.blocksRaycasts = true;
         // Show the error message text in your Canvas Group
+    }
+
+    void RetrieveLevelData(string levelName, System.Action<DataSnapshot> callback)
+    {
+        // Get a reference to the location in the database where level data is stored
+        DatabaseReference levelRef = databaseReference.Child("Users")
+                                                     .Child(Guest.instance.LoginAs.text)
+                                                     .Child("Levels")
+                                                     .Child(levelName);
+
+        // Retrieve the level data asynchronously
+        levelRef.GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsFaulted)
+            {
+                // Handle the error
+                Debug.LogError("Failed to retrieve data for " + levelName + ": " + task.Exception);
+                callback(null);
+                return;
+            }
+
+            // Retrieve the data snapshot
+            DataSnapshot snapshot = task.Result;
+
+            // Pass the data snapshot to the callback function
+            callback(snapshot);
+        });
     }
 }
