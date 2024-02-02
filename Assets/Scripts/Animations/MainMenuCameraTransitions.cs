@@ -28,7 +28,7 @@ public class MainMenuTransition : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
                 SetTutorial(false);
-                if (!GetSettings() && !GetCustomSong() && !GetPlay() && !GetAuthentication())
+                if (!GetSettings() && !GetCustomSong() && !GetPlay() && !GetAuthentication() && !GetSync())
                 {
                     if (Guest.instance.guest)
                     {
@@ -74,14 +74,14 @@ public class MainMenuTransition : MonoBehaviour
                     animator.SetBool("GuestPlayTrigger", false);
                 }
             }
-            else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow) && !GetSync())
             {
                 SetTutorial(false);
                 if (GetAuthentication())
                 {
 
                 }
-                else if (!GetSettings() && !GetCustomSong() && !GetPlay())
+                else if (!GetSettings() && !GetCustomSong() && !GetPlay() && !GetSync())
                 {
                     SettingsButton();
                 }
