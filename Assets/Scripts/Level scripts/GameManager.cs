@@ -204,92 +204,6 @@ public class GameManager : MonoBehaviour
     {
         resultsAnimation.SetBool("isTriggered", true);
 
-        if (Guest.instance.LoginAs.text != "Login as Guest")
-        {
-            string currentSceneName = SceneManager.GetActiveScene().name;
-
-            int currentScore = GetScore();
-
-            // Get the best score location in the database
-            var scoreLocation = DatabaseManager.instance.databaseReference.Child("Users")
-                                    .Child(Guest.instance.LoginAs.text)
-                                    .Child("Levels")
-                                    .Child(currentSceneName)
-                                    .Child("BestScore");
-
-            // Retrieve the current best score from the database
-            scoreLocation.GetValueAsync().ContinueWith(scoreTask =>
-            {
-                if (scoreTask.IsFaulted)
-                {
-                    Debug.LogError("Failed to retrieve best score: " + scoreTask.Exception.Message);
-                    return;
-                }
-
-                DataSnapshot scoreSnapshot = scoreTask.Result;
-
-                if (!scoreSnapshot.Exists || currentScore > int.Parse(scoreSnapshot.Value.ToString()))
-                {
-                    // If the score doesn't exist in the database or the current score is better, update the database with the new score
-                    scoreLocation.SetValueAsync(currentScore).ContinueWith(scoreSaveTask =>
-                    {
-                        if (scoreSaveTask.IsFaulted)
-                        {
-                            Debug.LogError("Failed to save level stats: " + scoreSaveTask.Exception.Message);
-                            return;
-                        }
-
-                        Debug.Log("Level score saved successfully!");
-                    });
-                }
-                else
-                {
-                    // If the current score is not better, do nothing
-                    Debug.Log("Current score is not better than the best score in the database.");
-                }
-            });
-
-            // Get the best streak location in the database
-            var streakLocation = DatabaseManager.instance.databaseReference.Child("Users")
-                                    .Child(Guest.instance.LoginAs.text)
-                                    .Child("Levels")
-                                    .Child(currentSceneName)
-                                    .Child("BestStreak");
-
-            // Retrieve the current best streak from the database
-            streakLocation.GetValueAsync().ContinueWith(streakTask =>
-            {
-                if (streakTask.IsFaulted)
-                {
-                    Debug.LogError("Failed to retrieve best streak: " + streakTask.Exception.Message);
-                    return;
-                }
-
-                DataSnapshot streakSnapshot = streakTask.Result;
-                int databaseBestStreak = streakSnapshot.Exists ? int.Parse(streakSnapshot.Value.ToString()) : 0;
-
-                if (bestStreak > databaseBestStreak)
-                {
-                    // If the best streak in the code is greater than the best streak in the database, update the database with the new streak
-                    streakLocation.SetValueAsync(bestStreak).ContinueWith(streakSaveTask =>
-                    {
-                        if (streakSaveTask.IsFaulted)
-                        {
-                            Debug.LogError("Failed to save best streak: " + streakSaveTask.Exception.Message);
-                            return;
-                        }
-
-                        Debug.Log("Best streak saved successfully!");
-                    });
-                }
-                else
-                {
-                    // If the current streak in the code is not better, do nothing
-                    Debug.Log("Current streak is not better than the best streak in the database.");
-                }
-            });
-        }
-
         // Update UI elements
         earlyText.text = earlyCounter.ToString();
         earlyPerfectText.text = earlyPerfectCounter.ToString();
@@ -298,22 +212,6 @@ public class GameManager : MonoBehaviour
         lateText.text = lateCounter.ToString();
         missedText.text = missedCounter.ToString();
         resultsScoreText.text = currentScore.ToString();
-    }
-
-    private int GetScore()
-    {
-        // Parse the string score to an int
-        int score;
-        if (int.TryParse(scoreText.text, out score))
-        {
-            return score;
-        }
-        else
-        {
-            // Handle the case where the conversion fails, perhaps by returning a default value
-            Debug.LogError("Failed to parse score from GameManager: " + scoreText.text);
-            return 0; // Default value
-        }
     }
 
     public void Heal(float damageHeal)

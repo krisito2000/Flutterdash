@@ -81,60 +81,14 @@ public class DatabaseManager : MonoBehaviour
             }
         }
 
-        // Initialize Firebase
-        FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task =>
-        {
-            FirebaseApp app = FirebaseApp.DefaultInstance;
-            // Initialize the Firebase Realtime Database
-            databaseReference = FirebaseDatabase.DefaultInstance.RootReference;
-
-            // Retrieve data for the tutorial level
-            RetrieveLevelData("TutorialLevel", (tutorialDataSnapshot) =>
-            {
-                // Handle the retrieved data for the tutorial level
-                if (tutorialDataSnapshot != null && tutorialDataSnapshot.Exists)
-                {
-                    // Retrieve best score, best speed, and best streak from the snapshot
-                    int tutorialBestScore = tutorialDataSnapshot.Child("BestScore").Exists ? int.Parse(tutorialDataSnapshot.Child("BestScore").Value.ToString()) : 0;
-                    float tutorialBestSpeed = tutorialDataSnapshot.Child("BestSpeed").Exists ? float.Parse(tutorialDataSnapshot.Child("BestSpeed").Value.ToString()) : 0;
-                    int tutorialBestStreak = tutorialDataSnapshot.Child("BestStreak").Exists ? int.Parse(tutorialDataSnapshot.Child("BestStreak").Value.ToString()) : 0;
-
-                    // Update UI or perform other actions with the retrieved data
-                    // For example:
-                    TutorialBestScoreText.text = tutorialBestScore.ToString();
-                    TutorialBestSpeedText.text = tutorialBestSpeed.ToString();
-                    TutorialBestStreakText.text = tutorialBestStreak.ToString();
-                }
-                else
-                {
-                    Debug.LogWarning("Tutorial level data not found.");
-                }
-            });
-
-            // Retrieve data for Level 1
-            RetrieveLevelData("Level1", (level1DataSnapshot) =>
-            {
-                // Handle the retrieved data for Level 1
-                if (level1DataSnapshot != null && level1DataSnapshot.Exists)
-                {
-                    // Retrieve best score, best speed, and best streak from the snapshot
-                    int level1BestScore = level1DataSnapshot.Child("BestScore").Exists ? int.Parse(level1DataSnapshot.Child("BestScore").Value.ToString()) : 0;
-                    float level1BestSpeed = level1DataSnapshot.Child("BestSpeed").Exists ? float.Parse(level1DataSnapshot.Child("BestSpeed").Value.ToString()) : 0;
-                    int level1BestStreak = level1DataSnapshot.Child("BestStreak").Exists ? int.Parse(level1DataSnapshot.Child("BestStreak").Value.ToString()) : 0;
-
-                    // Update UI or perform other actions with the retrieved data
-                    // For example:
-                    Level1BestScoreText.text = level1BestScore.ToString();
-                    Level1BestSpeedText.text = level1BestSpeed.ToString();
-                    Level1BestStreakText.text = level1BestStreak.ToString();
-                }
-                else
-                {
-                    Debug.LogWarning("Level 1 data not found.");
-                }
-            });
-        });
+        
     }
+    public void LoadEveryLevelStats()
+    {
+        StartCoroutine(LoadLevelStats(Guest.instance.LoginAs.text, "TutorialLevel", TutorialBestScoreText, TutorialBestSpeedText, TutorialBestStreakText));
+        StartCoroutine(LoadLevelStats(Guest.instance.LoginAs.text, "Level 1", Level1BestScoreText, Level1BestSpeedText, Level1BestStreakText));
+    }
+
     private void Update()
     {
         
@@ -149,6 +103,14 @@ public class DatabaseManager : MonoBehaviour
     private void DeleteUserData()
     {
         System.IO.File.WriteAllText(userDataFilePath, "");
+
+        TutorialBestScoreText.text = "Best Score: 0";
+        TutorialBestSpeedText.text = "Best Speed: 0%";
+        TutorialBestStreakText.text = "Best Streak: 0";
+
+        Level1BestScoreText.text = "Best Score: 0";
+        Level1BestSpeedText.text = "Best Speed: 0%";
+        Level1BestStreakText.text = "Best Streak: 0";
     }
     private IEnumerator CheckUserDataOnStartup(string username, string enteredPassword)
     {
@@ -507,30 +469,33 @@ public class DatabaseManager : MonoBehaviour
         // Show the error message text in your Canvas Group
     }
 
-    void RetrieveLevelData(string levelName, System.Action<DataSnapshot> callback)
+    private IEnumerator LoadLevelStats(string username, string levelName, Text bestScoreText, Text bestSpeedText, Text bestStreakText)
     {
-        // Get a reference to the location in the database where level data is stored
-        DatabaseReference levelRef = databaseReference.Child("Users")
-                                                     .Child(Guest.instance.LoginAs.text)
-                                                     .Child("Levels")
-                                                     .Child(levelName);
+        var levelStats = databaseReference.Child("Users").Child(username).Child("Levels").Child(levelName).GetValueAsync();
+        yield return new WaitUntil(() => levelStats.IsCompleted);
 
-        // Retrieve the level data asynchronously
-        levelRef.GetValueAsync().ContinueWith(task =>
+        if (levelStats.Exception != null)
         {
-            if (task.IsFaulted)
-            {
-                // Handle the error
-                Debug.LogError("Failed to retrieve data for " + levelName + ": " + task.Exception);
-                callback(null);
-                return;
-            }
+            Debug.LogError("Failed to retrieve level stats for " + levelName + ": " + levelStats.Exception.Message);
+            yield break;
+        }
 
-            // Retrieve the data snapshot
-            DataSnapshot snapshot = task.Result;
+        DataSnapshot statsSnapshot = levelStats.Result;
 
-            // Pass the data snapshot to the callback function
-            callback(snapshot);
-        });
+        if (statsSnapshot != null && statsSnapshot.Exists)
+        {
+            // Retrieve best score, best speed, and best streak from the snapshot
+            int bestScore = statsSnapshot.Child("BestScore").Exists ? int.Parse(statsSnapshot.Child("BestScore").Value.ToString()) : 0;
+            float bestSpeed = statsSnapshot.Child("BestSpeed").Exists ? float.Parse(statsSnapshot.Child("BestSpeed").Value.ToString()) : 0;
+            int bestStreak = statsSnapshot.Child("BestStreak").Exists ? int.Parse(statsSnapshot.Child("BestStreak").Value.ToString()) : 0;
+
+            bestScoreText.text = $"Best Score: {bestScore}";
+            bestSpeedText.text = $"Best Speed: {bestSpeed}%";
+            bestStreakText.text = $"Best Streak: {bestStreak}";
+        }
+        else
+        {
+            Debug.LogWarning(levelName + " data not found for user: " + username);
+        }
     }
 }

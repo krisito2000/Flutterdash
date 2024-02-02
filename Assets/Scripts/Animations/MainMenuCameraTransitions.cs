@@ -186,6 +186,7 @@ public class MainMenuTransition : MonoBehaviour
         SetPlay(true);
         SetSettings(false);
         SetCustomSong(false);
+        DatabaseManager.instance.LoadEveryLevelStats();
 
         if (animator.GetBool("isGuest") && !GetCustomSong() && !GetSettings())
         {
@@ -210,6 +211,7 @@ public class MainMenuTransition : MonoBehaviour
     public void TutorialButton()
     {
         SetTutorial(true);
+        DatabaseManager.instance.LoadEveryLevelStats();
     }
     public bool GetTutorial()
     {
