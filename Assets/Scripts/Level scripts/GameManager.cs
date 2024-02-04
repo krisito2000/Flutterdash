@@ -16,8 +16,8 @@ public class GameManager : MonoBehaviour
 
     [Header("------- Sound -------")]
     public AudioSource music;
+    public AudioSource noteHitSound;
     public float levelSpeed;
-    //public AudioSource noteHitSound;
 
     [Header("------- Note manager -------")]
     public float bpm;

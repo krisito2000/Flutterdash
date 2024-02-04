@@ -626,6 +626,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   music: {fileID: 1571495103}
+  noteHitSound: {fileID: 1997702929}
   levelSpeed: 0
   bpm: 94
   Notes: {fileID: 975520316}
@@ -8462,6 +8463,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ed729f7a05731243b2226cdff2ca883, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LoadingScreen: {fileID: 0}
 --- !u!114 &1381021307
 MonoBehaviour:
   m_ObjectHideFlags: 0

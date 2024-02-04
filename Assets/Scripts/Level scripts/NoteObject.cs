@@ -70,6 +70,8 @@ public class NoteObject : MonoBehaviour
                 //}
                 noteExited = true;
                 NoteAccuracy();
+
+                GameManager.instance.noteHitSound.Play();
             }
             //// For when you spam the note to take damage (does not work)
             //if (!circleTrigger && transform.position.x != 0 && transform.position.y != 0)

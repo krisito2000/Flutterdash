@@ -7919,6 +7919,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ed729f7a05731243b2226cdff2ca883, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LoadingScreen: {fileID: 0}
 --- !u!114 &1848152597
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8803,6 +8804,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   music: {fileID: 642572077}
+  noteHitSound: {fileID: 1017436466}
   levelSpeed: 1
   bpm: 94
   Notes: {fileID: 795494013}
