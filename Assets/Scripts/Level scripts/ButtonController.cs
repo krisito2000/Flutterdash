@@ -24,12 +24,12 @@ public class NewBehaviourScript : MonoBehaviour
     {
         if (!PauseMenu.instance.gameIsPaused)
         {
-            if (Input.GetKeyDown(keyToPress) || Input.GetKeyDown(secondaryKey))
+            if (Input.GetKeyDown(keyToPress))
             {
                 theSR.sprite = pressedImg;
             }
 
-            if (Input.GetKeyUp(keyToPress) || Input.GetKeyUp(secondaryKey))
+            if (Input.GetKeyUp(keyToPress))
             {
                 theSR.sprite = defaultImg;
             }

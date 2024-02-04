@@ -13,23 +13,6 @@ public class SettingsMenu : MonoBehaviour
 {
     public static SettingsMenu instance;
 
-    [Header("------- Audio -------")]
-    public AudioMixer audioMixer;
-    public Slider masterSlider;
-    public Slider musicSlider;
-    public Slider hitSoundSlider;
-    public Text syncText;
-    public Slider syncSlider;
-    public UnityEvent<float> onSliderValueChanged = new UnityEvent<float>();
-
-    [Header("------- Settings -------")]
-    public Toggle fullscreenToggle;
-    public Toggle VSyncToggle;
-
-    [Header("------- Resolution -------")]
-    public TMP_Dropdown resolutionsDropdown;
-    public Resolution[] resolutions;
-
     [Header("------- Canvas Groups -------")]
     public CanvasGroup GeneralCanvasGroup;
     public CanvasGroup InputCanvasGroup;
@@ -39,10 +22,59 @@ public class SettingsMenu : MonoBehaviour
     [Header("------- Animations -------")]
     public Animator ButtonAnimator;
 
+    [Header("------- Settings -------")]
+
+    [Header("------- Input -------")]
+    public bool InputLockMode;
+    public GameObject lockButton;
+    public Text lockButtonText;
+    private bool waitingForInput;
+
+    public CanvasGroup UpCircleCanvasGroup;
+    public Text UpCircleText;
+    public string UpCircleKeyCode;
+
+    public CanvasGroup LeftCircleCanvasGroup;
+    public Text LeftCircleText;
+    public string LeftCircleKeyCode;
+
+    public CanvasGroup DownCircleCanvasGroup;
+    public Text DownCircleText;
+    public string DownCircleKeyCode;
+
+    public CanvasGroup RightCircleCanvasGroup;
+    public Text RightCircleText;
+    public string RightCircleKeyCode;
+
+    [Header("------- Audio -------")]
+    public AudioMixer audioMixer;
+    public Slider masterSlider;
+    public Slider musicSlider;
+    public Slider hitSoundSlider;
+    public Text syncText;
+    public Slider syncSlider;
+    public UnityEvent<float> onSliderValueChanged = new UnityEvent<float>();
+
+    [Header("------- Display -------")]
+    public Toggle fullscreenToggle;
+
+    public TMP_Dropdown resolutionsDropdown;
+    public Resolution[] resolutions;
+
+    public Toggle VSyncToggle;
+
     [System.Obsolete]
     public void Start()
     {
         instance = this;
+
+        // Input
+        InputLockMode = false;
+
+        UpCircleKeyCode = "W";
+        LeftCircleKeyCode = "A";
+        DownCircleKeyCode = "S";
+        RightCircleKeyCode = "D";
 
         // Volume
 
@@ -86,7 +118,6 @@ public class SettingsMenu : MonoBehaviour
         
     }
 
-
     // General
     public void GeneralButton()
     {
@@ -95,6 +126,7 @@ public class SettingsMenu : MonoBehaviour
         ButtonAnimator.SetBool("Audio", false);
         ButtonAnimator.SetBool("Display", false);
     }
+
     // Input
     public void InputButton()
     {
@@ -103,6 +135,178 @@ public class SettingsMenu : MonoBehaviour
         ButtonAnimator.SetBool("Audio", false);
         ButtonAnimator.SetBool("Display", false);
     }
+
+    public void LockButton()
+    {
+        if (InputLockMode == true)
+        {
+            InputLockMode = false;
+            ButtonAnimator.SetBool("LockMode", false);
+
+            lockButtonText.text = "Lock";
+        }
+        else
+        {
+            InputLockMode = true;
+            ButtonAnimator.SetBool("LockMode", true);
+
+            lockButtonText.text = "Unlock";
+        }
+    }
+
+    public void UpCircle()
+    {
+        UpCircleText.text = "?";
+        lockButton.SetActive(false);
+
+        LeftCircleCanvasGroup.interactable = false;
+        DownCircleCanvasGroup.interactable = false;
+        RightCircleCanvasGroup.interactable = false;
+
+        if (!waitingForInput)
+        {
+            StartCoroutine(WaitForButtonPress(UpCircleKeyCode, UpCircleText));
+        }
+    }
+
+    public void LeftCircle()
+    {
+        LeftCircleText.text = "?";
+        lockButton.SetActive(false);
+
+        UpCircleCanvasGroup.interactable = false;
+        DownCircleCanvasGroup.interactable = false;
+        RightCircleCanvasGroup.interactable = false;
+
+        if (!waitingForInput)
+        {
+            StartCoroutine(WaitForButtonPress(LeftCircleKeyCode, LeftCircleText));
+        }
+    }
+
+    public void DownCircle()
+    {
+        DownCircleText.text = "?";
+        lockButton.SetActive(false);
+
+        UpCircleCanvasGroup.interactable = false;
+        LeftCircleCanvasGroup.interactable = false;
+        RightCircleCanvasGroup.interactable = false;
+
+        if (!waitingForInput)
+        {
+            StartCoroutine(WaitForButtonPress(DownCircleKeyCode, DownCircleText));
+        }
+    }
+
+    public void RightCircle()
+    {
+        RightCircleText.text = "?";
+        lockButton.SetActive(false);
+
+        UpCircleCanvasGroup.interactable = false;
+        LeftCircleCanvasGroup.interactable = false;
+        DownCircleCanvasGroup.interactable = false;
+
+        if (!waitingForInput)
+        {
+            StartCoroutine(WaitForButtonPress(RightCircleKeyCode, RightCircleText));
+        }
+    }
+
+    private IEnumerator WaitForButtonPress(string circleKeyCode, Text circleTextChange)
+    {
+        var keybindPath = DatabaseManager.instance.databaseReference
+            .Child("Users")
+            .Child(Guest.instance.LoginAs.text)
+            .Child("Settings")
+            .Child("Input")
+            .Child(circleKeyCode);
+
+        waitingForInput = true;
+
+        while (true)
+        {
+            if (Input.anyKeyDown && !Input.GetKeyDown(KeyCode.Mouse0))
+            {
+                circleKeyCode = Input.inputString.ToUpper();
+                Debug.Log("User Input: " + circleKeyCode);
+
+                UpCircleCanvasGroup.interactable = true;
+                LeftCircleCanvasGroup.interactable = true;
+                DownCircleCanvasGroup.interactable = true;
+                RightCircleCanvasGroup.interactable = true;
+
+                circleTextChange.text = circleKeyCode.ToUpper();
+                lockButton.SetActive(true);
+
+                // Save the updated keybind to the database
+                keybindPath.SetValueAsync(circleKeyCode.ToUpper());
+
+                break;
+            }
+
+            yield return null;
+        }
+
+        waitingForInput = false;
+    }
+
+    public void ResetButton()
+    {
+        // Define default keybind values
+        string defaultUpKeyCode = "W";
+        string defaultLeftKeyCode = "A";
+        string defaultDownKeyCode = "S";
+        string defaultRightKeyCode = "D";
+
+        // Update the UI text fields with default values
+        UpCircleText.text = defaultUpKeyCode;
+        LeftCircleText.text = defaultLeftKeyCode;
+        DownCircleText.text = defaultDownKeyCode;
+        RightCircleText.text = defaultRightKeyCode;
+
+        // Update the database with default keybind values
+        DatabaseManager databaseManager = DatabaseManager.instance;
+        var databaseReference = databaseManager.databaseReference;
+        string playerUsername = Guest.instance.LoginAs.text;
+
+        databaseReference
+            .Child("Users")
+            .Child(playerUsername)
+            .Child("Settings")
+            .Child("Input")
+            .Child("W")
+            .SetValueAsync(defaultUpKeyCode);
+
+        databaseReference
+            .Child("Users")
+            .Child(playerUsername)
+            .Child("Settings")
+            .Child("Input")
+            .Child("A")
+            .SetValueAsync(defaultLeftKeyCode);
+
+        databaseReference
+            .Child("Users")
+            .Child(playerUsername)
+            .Child("Settings")
+            .Child("Input")
+            .Child("S")
+            .SetValueAsync(defaultDownKeyCode);
+
+        databaseReference
+            .Child("Users")
+            .Child(playerUsername)
+            .Child("Settings")
+            .Child("Input")
+            .Child("D")
+            .SetValueAsync(defaultRightKeyCode);
+
+        Debug.Log("Keybinds reset to default values in the database.");
+    }
+
+
     // Audio
     public void AudioButton()
     {

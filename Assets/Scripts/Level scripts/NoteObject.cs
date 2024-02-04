@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.tvOS;
 
 public class NoteObject : MonoBehaviour
 {
@@ -12,8 +13,10 @@ public class NoteObject : MonoBehaviour
     public bool circleTrigger = false;
     private bool noteExited = false;
     public CircleCollider2D circleCollider;
-    public KeyCode keyToPress;
-    public KeyCode secondaryKey;
+    public KeyCode keyToPressKeyCode;
+    
+    public enum KeyToPress { Up, Left, Down, Right }
+    public KeyToPress keyToPress;
     public Transform circle;
 
     [Header("------- Animation -------")]
@@ -30,13 +33,32 @@ public class NoteObject : MonoBehaviour
     {
         instance = this;
 
+        switch (keyToPress)
+        {
+            case KeyToPress.Up:
+                keyToPressKeyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), SettingsMenu.instance.UpCircleKeyCode);
+                break;
+            case KeyToPress.Left:
+                keyToPressKeyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), SettingsMenu.instance.LeftCircleKeyCode);
+                break;
+            case KeyToPress.Down:
+                keyToPressKeyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), SettingsMenu.instance.DownCircleKeyCode);
+                break;
+            case KeyToPress.Right:
+                keyToPressKeyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), SettingsMenu.instance.RightCircleKeyCode);
+                break;
+            default:
+                keyToPressKeyCode = KeyCode.None;
+                break;
+        }
+
         // Assign an ID based on Z-axis
         noteID = transform.position.z * 1000;
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(keyToPress) || Input.GetKeyDown(secondaryKey))
+        if (Input.GetKeyDown(keyToPressKeyCode) && !PauseMenu.instance.gameIsPaused)
         {
             NoteObject closestNote = GetClosestNote();
 

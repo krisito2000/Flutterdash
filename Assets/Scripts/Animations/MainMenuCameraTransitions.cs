@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,22 +12,60 @@ public class MainMenuTransition : MonoBehaviour
 
     [Header("------- Animaton -------")]
     public Animator animator;
-
-    [Header("------- Canvases -------")]
     public CanvasGroup mainMenuCanvas;
+
+    // Define the default keybind values
+    string defaultUpKeyCode = "W";
+    string defaultLeftKeyCode = "A";
+    string defaultDownKeyCode = "S";
+    string defaultRightKeyCode = "D";
 
     void Start()
     {
         instance = this;
+        StartCoroutine(LoadKeybindsCoroutine());
+    }
+
+    IEnumerator LoadKeybindsCoroutine()
+    {
+        yield return LoadKeybinds();
+    }
+
+    async Task LoadKeybinds()
+    {
+        // Load keybinds from the database
+        var databaseReference = DatabaseManager.instance.databaseReference;
+        string playerUsername = Guest.instance.LoginAs.text;
+
+        var snapshot = await databaseReference
+            .Child("Users")
+            .Child(playerUsername)
+            .Child("Settings")
+            .Child("Input")
+            .GetValueAsync();
+
+        if (snapshot.Exists)
+        {
+            // Get keybind values from the snapshot
+            var inputSettings = snapshot.Value as Dictionary<string, object>;
+            if (inputSettings.ContainsKey("W"))
+                defaultUpKeyCode = inputSettings["W"].ToString();
+            if (inputSettings.ContainsKey("A"))
+                defaultLeftKeyCode = inputSettings["A"].ToString();
+            if (inputSettings.ContainsKey("S"))
+                defaultDownKeyCode = inputSettings["S"].ToString();
+            if (inputSettings.ContainsKey("D"))
+                defaultRightKeyCode = inputSettings["D"].ToString();
+        }
     }
 
     void Update()
     {
         if (mainMenuCanvas == null) return;
 
-        if (mainMenuCanvas.alpha == 1 && !animator.GetBool("GuestPlayTrigger") && MainMenuCircleTransition.instance.animator.GetBool("isExpanded") && !PauseMenu.instance.gameIsPaused)
+        if (mainMenuCanvas.alpha == 1 && !animator.GetBool("GuestPlayTrigger") && MainMenuCircleTransition.instance.animator.GetBool("isExpanded") && !PauseMenu.instance.gameIsPaused && !SettingsMenu.instance.InputLockMode)
         {
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            if (Input.GetKeyDown(GetKeyCode(defaultUpKeyCode)) || Input.GetKeyDown(KeyCode.UpArrow))
             {
                 SetTutorial(false);
                 if (!GetSettings() && !GetCustomSong() && !GetPlay() && !GetAuthentication() && !GetSync())
@@ -74,7 +114,7 @@ public class MainMenuTransition : MonoBehaviour
                     animator.SetBool("GuestPlayTrigger", false);
                 }
             }
-            else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow) && !GetSync())
+            else if (Input.GetKeyDown(GetKeyCode(defaultRightKeyCode)) || Input.GetKeyDown(KeyCode.RightArrow) && !GetSync())
             {
                 SetTutorial(false);
                 if (GetAuthentication())
@@ -115,7 +155,7 @@ public class MainMenuTransition : MonoBehaviour
                     }
                 }
             }
-            else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            else if (Input.GetKeyDown(GetKeyCode(defaultLeftKeyCode)) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 SetTutorial(false);
                 if (GetAuthentication())
@@ -163,7 +203,7 @@ public class MainMenuTransition : MonoBehaviour
                     }
                 }
             }
-            else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            else if (Input.GetKeyDown(GetKeyCode(defaultDownKeyCode)) || Input.GetKeyDown(KeyCode.DownArrow))
             {
                 SetTutorial(false);
                 Guest.instance.guestCanvas.alpha = 0;
@@ -180,6 +220,22 @@ public class MainMenuTransition : MonoBehaviour
             }
         }
     }
+
+    // Method to convert string key codes to Unity KeyCode
+    KeyCode GetKeyCode(string key)
+    {
+        KeyCode keyCode;
+        if (Enum.TryParse(key, out keyCode))
+        {
+            return keyCode;
+        }
+        else
+        {
+            Debug.LogWarning("Invalid key code: " + key);
+            return KeyCode.None;
+        }
+    }
+
     // Level Selection
     public void PlayButton()
     {
