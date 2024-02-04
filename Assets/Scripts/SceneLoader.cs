@@ -7,6 +7,8 @@ public class SceneLoader : MonoBehaviour
     public static SceneLoader instance;
     public AsyncOperation operation;
 
+    public GameObject LoadingScreen;
+
     void Start()
     {
         instance = this;
@@ -14,35 +16,45 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadScene(int sceneID)
     {
-        operation = SceneManager.LoadSceneAsync(sceneID);
-        //StartCoroutine(LoadSceneAsync(sceneID, 1.0f));
+        StartCoroutine(LoadSceneCoroutine(sceneID));
     }
 
-    //IEnumerator LoadSceneAsync(int sceneID, float delayTime)
-    //{
-    //    float elapsedTime = 0;
-    //    LoadingScreen.instance.LoadingScreenCanvas.SetActive(true);
-    //    // Wait for the delay time
-    //    while (elapsedTime < delayTime)
-    //    {
-    //        elapsedTime += 0.01f;
-    //    }
-    //    CanvasGroup canvasGroup = MainMenuTransition.instance.mainMenuCanvas.GetComponent<CanvasGroup>();
-    //    canvasGroup.gameObject.SetActive(false);
+    IEnumerator LoadSceneCoroutine(int sceneID)
+    {
+        LoadingScreen.SetActive(true);
 
-    //    LoadingScreen.instance.DeleteObjects();
+        operation = SceneManager.LoadSceneAsync(sceneID);
 
-    //    operation = SceneManager.LoadSceneAsync(sceneID);
+        // Wait for the scene to finish loading
+        while (!operation.isDone)
+        {
+            yield return null;
+        }
 
-    //    while (!operation.isDone)
-    //    {
-    //        LoadingScreen.instance.LoadingScreenCanvas.SetActive(false);
-    //        yield return null;
-    //    }
-    //}
+        // Scene loading is done, deactivate the loading screen
+        LoadingScreen.SetActive(false);
+    }
 
     public void QuitGame()
     {
         Application.Quit();
+    }
+
+    void Awake()
+    {
+        // Ensure there is only one instance of the GameManager script in the scene.
+        if (instance == null)
+        {
+            // Set the instance to this GameManager if it's the first one.
+            instance = this;
+        }
+        else
+        {
+            // Destroy the existing instance if a new one is detected.
+            Destroy(instance.gameObject);
+        }
+
+        // Keep this GameObject alive throughout the entire game.
+        DontDestroyOnLoad(gameObject);
     }
 }
