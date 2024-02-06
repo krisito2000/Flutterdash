@@ -16,6 +16,7 @@ public class DatabaseManager : MonoBehaviour
 {
     public static DatabaseManager instance;
     private string userDataFilePath = "userdata.txt";
+    public string username;
 
     [Header("------- Register -------")]
     [Header("------- Fields -------")]
@@ -80,8 +81,6 @@ public class DatabaseManager : MonoBehaviour
                 }
             }
         }
-
-        
     }
     public void LoadEveryLevelStats()
     {
@@ -115,6 +114,8 @@ public class DatabaseManager : MonoBehaviour
     private IEnumerator CheckUserDataOnStartup(string username, string enteredPassword)
     {
         var userData = databaseReference.Child("Users").Child(username).Child("Authentication").GetValueAsync();
+
+        this.username = username;
 
         yield return new WaitUntil(() => userData.IsCompleted);
 
@@ -497,5 +498,23 @@ public class DatabaseManager : MonoBehaviour
         {
             Debug.LogWarning(levelName + " data not found for user: " + username);
         }
+    }
+
+    void Awake()
+    {
+        // Ensure there is only one instance of the GameManager script in the scene.
+        if (instance == null)
+        {
+            // Set the instance to this GameManager if it's the first one.
+            instance = this;
+        }
+        else
+        {
+            // Destroy the existing instance if a new one is detected.
+            Destroy(instance.gameObject);
+        }
+
+        // Keep this GameObject alive throughout the entire game.
+        DontDestroyOnLoad(gameObject);
     }
 }

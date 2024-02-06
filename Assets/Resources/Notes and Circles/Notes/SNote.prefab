@@ -139,10 +139,8 @@ MonoBehaviour:
   circleTrigger: 0
   circleCollider: {fileID: 7581781775850032206, guid: caccd27d3a7027d4a83f23bcda005caf, type: 3}
   keyToPressKeyCode: 0
-  keyToPress: 2
   circle: {fileID: 5999016444972914083, guid: caccd27d3a7027d4a83f23bcda005caf, type: 3}
-  noteAnimation: 0
-  direction: 0
+  keyToPress: 2
   isTheLastNote: 0
   noteID: 0
 --- !u!58 &3829798255882923429
