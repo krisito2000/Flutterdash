@@ -103,6 +103,7 @@ public class DatabaseManager : MonoBehaviour
     {
         System.IO.File.WriteAllText(userDataFilePath, "");
 
+        // Level data
         TutorialBestScoreText.text = "Best Score: 0";
         TutorialBestSpeedText.text = "Best Speed: 0%";
         TutorialBestStreakText.text = "Best Streak: 0";
@@ -414,6 +415,7 @@ public class DatabaseManager : MonoBehaviour
 
         DeleteUserData();
         HideErrorMessage();
+        PauseMenu.instance.Retry();
     }
 
     void HideErrorMessage()
