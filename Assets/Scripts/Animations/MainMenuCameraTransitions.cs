@@ -15,18 +15,17 @@ public class MainMenuTransition : MonoBehaviour
     public CanvasGroup mainMenuCanvas;
 
     // Define the default keybind values
-    string defaultUpKeyCode = "W";
-    string defaultLeftKeyCode = "A";
-    string defaultDownKeyCode = "S";
-    string defaultRightKeyCode = "D";
+    string defaultUpKeyCode = null;
+    string defaultLeftKeyCode = null;
+    string defaultDownKeyCode = null;
+    string defaultRightKeyCode = null;
 
     void Start()
     {
         instance = this;
-        StartCoroutine(LoadKeybindsCoroutine());
     }
 
-    IEnumerator LoadKeybindsCoroutine()
+    public IEnumerator LoadKeybindsCoroutine()
     {
         yield return LoadKeybinds();
     }
@@ -61,6 +60,21 @@ public class MainMenuTransition : MonoBehaviour
 
     void Update()
     {
+        // Check if any of the default key codes are null or empty
+        if (string.IsNullOrEmpty(defaultUpKeyCode) || string.IsNullOrEmpty(defaultLeftKeyCode) || string.IsNullOrEmpty(defaultDownKeyCode) || string.IsNullOrEmpty(defaultRightKeyCode))
+        {
+            // Set default key values if any of the key codes are empty or null
+            if (string.IsNullOrEmpty(DatabaseManager.instance.username))
+            {
+                defaultUpKeyCode = "W";
+                defaultLeftKeyCode = "A";
+                defaultDownKeyCode = "S";
+                defaultRightKeyCode = "D";
+            }
+            StartCoroutine(LoadKeybindsCoroutine());
+        }
+       
+
         if (mainMenuCanvas == null) return;
 
         if (mainMenuCanvas.alpha == 1 && !animator.GetBool("GuestPlayTrigger") && MainMenuCircleTransition.instance.animator.GetBool("isExpanded") && !PauseMenu.instance.gameIsPaused && !SettingsMenu.instance.InputLockMode)

@@ -1,41 +1,43 @@
-using Firebase.Database;
 using Firebase;
+using Firebase.Database;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class NewBehaviourScript : MonoBehaviour
+public class TextButtonController : MonoBehaviour
 {
-    [Header("------- Images -------")]
-    private SpriteRenderer theSR;
-    public Sprite defaultImg;
-    public Sprite pressedImg;
+    public static TextButtonController instance;
 
-    [Header("------- Keys -------")]
-    public KeyCode keyToPressKeyCode;
+    public Text CircleText;
 
+    public string keyToPressKeyCode;
     public KeyToPress keyToPress;
 
-    // Enum to define the keys
     public enum KeyToPress { W, A, S, D }
 
-    // Getting the SpriteRenderer of the component
+    // Start is called before the first frame update
     void Start()
     {
-        theSR = GetComponent<SpriteRenderer>();
-
-        // Set default key values if the username is empty or null
-        if (string.IsNullOrEmpty(DatabaseManager.instance.username))
-        {
-            SetDefaultKeyValues();
-        }
-        else
-        {
-            StartCoroutine(InitializeFirebaseAndGetData());
-        }
+        instance = this;
     }
 
-    IEnumerator InitializeFirebaseAndGetData()
+    void Update()
+    {
+        if (string.IsNullOrEmpty(keyToPressKeyCode))
+        {
+            // Set default key values if the username is empty or null
+            if (string.IsNullOrEmpty(DatabaseManager.instance.username))
+            {
+                SetDefaultKeyValues();
+            }
+            else
+            {
+                StartCoroutine(InitializeFirebaseAndGetData());
+            }
+        }
+    }
+    public IEnumerator InitializeFirebaseAndGetData()
     {
         // Wait for Firebase to finish checking dependencies
         var checkDependenciesTask = FirebaseApp.CheckAndFixDependenciesAsync();
@@ -48,15 +50,16 @@ public class NewBehaviourScript : MonoBehaviour
             yield break; // Exit the coroutine if initialization failed
         }
 
-        // Get key code from the database based on the username settings
+        // Get key code from the database based on the keyToPress setting
         GetKeyCodeFromDatabase(keyToPress.ToString(), (keyCode) =>
         {
-            // Assign the retrieved key code to the class variable
+            // Set the CircleText to display the retrieved key code
+            CircleText.text = keyCode;
+
             keyToPressKeyCode = keyCode;
         });
     }
-
-    public void GetKeyCodeFromDatabase(string keyName, System.Action<KeyCode> callback)
+    public void GetKeyCodeFromDatabase(string keyName, System.Action<string> callback)
     {
         // Get data from the database
         DatabaseManager.instance.databaseReference
@@ -79,11 +82,8 @@ public class NewBehaviourScript : MonoBehaviour
                     DataSnapshot snapshot = task.Result;
                     string keyCode = snapshot.Value.ToString();
 
-                    // Convert the string representation of the key code to the KeyCode value
-                    KeyCode retrievedKeyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), keyCode);
-
                     // Invoke the callback with the retrieved key code
-                    callback(retrievedKeyCode);
+                    callback(keyCode);
                 }
             });
     }
@@ -94,36 +94,20 @@ public class NewBehaviourScript : MonoBehaviour
         switch (keyToPress)
         {
             case KeyToPress.W:
-                keyToPressKeyCode = KeyCode.W;
+                CircleText.text = KeyCode.W.ToString();
                 break;
             case KeyToPress.A:
-                keyToPressKeyCode = KeyCode.A;
+                CircleText.text = KeyCode.A.ToString();
                 break;
             case KeyToPress.S:
-                keyToPressKeyCode = KeyCode.S;
+                CircleText.text = KeyCode.S.ToString();
                 break;
             case KeyToPress.D:
-                keyToPressKeyCode = KeyCode.D;
+                CircleText.text = KeyCode.D.ToString();
                 break;
             default:
                 Debug.LogError("Invalid key code");
                 break;
-        }
-    }
-
-    void Update()
-    {
-        if (!PauseMenu.instance.gameIsPaused)
-        {
-            if (Input.GetKeyDown(keyToPressKeyCode))
-            {
-                theSR.sprite = pressedImg;
-            }
-
-            if (Input.GetKeyUp(keyToPressKeyCode))
-            {
-                theSR.sprite = defaultImg;
-            }
         }
     }
 }

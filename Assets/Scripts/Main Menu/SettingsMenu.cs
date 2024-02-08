@@ -144,6 +144,7 @@ public class SettingsMenu : MonoBehaviour
             ButtonAnimator.SetBool("LockMode", false);
 
             lockButtonText.text = "Lock";
+            StartCoroutine(MainMenuTransition.instance.LoadKeybindsCoroutine());
         }
         else
         {

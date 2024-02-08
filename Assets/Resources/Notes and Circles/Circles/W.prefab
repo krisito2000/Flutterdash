@@ -27,13 +27,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3343094082376175234}
+  serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 3.7339997, z: -1}
   m_LocalScale: {x: 0.06, y: 0.06, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &2770505346577388530
 SpriteRenderer:
@@ -101,7 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   defaultImg: {fileID: 21300000, guid: 9d9e03b9449ee3a41b682a24ee896470, type: 3}
   pressedImg: {fileID: 21300000, guid: 942a34745f203854a97aadd6328c589a, type: 3}
-  keyToPress: 119
+  keyToPress: 0
 --- !u!50 &5590189386359622253
 Rigidbody2D:
   serializedVersion: 4

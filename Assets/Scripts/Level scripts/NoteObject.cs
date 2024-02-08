@@ -1,9 +1,10 @@
+using Firebase;
 using Firebase.Database;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.tvOS;
 
 public class NoteObject : MonoBehaviour
 {
@@ -14,17 +15,17 @@ public class NoteObject : MonoBehaviour
     private bool noteExited = false;
     public CircleCollider2D circleCollider;
     public KeyCode keyToPressKeyCode;
-    
-    public enum KeyToPress { Up, Left, Down, Right }
-    public KeyToPress keyToPress;
+
     public Transform circle;
 
-    [Header("------- Animation -------")]
-    public bool noteAnimation;
-    public enum SpinDirection { Left, Right }
-    public SpinDirection direction;
+    public enum KeyToPress { Up, Left, Down, Right }
+    public KeyToPress keyToPress;
 
-    [Header("------- Note indentification -------")]
+    //[Header("------- Animation -------")]
+    //public bool noteAnimation;
+    //public enum SpinDirection { Left, Right }
+    //public SpinDirection direction;
+
     private static List<NoteObject> activeNotes = new List<NoteObject>();
     public bool isTheLastNote;
     public float noteID;
@@ -32,32 +33,127 @@ public class NoteObject : MonoBehaviour
     void Start()
     {
         instance = this;
+    }
 
+    IEnumerator InitializeFirebaseAndGetData()
+    {
+        // Wait for Firebase to finish checking dependencies
+        var checkDependenciesTask = FirebaseApp.CheckAndFixDependenciesAsync();
+        yield return new WaitUntil(() => checkDependenciesTask.IsCompleted);
+
+        // Check if Firebase initialization was successful
+        if (checkDependenciesTask.Exception != null)
+        {
+            Debug.LogError("Failed to initialize Firebase: " + checkDependenciesTask.Exception);
+            yield break; // Exit the coroutine if initialization failed
+        }
+
+        // If the username is empty or null, set default key values
+        if (string.IsNullOrEmpty(DatabaseManager.instance.username))
+        {
+            SetDefaultKeyValues();
+            yield break; // Exit the coroutine
+        }
+
+        // Determine the KeyToPress enum value based on the public variable keyToPress
+        KeyToPress keyEnumValue = keyToPress;
+
+        // Use the switch-case statement to determine the KeyToPress enum value
+        switch (keyEnumValue)
+        {
+            case KeyToPress.Up:
+                GetKeyCodeFromDatabase("W", (keyCode) =>
+                {
+                    // Assign the retrieved key code to the class variable
+                    keyToPressKeyCode = keyCode;
+                });
+                break;
+            case KeyToPress.Left:
+                GetKeyCodeFromDatabase("A", (keyCode) =>
+                {
+                    // Assign the retrieved key code to the class variable
+                    keyToPressKeyCode = keyCode;
+                });
+                break;
+            case KeyToPress.Down:
+                GetKeyCodeFromDatabase("S", (keyCode) =>
+                {
+                    // Assign the retrieved key code to the class variable
+                    keyToPressKeyCode = keyCode;
+                });
+                break;
+            case KeyToPress.Right:
+                GetKeyCodeFromDatabase("D", (keyCode) =>
+                {
+                    // Assign the retrieved key code to the class variable
+                    keyToPressKeyCode = keyCode;
+                });
+                break;
+            default:
+                Debug.LogError("Invalid KeyToPress enum value");
+                break;
+        }
+    }
+
+    public void GetKeyCodeFromDatabase(string keyName, Action<KeyCode> callback)
+    {
+        // Get data from the database
+        DatabaseManager.instance.databaseReference
+            .Child("Users")
+            .Child(DatabaseManager.instance.username)
+            .Child("Settings")
+            .Child("Input")
+            .GetValueAsync()
+            .ContinueWith(task =>
+            {
+                if (task.IsFaulted)
+                {
+                    Debug.LogError("Failed to retrieve key codes: " + task.Exception);
+                    return;
+                }
+                else if (task.IsCompleted)
+                {
+                    // Process retrieved data
+                    DataSnapshot snapshot = task.Result;
+                    string keyCode = snapshot.Child(keyName).Value.ToString();
+
+                    // Assign the key code
+                    KeyCode keyToPress = (KeyCode)Enum.Parse(typeof(KeyCode), keyCode);
+                    callback(keyToPress);
+                }
+            });
+    }
+    void SetDefaultKeyValues()
+    {
+        // Check the current value of keyToPress and set default key values accordingly
         switch (keyToPress)
         {
             case KeyToPress.Up:
-                keyToPressKeyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), SettingsMenu.instance.UpCircleKeyCode);
+                keyToPressKeyCode = KeyCode.W;
                 break;
             case KeyToPress.Left:
-                keyToPressKeyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), SettingsMenu.instance.LeftCircleKeyCode);
+                keyToPressKeyCode = KeyCode.A;
                 break;
             case KeyToPress.Down:
-                keyToPressKeyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), SettingsMenu.instance.DownCircleKeyCode);
+                keyToPressKeyCode = KeyCode.S;
                 break;
             case KeyToPress.Right:
-                keyToPressKeyCode = (KeyCode)System.Enum.Parse(typeof(KeyCode), SettingsMenu.instance.RightCircleKeyCode);
+                keyToPressKeyCode = KeyCode.D;
                 break;
             default:
-                keyToPressKeyCode = KeyCode.None;
+                Debug.LogError("Invalid KeyToPress enum value");
                 break;
         }
-
-        // Assign an ID based on Z-axis
-        noteID = transform.position.z * 1000;
     }
+
 
     void Update()
     {
+        if (keyToPressKeyCode == KeyCode.None)
+        {
+            StartCoroutine(InitializeFirebaseAndGetData());
+        }
+
         if (Input.GetKeyDown(keyToPressKeyCode) && !PauseMenu.instance.gameIsPaused)
         {
             NoteObject closestNote = GetClosestNote();
@@ -110,7 +206,7 @@ public class NoteObject : MonoBehaviour
     private void NoteAccuracy()
     {
         float distanceDetection = Vector2.Distance(transform.position, circle.position);
-        if (isTheLastNote)
+        if (isTheLastNote && !string.IsNullOrEmpty(DatabaseManager.instance.username))
         {
             string currentSceneName = SceneManager.GetActiveScene().name;
 
