@@ -88,20 +88,17 @@ public class DatabaseManager : MonoBehaviour
         StartCoroutine(LoadLevelStats(Guest.instance.LoginAs.text, "Level 1", Level1BestScoreText, Level1BestSpeedText, Level1BestStreakText));
     }
 
-    private void Update()
-    {
-        
-    }
-
     private void SaveUserData(string username, string hashedPassword)
     {
         string userData = $"{username}:{hashedPassword}\n";
+        this.username = username;
         System.IO.File.AppendAllText(userDataFilePath, userData);
     }
 
     private void DeleteUserData()
     {
         System.IO.File.WriteAllText(userDataFilePath, "");
+        username = null;
 
         // Level data
         TutorialBestScoreText.text = "Best Score: 0";
@@ -265,11 +262,16 @@ public class DatabaseManager : MonoBehaviour
             string hashedPassword = PasswordHashSystem.HashPassword(RegisterPasswordField.text);
             loginButtonText.text = "Logout";
             Guest.instance.LoginAs.text = enteredUsername;
+            username = enteredUsername;
 
             User newUser = new User(RegisterUsernameField.text, RegisterEmailField.text, hashedPassword);
             string json = JsonUtility.ToJson(newUser);
 
-            databaseReference.Child("Users").Child(newUser.username).Child("Authentication").SetRawJsonValueAsync(json);
+            databaseReference.Child("Users").Child(username).Child("Authentication").SetRawJsonValueAsync(json);
+            databaseReference.Child("Users").Child(username).Child("Settings").Child("Input").Child("W").SetRawJsonValueAsync("W");
+            databaseReference.Child("Users").Child(username).Child("Settings").Child("Input").Child("A").SetRawJsonValueAsync("A");
+            databaseReference.Child("Users").Child(username).Child("Settings").Child("Input").Child("S").SetRawJsonValueAsync("S");
+            databaseReference.Child("Users").Child(username).Child("Settings").Child("Input").Child("D").SetRawJsonValueAsync("D");
             SaveUserData(RegisterUsernameField.text, PasswordHashSystem.HashPassword(RegisterPasswordField.text));
 
             Authentication.instance.RegisterReturnButton();
@@ -413,9 +415,15 @@ public class DatabaseManager : MonoBehaviour
         loginButtonText.text = "Login";
         Authentication.instance.animator.SetBool("login", true);
 
+        MainMenuTransition.instance.defaultUpKeyCode = "W";
+        MainMenuTransition.instance.defaultLeftKeyCode = "A";
+        MainMenuTransition.instance.defaultDownKeyCode = "S";
+        MainMenuTransition.instance.defaultRightKeyCode = "D";
+
+        TextButtonController.instance.SetDefaultKeyValues();
+
         DeleteUserData();
         HideErrorMessage();
-        PauseMenu.instance.Retry();
     }
 
     void HideErrorMessage()
@@ -452,6 +460,7 @@ public class DatabaseManager : MonoBehaviour
                 MainMenuTransition.instance.animator.SetBool("AuthenticationTrigger", false);
                 DeleteUserData();
                 SaveUserData(loginUsername.text, PasswordHashSystem.HashPassword(loginPassword.text));
+                StartCoroutine(MainMenuTransition.instance.LoadKeybindsCoroutine());
             }
             else
             {

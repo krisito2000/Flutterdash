@@ -20,6 +20,8 @@ public class TutorialGameManager : MonoBehaviour
     public bool tryNotes;
     public bool tutorialDone;
 
+    public AudioSource backgroundMusic;
+
     void Start()
     {
         instance = this;
@@ -28,6 +30,8 @@ public class TutorialGameManager : MonoBehaviour
 
     void Update()
     {
+        Debug.Log(backgroundMusic.time);
+
         if(tryNotes)
         {
             TutorialNoteMovement.instance.gameStart = true;

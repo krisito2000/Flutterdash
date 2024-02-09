@@ -88,7 +88,7 @@ public class TextButtonController : MonoBehaviour
             });
     }
 
-    void SetDefaultKeyValues()
+    public void SetDefaultKeyValues()
     {
         // Set default key values if the username is empty or null
         switch (keyToPress)

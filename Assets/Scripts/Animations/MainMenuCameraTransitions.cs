@@ -15,10 +15,10 @@ public class MainMenuTransition : MonoBehaviour
     public CanvasGroup mainMenuCanvas;
 
     // Define the default keybind values
-    string defaultUpKeyCode = null;
-    string defaultLeftKeyCode = null;
-    string defaultDownKeyCode = null;
-    string defaultRightKeyCode = null;
+    public string defaultUpKeyCode = null;
+    public string defaultLeftKeyCode = null;
+    public string defaultDownKeyCode = null;
+    public string defaultRightKeyCode = null;
 
     void Start()
     {
@@ -56,7 +56,16 @@ public class MainMenuTransition : MonoBehaviour
             if (inputSettings.ContainsKey("D"))
                 defaultRightKeyCode = inputSettings["D"].ToString();
         }
+        else
+        {
+            // Set default keybind values if snapshot does not exist
+            defaultUpKeyCode = "W";
+            defaultLeftKeyCode = "A";
+            defaultDownKeyCode = "S";
+            defaultRightKeyCode = "D";
+        }
     }
+
 
     void Update()
     {
