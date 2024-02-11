@@ -148,10 +148,17 @@ public class SettingsMenu : MonoBehaviour
         }
         else
         {
-            InputLockMode = true;
-            ButtonAnimator.SetBool("LockMode", true);
+            if (!Guest.instance.guest)
+            {
+                InputLockMode = true;
+                ButtonAnimator.SetBool("LockMode", true);
 
-            lockButtonText.text = "Unlock";
+                lockButtonText.text = "Unlock";
+            }
+            else
+            {
+                lockButtonText.text = "Need to login";
+            }
         }
     }
 

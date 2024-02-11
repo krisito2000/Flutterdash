@@ -94,16 +94,16 @@ public class TextButtonController : MonoBehaviour
         switch (keyToPress)
         {
             case KeyToPress.W:
-                CircleText.text = KeyCode.W.ToString();
+                CircleText.text = "W";
                 break;
             case KeyToPress.A:
-                CircleText.text = KeyCode.A.ToString();
+                CircleText.text = "A";
                 break;
             case KeyToPress.S:
-                CircleText.text = KeyCode.S.ToString();
+                CircleText.text = "S";
                 break;
             case KeyToPress.D:
-                CircleText.text = KeyCode.D.ToString();
+                CircleText.text = "D";
                 break;
             default:
                 Debug.LogError("Invalid key code");

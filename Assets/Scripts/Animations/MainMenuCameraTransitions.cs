@@ -23,6 +23,8 @@ public class MainMenuTransition : MonoBehaviour
     void Start()
     {
         instance = this;
+
+        LoadKeybindsCoroutine();
     }
 
     public IEnumerator LoadKeybindsCoroutine()
@@ -34,11 +36,10 @@ public class MainMenuTransition : MonoBehaviour
     {
         // Load keybinds from the database
         var databaseReference = DatabaseManager.instance.databaseReference;
-        string playerUsername = Guest.instance.LoginAs.text;
 
         var snapshot = await databaseReference
             .Child("Users")
-            .Child(playerUsername)
+            .Child(DatabaseManager.instance.username)
             .Child("Settings")
             .Child("Input")
             .GetValueAsync();

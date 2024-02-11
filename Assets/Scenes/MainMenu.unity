@@ -3991,8 +3991,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 1, y: 0}
+  m_SizeDelta: {x: 115.56, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &347432813
 MonoBehaviour:
@@ -4040,7 +4040,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: LOCK
+  m_Text: Lock
 --- !u!222 &347432815
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9587,6 +9587,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 856469775}
   mainMenuCanvas: {fileID: 1939340784}
+  defaultUpKeyCode: 
+  defaultLeftKeyCode: 
+  defaultDownKeyCode: 
+  defaultRightKeyCode: 
 --- !u!95 &856469775
 Animator:
   serializedVersion: 5

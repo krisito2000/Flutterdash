@@ -16,6 +16,8 @@ public class NewBehaviourScript : MonoBehaviour
 
     public KeyToPress keyToPress;
 
+    private bool isInitializingFirebase = false;
+
     // Enum to define the keys
     public enum KeyToPress { W, A, S, D }
 
@@ -24,14 +26,17 @@ public class NewBehaviourScript : MonoBehaviour
     {
         theSR = GetComponent<SpriteRenderer>();
 
-        // Set default key values if the username is empty or null
-        if (string.IsNullOrEmpty(DatabaseManager.instance.username))
+        if (!isInitializingFirebase && !PauseMenu.instance.gameIsPaused)
         {
-            SetDefaultKeyValues();
-        }
-        else
-        {
-            StartCoroutine(InitializeFirebaseAndGetData());
+            // Set default key values if the username is empty or null
+            if (string.IsNullOrEmpty(DatabaseManager.instance.username))
+            {
+                SetDefaultKeyValues();
+            }
+            else
+            {
+                StartCoroutine(InitializeFirebaseAndGetData());
+            }
         }
     }
 
