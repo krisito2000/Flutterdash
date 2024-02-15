@@ -23,6 +23,7 @@ public class DragAndDropReceiver : MonoBehaviour
     void Start()
     {
         instance = this;
+
         UnityDragAndDropHook.InstallHook();
         UnityDragAndDropHook.OnDroppedFiles += OnDroppedFiles;
     }
@@ -88,6 +89,6 @@ public class DragAndDropReceiver : MonoBehaviour
     // Method to call the CopyAndSaveCustomLevel method from CustomLevelCreator
     public void CreateCustomLevel()
     {
-        levelCreator.CopyAndSaveCustomLevel();
+        //levelCreator.CopyAndSaveCustomLevel();
     }
 }

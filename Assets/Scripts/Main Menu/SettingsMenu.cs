@@ -466,7 +466,7 @@ public class SettingsMenu : MonoBehaviour
     }
     public void SaveVSyncSetting(bool isVSyncOn)
     {
-        if (Guest.instance.LoginAs.text == "Login as Guest")
+        if (Guest.instance.guest)
         {
             Debug.Log("User not logged in");
         }

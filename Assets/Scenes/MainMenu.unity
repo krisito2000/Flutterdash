@@ -5787,7 +5787,6 @@ GameObject:
   - component: {fileID: 506491547}
   - component: {fileID: 506491546}
   - component: {fileID: 506491548}
-  - component: {fileID: 506491549}
   m_Layer: 0
   m_Name: CustomSongManager
   m_TagString: Untagged
@@ -5837,27 +5836,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d42b3cc76bc71c4b83fe9be2341d305, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statusText1: {fileID: 1544795108}
-  statusText2: {fileID: 1927481236}
---- !u!114 &506491549
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 506491545}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d58c4f7c8ac01b4b9af54b51be4f417, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  musicSource: {fileID: 0}
-  WNote: {fileID: 6451816099853342478, guid: cfd796c09303ce14899eb64ed2f8042c, type: 3}
-  ANote: {fileID: 964110039878130870, guid: 420406de8cb08c74ab88b310ceeedfb2, type: 3}
-  SNote: {fileID: 5209035731295448301, guid: d45eb7db692dc13428c58473852d3d9b, type: 3}
-  DNote: {fileID: 4823105947715267692, guid: b11d4dda37e9c644d8c80793c88ffb7a, type: 3}
-  spawnPosition: {fileID: 0}
-  threshold: 0.1
+  clearSceneAsset: {fileID: 102900000, guid: b3bbcd4415651d449bd8f2f41094f368, type: 3}
 --- !u!1 &524601309
 GameObject:
   m_ObjectHideFlags: 0
@@ -10776,7 +10755,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_IsOn: 1
+  m_IsOn: 0
 --- !u!114 &972364787 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 112540704290588831, guid: 1dcf5293fc2746749a54f2fdb907c3a5, type: 3}
@@ -17978,7 +17957,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2233109675526487451, guid: 1dcf5293fc2746749a54f2fdb907c3a5, type: 3}
       propertyPath: isOn
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8420630932592252938, guid: 1dcf5293fc2746749a54f2fdb907c3a5, type: 3}
       propertyPath: m_Pivot.x
