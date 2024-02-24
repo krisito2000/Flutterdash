@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class NoteObject : MonoBehaviour
@@ -14,17 +15,13 @@ public class NoteObject : MonoBehaviour
     public bool circleTrigger = false;
     private bool noteExited = false;
     public CircleCollider2D circleCollider;
+    
     public KeyCode keyToPressKeyCode;
 
     public Transform circle;
 
     public enum KeyToPress { Up, Left, Down, Right }
     public KeyToPress keyToPress;
-
-    //[Header("------- Animation -------")]
-    //public bool noteAnimation;
-    //public enum SpinDirection { Left, Right }
-    //public SpinDirection direction;
 
     private static List<NoteObject> activeNotes = new List<NoteObject>();
     public bool isTheLastNote;
@@ -34,147 +31,43 @@ public class NoteObject : MonoBehaviour
     {
         instance = this;
     }
-
-    IEnumerator InitializeFirebaseAndGetData()
+    private void Pressed()
     {
-        // Wait for Firebase to finish checking dependencies
-        var checkDependenciesTask = FirebaseApp.CheckAndFixDependenciesAsync();
-        yield return new WaitUntil(() => checkDependenciesTask.IsCompleted);
+        NoteObject closestNote = GetClosestNote();
 
-        // Check if Firebase initialization was successful
-        if (checkDependenciesTask.Exception != null)
+        if (closestNote == this)
         {
-            Debug.LogError("Failed to initialize Firebase: " + checkDependenciesTask.Exception);
-            yield break; // Exit the coroutine if initialization failed
-        }
+            noteExited = true;
+            NoteAccuracy();
 
-        // If the username is empty or null, set default key values
-        if (string.IsNullOrEmpty(DatabaseManager.instance.username))
-        {
-            SetDefaultKeyValues();
-            yield break; // Exit the coroutine
-        }
-
-        // Determine the KeyToPress enum value based on the public variable keyToPress
-        KeyToPress keyEnumValue = keyToPress;
-
-        // Use the switch-case statement to determine the KeyToPress enum value
-        switch (keyEnumValue)
-        {
-            case KeyToPress.Up:
-                GetKeyCodeFromDatabase("W", (keyCode) =>
-                {
-                    // Assign the retrieved key code to the class variable
-                    keyToPressKeyCode = keyCode;
-                });
-                break;
-            case KeyToPress.Left:
-                GetKeyCodeFromDatabase("A", (keyCode) =>
-                {
-                    // Assign the retrieved key code to the class variable
-                    keyToPressKeyCode = keyCode;
-                });
-                break;
-            case KeyToPress.Down:
-                GetKeyCodeFromDatabase("S", (keyCode) =>
-                {
-                    // Assign the retrieved key code to the class variable
-                    keyToPressKeyCode = keyCode;
-                });
-                break;
-            case KeyToPress.Right:
-                GetKeyCodeFromDatabase("D", (keyCode) =>
-                {
-                    // Assign the retrieved key code to the class variable
-                    keyToPressKeyCode = keyCode;
-                });
-                break;
-            default:
-                Debug.LogError("Invalid KeyToPress enum value");
-                break;
-        }
-    }
-
-    public void GetKeyCodeFromDatabase(string keyName, Action<KeyCode> callback)
-    {
-        // Get data from the database
-        DatabaseManager.instance.databaseReference
-            .Child("Users")
-            .Child(DatabaseManager.instance.username)
-            .Child("Settings")
-            .Child("Input")
-            .GetValueAsync()
-            .ContinueWith(task =>
-            {
-                if (task.IsFaulted)
-                {
-                    Debug.LogError("Failed to retrieve key codes: " + task.Exception);
-                    return;
-                }
-                else if (task.IsCompleted)
-                {
-                    // Process retrieved data
-                    DataSnapshot snapshot = task.Result;
-                    string keyCode = snapshot.Child(keyName).Value.ToString();
-
-                    // Assign the key code
-                    KeyCode keyToPress = (KeyCode)Enum.Parse(typeof(KeyCode), keyCode);
-                    callback(keyToPress);
-                }
-            });
-    }
-    void SetDefaultKeyValues()
-    {
-        // Check the current value of keyToPress and set default key values accordingly
-        switch (keyToPress)
-        {
-            case KeyToPress.Up:
-                keyToPressKeyCode = KeyCode.W;
-                break;
-            case KeyToPress.Left:
-                keyToPressKeyCode = KeyCode.A;
-                break;
-            case KeyToPress.Down:
-                keyToPressKeyCode = KeyCode.S;
-                break;
-            case KeyToPress.Right:
-                keyToPressKeyCode = KeyCode.D;
-                break;
-            default:
-                Debug.LogError("Invalid KeyToPress enum value");
-                break;
+            GameManager.instance.noteHitSound.Play();
         }
     }
 
 
     void Update()
     {
-        if (keyToPressKeyCode == KeyCode.None)
+        if (CompassInputSystem.instance.UpCircleClicked && keyToPress == KeyToPress.Up && !PauseMenu.instance.gameIsPaused)
         {
-            StartCoroutine(InitializeFirebaseAndGetData());
+            Pressed();
         }
-
-        if (Input.GetKeyDown(keyToPressKeyCode) && !PauseMenu.instance.gameIsPaused)
+        else if (CompassInputSystem.instance.DownCircleClicked && keyToPress == KeyToPress.Down && !PauseMenu.instance.gameIsPaused)
         {
-            NoteObject closestNote = GetClosestNote();
-
-            if (closestNote == this)
-            {
-                //if (haveAnimation)
-                //{
-                //    noteAnimation.SetBool("isTriggered", true);
-                //}
-                noteExited = true;
-                NoteAccuracy();
-
-                GameManager.instance.noteHitSound.Play();
-            }
-            //// For when you spam the note to take damage (does not work)
-            //if (!circleTrigger && transform.position.x != 0 && transform.position.y != 0)
-            //{
-            //    GameManager.instance.currentHealth += GameManager.instance.missedHitHeal;
-            //}
+            Pressed();
         }
+        else if (CompassInputSystem.instance.LeftCircleClicked && keyToPress == KeyToPress.Left && !PauseMenu.instance.gameIsPaused)
+        {
+            Pressed();
+        }
+        else if (CompassInputSystem.instance.RightCircleClicked && keyToPress == KeyToPress.Right && !PauseMenu.instance.gameIsPaused)
+        {
+            Pressed();
+        }
+        //// For when you spam the note to take damage (does not work)
+        //if (!circleTrigger && transform.position.x != 0 && transform.position.y != 0)
+        //{
+        //    GameManager.instance.currentHealth += GameManager.instance.missedHitHeal;
+        //}
     }
 
     private NoteObject GetClosestNote()
@@ -213,7 +106,8 @@ public class NoteObject : MonoBehaviour
             GameManager.instance.Statistics();
 
             // Get the best speed location in the database
-            var speedLocation = DatabaseManager.instance.databaseReference.Child("Users")
+            var speedLocation = DatabaseManager.instance.databaseReference
+                                    .Child("Users")
                                     .Child(Guest.instance.LoginAs.text)
                                     .Child("Levels")
                                     .Child(currentSceneName)
