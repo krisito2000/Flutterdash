@@ -10,10 +10,10 @@ public class InputSystemController : MonoBehaviour
     private PlayerInput playerInput;
 
     private InputAction circleClickAction;
-    public InputAction upAction;
-    public InputAction downAction;
-    public InputAction leftAction;
-    public InputAction rightAction;
+    private InputAction upAction;
+    private InputAction downAction;
+    private InputAction leftAction;
+    private InputAction rightAction;
 
     public bool UpCircleClicked { get; private set; }
     public bool UpCircleRelease { get; private set; }
