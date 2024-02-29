@@ -47,19 +47,10 @@ public class NoteObject : MonoBehaviour
 
     void Update()
     {
-        if (CompassInputSystem.instance.UpCircleClicked && keyToPress == KeyToPress.Up && !PauseMenu.instance.gameIsPaused)
-        {
-            Pressed();
-        }
-        else if (CompassInputSystem.instance.DownCircleClicked && keyToPress == KeyToPress.Down && !PauseMenu.instance.gameIsPaused)
-        {
-            Pressed();
-        }
-        else if (CompassInputSystem.instance.LeftCircleClicked && keyToPress == KeyToPress.Left && !PauseMenu.instance.gameIsPaused)
-        {
-            Pressed();
-        }
-        else if (CompassInputSystem.instance.RightCircleClicked && keyToPress == KeyToPress.Right && !PauseMenu.instance.gameIsPaused)
+        if ((InputSystemController.instance.UpCircleClicked && keyToPress == KeyToPress.Up && !PauseMenu.instance.gameIsPaused) || 
+            (InputSystemController.instance.DownCircleClicked && keyToPress == KeyToPress.Down && !PauseMenu.instance.gameIsPaused) || 
+            (InputSystemController.instance.LeftCircleClicked && keyToPress == KeyToPress.Left && !PauseMenu.instance.gameIsPaused) || 
+            (InputSystemController.instance.RightCircleClicked && keyToPress == KeyToPress.Right && !PauseMenu.instance.gameIsPaused))
         {
             Pressed();
         }

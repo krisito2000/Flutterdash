@@ -245,7 +245,7 @@ public class SettingsMenu : MonoBehaviour
                 DownCircleCanvasGroup.interactable = true;
                 RightCircleCanvasGroup.interactable = true;
 
-                circleTextChange.text = circleKeyCode.ToUpper();
+                //circleTextChange.text = circleKeyCode.ToUpper();
                 lockButton.SetActive(true);
 
                 // Save the updated keybind to the database
