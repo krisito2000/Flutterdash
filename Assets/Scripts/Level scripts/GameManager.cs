@@ -42,6 +42,7 @@ public class GameManager : MonoBehaviour
     private int noteStreak;
     public int bestStreak;
     public Text streakText;
+    public int attempts;
 
     [Header("------- Multiplier -------")]
     public Text multiplierText;
@@ -138,6 +139,8 @@ public class GameManager : MonoBehaviour
                 if (pressAnyKey != null)
                 {
                     pressAnyKey.text = string.Empty;
+                    attempts++;
+                    UpdateAttemptsInDatabase();
                 }
                 if (circleAnimator != null)
                 {
@@ -198,6 +201,21 @@ public class GameManager : MonoBehaviour
         {
             bestStreak = noteStreak;
         }
+    }
+    void UpdateAttemptsInDatabase()
+    {
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        string playerName = Guest.instance.LoginAs.text;
+
+        // Create a reference to the location where attempts will be stored
+        var attemptsLocation = DatabaseManager.instance.databaseReference.Child("Users")
+                                                                         .Child(playerName)
+                                                                         .Child("Levels")
+                                                                         .Child(currentSceneName)
+                                                                         .Child("Attempts");
+
+        // Update attempts value in the database
+        attemptsLocation.SetValueAsync(attempts);
     }
 
     public void Statistics()

@@ -44,7 +44,6 @@ public class NoteObject : MonoBehaviour
         }
     }
 
-
     void Update()
     {
         if ((InputSystemController.instance.UpCircleClicked && keyToPress == KeyToPress.Up && !PauseMenu.instance.gameIsPaused) || 
@@ -139,8 +138,50 @@ public class NoteObject : MonoBehaviour
                 }
             });
 
-            // Update best streak and best score
+            // Get the best speed location in the database
+            var attemptsLocation = DatabaseManager.instance.databaseReference
+                                    .Child("Users")
+                                    .Child(Guest.instance.LoginAs.text)
+                                    .Child("Levels")
+                                    .Child(currentSceneName)
+                                    .Child("BestSpeed");
 
+            // Retrieve the current best speed from the database
+            attemptsLocation.GetValueAsync().ContinueWith(attemptsTask =>
+            {
+                if (attemptsTask.IsFaulted)
+                {
+                    Debug.LogError("Failed to retrieve best speed: " + attemptsTask.Exception.Message);
+                    return;
+                }
+
+                DataSnapshot attemptsSnapshot = attemptsTask.Result;
+                float databaseBestSpeed = attemptsSnapshot.Exists ? float.Parse(attemptsSnapshot.Value.ToString()) : 0f;
+
+                float currentAttempts = PauseMenu.instance.speedUpPercentage;
+
+                if (currentAttempts > databaseBestSpeed)
+                {
+                    // If the current speed in the game is greater than the best speed in the database, update the database with the new speed
+                    attemptsLocation.SetValueAsync(currentAttempts).ContinueWith(speedSaveTask =>
+                    {
+                        if (speedSaveTask.IsFaulted)
+                        {
+                            Debug.LogError("Failed to save best speed: " + speedSaveTask.Exception.Message);
+                            return;
+                        }
+
+                        Debug.Log("Best speed saved successfully!");
+                    });
+                }
+                else
+                {
+                    // If the current speed in the game is not better, do nothing
+                    Debug.Log("Current speed is not better than the best speed in the database.");
+                }
+            });
+
+            // Update best streak and best score
             // Get the best streak location in the database
             var streakLocation = DatabaseManager.instance.databaseReference.Child("Users")
                                     .Child(Guest.instance.LoginAs.text)
