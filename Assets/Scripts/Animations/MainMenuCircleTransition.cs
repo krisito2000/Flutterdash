@@ -31,7 +31,7 @@ public class MainMenuCircleTransition : MonoBehaviour
         {
             animator.SetTrigger("Clicked");
             animator.SetBool("isExpanded", true);
-            AnyKeyText.gameObject.SetActive(false);
+            AnyKeyText.enabled = false;
             counterRunning = false;
         }
     }

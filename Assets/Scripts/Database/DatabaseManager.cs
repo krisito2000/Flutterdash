@@ -420,8 +420,6 @@ public class DatabaseManager : MonoBehaviour
         MainMenuTransition.instance.defaultDownKeyCode = "S";
         MainMenuTransition.instance.defaultRightKeyCode = "D";
 
-        TextButtonController.instance.SetDefaultKeyValues();
-
         DeleteUserData();
         HideErrorMessage();
     }
