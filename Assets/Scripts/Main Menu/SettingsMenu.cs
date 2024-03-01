@@ -28,7 +28,6 @@ public class SettingsMenu : MonoBehaviour
     public bool InputLockMode;
     public GameObject lockButton;
     public Text lockButtonText;
-    private bool waitingForInput;
 
     public CanvasGroup UpCircleCanvasGroup;
     public Text UpCircleText;
@@ -144,7 +143,6 @@ public class SettingsMenu : MonoBehaviour
             ButtonAnimator.SetBool("LockMode", false);
 
             lockButtonText.text = "Lock";
-            StartCoroutine(MainMenuTransition.instance.LoadKeybindsCoroutine());
         }
         else
         {

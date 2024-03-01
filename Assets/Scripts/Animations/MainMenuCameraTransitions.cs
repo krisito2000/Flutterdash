@@ -14,82 +14,18 @@ public class MainMenuTransition : MonoBehaviour
     public Animator animator;
     public CanvasGroup mainMenuCanvas;
 
-    // Define the default keybind values
-    public string defaultUpKeyCode = null;
-    public string defaultLeftKeyCode = null;
-    public string defaultDownKeyCode = null;
-    public string defaultRightKeyCode = null;
-
     void Start()
     {
         instance = this;
-
-        LoadKeybindsCoroutine();
     }
-
-    public IEnumerator LoadKeybindsCoroutine()
-    {
-        yield return LoadKeybinds();
-    }
-
-    async Task LoadKeybinds()
-    {
-        // Load keybinds from the database
-        var databaseReference = DatabaseManager.instance.databaseReference;
-
-        var snapshot = await databaseReference
-            .Child("Users")
-            .Child(DatabaseManager.instance.username)
-            .Child("Settings")
-            .Child("Input")
-            .GetValueAsync();
-
-        if (snapshot.Exists)
-        {
-            // Get keybind values from the snapshot
-            var inputSettings = snapshot.Value as Dictionary<string, object>;
-            if (inputSettings.ContainsKey("W"))
-                defaultUpKeyCode = inputSettings["W"].ToString();
-            if (inputSettings.ContainsKey("A"))
-                defaultLeftKeyCode = inputSettings["A"].ToString();
-            if (inputSettings.ContainsKey("S"))
-                defaultDownKeyCode = inputSettings["S"].ToString();
-            if (inputSettings.ContainsKey("D"))
-                defaultRightKeyCode = inputSettings["D"].ToString();
-        }
-        else
-        {
-            // Set default keybind values if snapshot does not exist
-            defaultUpKeyCode = "W";
-            defaultLeftKeyCode = "A";
-            defaultDownKeyCode = "S";
-            defaultRightKeyCode = "D";
-        }
-    }
-
 
     void Update()
     {
-        // Check if any of the default key codes are null or empty
-        if (string.IsNullOrEmpty(defaultUpKeyCode) || string.IsNullOrEmpty(defaultLeftKeyCode) || string.IsNullOrEmpty(defaultDownKeyCode) || string.IsNullOrEmpty(defaultRightKeyCode))
-        {
-            // Set default key values if any of the key codes are empty or null
-            if (string.IsNullOrEmpty(DatabaseManager.instance.username))
-            {
-                defaultUpKeyCode = "W";
-                defaultLeftKeyCode = "A";
-                defaultDownKeyCode = "S";
-                defaultRightKeyCode = "D";
-            }
-            StartCoroutine(LoadKeybindsCoroutine());
-        }
-       
-
         if (mainMenuCanvas == null) return;
 
         if (mainMenuCanvas.alpha == 1 && !animator.GetBool("GuestPlayTrigger") && MainMenuCircleTransition.instance.animator.GetBool("isExpanded") && !PauseMenu.instance.gameIsPaused && !SettingsMenu.instance.InputLockMode)
         {
-            if (Input.GetKeyDown(GetKeyCode(defaultUpKeyCode)) || Input.GetKeyDown(KeyCode.UpArrow))
+            if (InputSystemController.instance.UpCircleClicked)
             {
                 SetTutorial(false);
                 if (!GetSettings() && !GetCustomSong() && !GetPlay() && !GetAuthentication() && !GetSync())
@@ -138,7 +74,7 @@ public class MainMenuTransition : MonoBehaviour
                     animator.SetBool("GuestPlayTrigger", false);
                 }
             }
-            else if (Input.GetKeyDown(GetKeyCode(defaultRightKeyCode)) || Input.GetKeyDown(KeyCode.RightArrow) && !GetSync())
+            else if (InputSystemController.instance.RightCircleClicked)
             {
                 SetTutorial(false);
                 if (GetAuthentication())
@@ -179,7 +115,7 @@ public class MainMenuTransition : MonoBehaviour
                     }
                 }
             }
-            else if (Input.GetKeyDown(GetKeyCode(defaultLeftKeyCode)) || Input.GetKeyDown(KeyCode.LeftArrow))
+            else if (InputSystemController.instance.LeftCircleClicked)
             {
                 SetTutorial(false);
                 if (GetAuthentication())
@@ -227,7 +163,7 @@ public class MainMenuTransition : MonoBehaviour
                     }
                 }
             }
-            else if (Input.GetKeyDown(GetKeyCode(defaultDownKeyCode)) || Input.GetKeyDown(KeyCode.DownArrow))
+            else if (InputSystemController.instance.DownCircleClicked)
             {
                 SetTutorial(false);
                 Guest.instance.guestCanvas.alpha = 0;

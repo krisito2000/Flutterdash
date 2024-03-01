@@ -279,7 +279,6 @@ public class DatabaseManager : MonoBehaviour
         }
     }
 
-
     public void LoginUser()
     {
         DeleteUserData();
@@ -415,11 +414,6 @@ public class DatabaseManager : MonoBehaviour
         loginButtonText.text = "Login";
         Authentication.instance.animator.SetBool("login", true);
 
-        MainMenuTransition.instance.defaultUpKeyCode = "W";
-        MainMenuTransition.instance.defaultLeftKeyCode = "A";
-        MainMenuTransition.instance.defaultDownKeyCode = "S";
-        MainMenuTransition.instance.defaultRightKeyCode = "D";
-
         DeleteUserData();
         HideErrorMessage();
     }
@@ -458,7 +452,6 @@ public class DatabaseManager : MonoBehaviour
                 MainMenuTransition.instance.animator.SetBool("AuthenticationTrigger", false);
                 DeleteUserData();
                 SaveUserData(loginUsername.text, PasswordHashSystem.HashPassword(loginPassword.text));
-                StartCoroutine(MainMenuTransition.instance.LoadKeybindsCoroutine());
             }
             else
             {
