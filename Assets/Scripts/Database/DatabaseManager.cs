@@ -45,11 +45,13 @@ public class DatabaseManager : MonoBehaviour
     [Header("------- Level stats -------")]
     [Header("------- Tutorial level -------")]
     public Text TutorialBestScoreText;
+    public Text TutorialAttemptsText;
     public Text TutorialBestSpeedText;
     public Text TutorialBestStreakText;
 
     [Header("------- Level 1 -------")]
     public Text Level1BestScoreText;
+    public Text Level1AttemptsText;
     public Text Level1BestSpeedText;
     public Text Level1BestStreakText;
 
@@ -84,8 +86,8 @@ public class DatabaseManager : MonoBehaviour
     }
     public void LoadEveryLevelStats()
     {
-        StartCoroutine(LoadLevelStats(Guest.instance.LoginAs.text, "TutorialLevel", TutorialBestScoreText, TutorialBestSpeedText, TutorialBestStreakText));
-        StartCoroutine(LoadLevelStats(Guest.instance.LoginAs.text, "Level 1", Level1BestScoreText, Level1BestSpeedText, Level1BestStreakText));
+        StartCoroutine(LoadLevelStats(Guest.instance.LoginAs.text, "TutorialLevel", TutorialBestScoreText, TutorialAttemptsText, TutorialBestSpeedText, TutorialBestStreakText));
+        StartCoroutine(LoadLevelStats(Guest.instance.LoginAs.text, "Level 1", Level1BestScoreText, Level1AttemptsText, Level1BestSpeedText, Level1BestStreakText));
     }
 
     private void SaveUserData(string username, string hashedPassword)
@@ -472,7 +474,7 @@ public class DatabaseManager : MonoBehaviour
         // Show the error message text in your Canvas Group
     }
 
-    private IEnumerator LoadLevelStats(string username, string levelName, Text bestScoreText, Text bestSpeedText, Text bestStreakText)
+    private IEnumerator LoadLevelStats(string username, string levelName, Text bestScoreText, Text attemptsText, Text bestSpeedText, Text bestStreakText)
     {
         var levelStats = databaseReference.Child("Users").Child(username).Child("Levels").Child(levelName).GetValueAsync();
         yield return new WaitUntil(() => levelStats.IsCompleted);
@@ -489,10 +491,12 @@ public class DatabaseManager : MonoBehaviour
         {
             // Retrieve best score, best speed, and best streak from the snapshot
             int bestScore = statsSnapshot.Child("BestScore").Exists ? int.Parse(statsSnapshot.Child("BestScore").Value.ToString()) : 0;
+            int attempts = statsSnapshot.Child("Attempts").Exists ? int.Parse(statsSnapshot.Child("Attempts").Value.ToString()) : 0;
             float bestSpeed = statsSnapshot.Child("BestSpeed").Exists ? float.Parse(statsSnapshot.Child("BestSpeed").Value.ToString()) : 0;
             int bestStreak = statsSnapshot.Child("BestStreak").Exists ? int.Parse(statsSnapshot.Child("BestStreak").Value.ToString()) : 0;
 
             bestScoreText.text = $"Best Score: {bestScore}";
+            attemptsText.text = $"Attempts: {attempts}";
             bestSpeedText.text = $"Best Speed: {bestSpeed}%";
             bestStreakText.text = $"Best Streak: {bestStreak}";
         }

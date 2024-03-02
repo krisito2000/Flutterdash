@@ -25,7 +25,7 @@ public class MainMenuTransition : MonoBehaviour
 
         if (mainMenuCanvas.alpha == 1 && !animator.GetBool("GuestPlayTrigger") && MainMenuCircleTransition.instance.animator.GetBool("isExpanded") && !PauseMenu.instance.gameIsPaused && !SettingsMenu.instance.InputLockMode)
         {
-            if (InputSystemController.instance.UpCircleClicked)
+            if (InputSystemController.instance.DownCircleClicked)
             {
                 SetTutorial(false);
                 if (!GetSettings() && !GetCustomSong() && !GetPlay() && !GetAuthentication() && !GetSync())

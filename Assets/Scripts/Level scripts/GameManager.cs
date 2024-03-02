@@ -125,6 +125,40 @@ public class GameManager : MonoBehaviour
         scoreLatePerfect = 150 * levelSpeed;
         scoreLate = 75 * levelSpeed;
         currentMultiplier = 1;
+
+        FetchAttemptsFromDatabase();
+    }
+
+    void FetchAttemptsFromDatabase()
+    {
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        string playerName = Guest.instance.LoginAs.text;
+
+        // Create a reference to the location of attempts in the database
+        var attemptsLocation = DatabaseManager.instance.databaseReference.Child("Users")
+                                                                         .Child(playerName)
+                                                                         .Child("Levels")
+                                                                         .Child(currentSceneName)
+                                                                         .Child("Attempts");
+
+        // Fetch attempts value from the database
+        attemptsLocation.GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsCompleted)
+            {
+                DataSnapshot snapshot = task.Result;
+                if (snapshot.Exists)
+                {
+                    // Update attempts with the value from the database
+                    attempts = int.Parse(snapshot.Value.ToString());
+                }
+                else
+                {
+                    // If attempts node does not exist, set attempts to 0
+                    attempts = 0;
+                }
+            }
+        });
     }
 
     void Update()
@@ -208,14 +242,17 @@ public class GameManager : MonoBehaviour
         string playerName = Guest.instance.LoginAs.text;
 
         // Create a reference to the location where attempts will be stored
-        var attemptsLocation = DatabaseManager.instance.databaseReference.Child("Users")
-                                                                         .Child(playerName)
-                                                                         .Child("Levels")
-                                                                         .Child(currentSceneName)
-                                                                         .Child("Attempts");
+        if (!Guest.instance.guest)
+        {
+            var attemptsLocation = DatabaseManager.instance.databaseReference.Child("Users")
+                                                                             .Child(playerName)
+                                                                             .Child("Levels")
+                                                                             .Child(currentSceneName)
+                                                                             .Child("Attempts");
 
-        // Update attempts value in the database
-        attemptsLocation.SetValueAsync(attempts);
+            // Update attempts value in the database
+            attemptsLocation.SetValueAsync(attempts);
+        }
     }
 
     public void Statistics()
