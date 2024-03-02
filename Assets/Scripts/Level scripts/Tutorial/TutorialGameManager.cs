@@ -12,15 +12,14 @@ public class TutorialGameManager : MonoBehaviour
 {
     public static TutorialGameManager instance;
 
-    //[Header("------- Sound -------")]
-    //public AudioSource noteHitSound;
+    [Header("------- Sound -------")]
+    public AudioSource backgroundMusic;
+    public AudioSource noteHitSound;
 
     [Header("------- Note manager -------")]
     public float bpm;
     public bool tryNotes;
     public bool tutorialDone;
-
-    public AudioSource backgroundMusic;
 
     void Start()
     {
@@ -30,8 +29,6 @@ public class TutorialGameManager : MonoBehaviour
 
     void Update()
     {
-        Debug.Log(backgroundMusic.time);
-
         if(tryNotes)
         {
             TutorialNoteMovement.instance.gameStart = true;

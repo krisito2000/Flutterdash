@@ -8,22 +8,23 @@ public class AnimationManager : MonoBehaviour
     public static AnimationManager instance;
 
     [Header("------- Animaton -------")]
+    [Tooltip("The type animation you want to manage")]
     public AnimationType animationtype;
     public enum AnimationType { SongShower, FadeAnimation }
+
+    [Tooltip("The animation")]
     public Animator transition;
 
     [Header("------- Animaton time -------")]
+    [Tooltip("The time where the Up, Down, Left and Right circle text will fade")]
     public float fadeTimer;
+    [Tooltip("The time after the song shower will show the song")]
     public float songShowerTimer;
-
-    //[Header("------- Objects -------")]
-    //public Animator circleAnimation;
 
     void Start()
     {
         instance = this;
         transition = GetComponent<Animator>();
-
     }
 
     void Update()
@@ -31,17 +32,21 @@ public class AnimationManager : MonoBehaviour
         // Wait for the music to start
         if (GameManager.instance.music.enabled == true)
         {
+            // Checking what is the animation type
             switch (animationtype)
             {
+                // Song shower animation
                 case AnimationType.SongShower:
                     StartCoroutine(AnimationTrigger(songShowerTimer));
                     break;
+                // Circle text fade animation
                 case AnimationType.FadeAnimation:
                     StartCoroutine(AnimationTrigger(fadeTimer));
                     break;
             }
         }
     }
+
     public IEnumerator AnimationTrigger(float timer)
     {
         // Wait for the specified fadeTime
@@ -49,34 +54,5 @@ public class AnimationManager : MonoBehaviour
 
         // Set the transition trigger after the delay
         transition.SetBool("isTriggered", true);
-    }
-
-    //public IEnumerator NoteAnimation()
-    //{
-    //    if (!gameObject.activeSelf)
-    //    {
-    //        // Circle rotation
-    //        switch (NoteObject.instance.direction)
-    //        {
-    //            case NoteObject.SpinDirection.Left:
-    //                circleAnimation.SetBool("triggerLeft", true);
-    //                yield break;
-    //            case NoteObject.SpinDirection.Right:
-    //                circleAnimation.SetBool("triggerRight", true);
-    //                yield break;
-    //        }
-    //    }
-    //}
-
-    public void LoginAnimation()
-    {
-        if (!transition.GetBool("isTriggered"))
-        {
-            transition.SetBool("isTriggered", true);
-        }
-        else
-        {
-            transition.SetBool("isTriggered", false);
-        }
     }
 }

@@ -9609,7 +9609,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 856469775}
-  mainMenuCanvas: {fileID: 1939340784}
 --- !u!95 &856469775
 Animator:
   serializedVersion: 5

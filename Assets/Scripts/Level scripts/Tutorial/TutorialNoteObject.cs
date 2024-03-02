@@ -34,16 +34,19 @@ public class TutorialNoteObject : MonoBehaviour
         if (distanceDetection >= 0.774)
         {
             this.gameObject.SetActive(false);
+            TutorialGameManager.instance.noteHitSound.Play();
         }
         // ELPerfect
         else if (distanceDetection >= 0.263)
         {
             this.gameObject.SetActive(false);
+            TutorialGameManager.instance.noteHitSound.Play();
         }
         // Perfect
         else
         {
             this.gameObject.SetActive(false);
+            TutorialGameManager.instance.noteHitSound.Play();
         }
         // TODO: Create Late and Late Perfect
     }

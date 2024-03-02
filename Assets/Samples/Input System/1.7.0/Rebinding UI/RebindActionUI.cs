@@ -317,13 +317,14 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                         m_RebindOverlay?.SetActive(false);
                         m_RebindStopEvent?.Invoke(this, operation);
 
-                        if (CheckDuplicateBindings(action, bindingIndex, allCompositeParts))
-                        {
-                            action.RemoveBindingOverride(bindingIndex);
-                            CleanUp();
-                            PerformInteractiveRebind(action, bindingIndex, allCompositeParts);
-                            return;
-                        }
+                        // Check for duplicate bindings
+                        //if (CheckDuplicateBindings(action, bindingIndex, allCompositeParts))
+                        //{
+                        //    action.RemoveBindingOverride(bindingIndex);
+                        //    CleanUp();
+                        //    PerformInteractiveRebind(action, bindingIndex, allCompositeParts);
+                        //    return;
+                        //}
 
                         UpdateBindingDisplay();
                         CleanUp();

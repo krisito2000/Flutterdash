@@ -9,8 +9,6 @@ public class NewBehaviourScript : MonoBehaviour
 
     [Header("------- Keys -------")]
     public KeyToPress keyToPress;
-
-    // Enum to define the keys
     public enum KeyToPress { Up, Left, Down, Right }
 
     void Start()

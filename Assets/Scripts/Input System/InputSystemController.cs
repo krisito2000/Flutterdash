@@ -7,14 +7,16 @@ public class InputSystemController : MonoBehaviour
 {
     public static InputSystemController instance;
 
+    // Reference to PlayerInput component
     private PlayerInput playerInput;
 
-    private InputAction circleClickAction;
+    // Input actions for different directions
     private InputAction upAction;
     private InputAction downAction;
     private InputAction leftAction;
     private InputAction rightAction;
 
+    // Properties to track circle click and release for each direction
     public bool UpCircleClicked { get; private set; }
     public bool UpCircleRelease { get; private set; }
 
@@ -27,16 +29,16 @@ public class InputSystemController : MonoBehaviour
     public bool RightCircleClicked { get; private set; }
     public bool RightCircleRelease { get; private set; }
 
-
-
-    // Start is called before the first frame update
+    // Awake is called when the script instance is being loaded
     private void Awake()
     {
+        // Ensure there is only one instance of InputSystemController
         if (instance == null)
         {
             instance = this;
         }
 
+        // Get reference to PlayerInput component
         playerInput = GetComponent<PlayerInput>();
 
         SetUpInputActions();
@@ -48,32 +50,34 @@ public class InputSystemController : MonoBehaviour
         UpdateInputs();
     }
 
+    // Set up input actions
     private void SetUpInputActions()
     {
+        // Get input actions for each direction
         upAction = playerInput.actions["UpCircle"];
         downAction = playerInput.actions["DownCircle"];
         leftAction = playerInput.actions["LeftCircle"];
         rightAction = playerInput.actions["RightCircle"];
-
-        Debug.Log(circleClickAction);
     }
 
+    // Update inputs
     private void UpdateInputs()
     {
+        // Check if each circle action was pressed or released this frame and update corresponding properties
+        // Up Circle
         UpCircleClicked = upAction.WasPressedThisFrame();
         UpCircleRelease = upAction.WasReleasedThisFrame();
-        Debug.Log($"Up Circle: {UpCircleClicked}");
 
+        // Down Circle
         DownCircleClicked = downAction.WasPressedThisFrame();
         DownCircleRelease = downAction.WasReleasedThisFrame();
-        Debug.Log($"Down Circle: {DownCircleClicked}");
 
+        // Left Circle
         LeftCircleClicked = leftAction.WasPressedThisFrame();
         LeftCircleRelease = leftAction.WasReleasedThisFrame();
-        Debug.Log($"Left Circle: {LeftCircleClicked}");
 
+        // Right Circle
         RightCircleClicked = rightAction.WasPressedThisFrame();
         RightCircleRelease = rightAction.WasReleasedThisFrame();
-        Debug.Log($"Right Circle: {RightCircleClicked}");
     }
 }

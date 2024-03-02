@@ -11,8 +11,8 @@ public class MainMenuTransition : MonoBehaviour
     public static MainMenuTransition instance;
 
     [Header("------- Animaton -------")]
+    [Tooltip("The animatior for the movement of the camera")]
     public Animator animator;
-    public CanvasGroup mainMenuCanvas;
 
     void Start()
     {
@@ -21,18 +21,16 @@ public class MainMenuTransition : MonoBehaviour
 
     void Update()
     {
-        if (mainMenuCanvas == null) return;
-
-        if (mainMenuCanvas.alpha == 1 && !animator.GetBool("GuestPlayTrigger") && MainMenuCircleTransition.instance.animator.GetBool("isExpanded") && !PauseMenu.instance.gameIsPaused && !SettingsMenu.instance.InputLockMode)
+        if (CheckConditions())
         {
-            if (InputSystemController.instance.DownCircleClicked)
+            if (InputSystemController.instance.UpCircleClicked)
             {
                 SetTutorial(false);
                 if (!GetSettings() && !GetCustomSong() && !GetPlay() && !GetAuthentication() && !GetSync())
                 {
                     if (Guest.instance.guest)
                     {
-                        animator.SetBool("GuestPlayTrigger", true);
+                        SetGuestTrigger(true);
                         Guest.instance.guestCanvas.alpha = 1;
                     }
                     PlayButton();
@@ -47,7 +45,7 @@ public class MainMenuTransition : MonoBehaviour
                     {
                         BackMainMenuSettings();
                         PlayButton();
-                        animator.SetBool("GuestPlayTrigger", false);
+                        SetGuestTrigger(false);
                     }
                 }
                 if (GetSettings())
@@ -55,7 +53,7 @@ public class MainMenuTransition : MonoBehaviour
                     SetTransitionSettings(true);
                     BackMainMenuSettings();
                     PlayButton();
-                    animator.SetBool("GuestPlayTrigger", false);
+                    SetGuestTrigger(false);
                 }
                 if (GetTransitionCustom())
                 {
@@ -63,7 +61,7 @@ public class MainMenuTransition : MonoBehaviour
                     {
                         BackMainMenuCustomSong();
                         PlayButton();
-                        animator.SetBool("GuestPlayTrigger", false);
+                        SetGuestTrigger(false);
                     }
                 }
                 if (GetCustomSong())
@@ -71,17 +69,13 @@ public class MainMenuTransition : MonoBehaviour
                     SetTransitionCustom(true);
                     BackMainMenuCustomSong();
                     PlayButton();
-                    animator.SetBool("GuestPlayTrigger", false);
+                    SetGuestTrigger(false);
                 }
             }
             else if (InputSystemController.instance.RightCircleClicked)
             {
                 SetTutorial(false);
-                if (GetAuthentication())
-                {
-
-                }
-                else if (!GetSettings() && !GetCustomSong() && !GetPlay() && !GetSync())
+                if (!GetSettings() && !GetCustomSong() && !GetPlay() && !GetSync())
                 {
                     SettingsButton();
                 }
@@ -118,11 +112,7 @@ public class MainMenuTransition : MonoBehaviour
             else if (InputSystemController.instance.LeftCircleClicked)
             {
                 SetTutorial(false);
-                if (GetAuthentication())
-                {
-
-                }
-                else if (!GetCustomSong() && !GetSettings() && !GetPlay() && !GetSync())
+                if (!GetCustomSong() && !GetSettings() && !GetPlay() && !GetSync())
                 {
                     CustomSongButton();
                     BackMainMenuPlay();
@@ -181,19 +171,22 @@ public class MainMenuTransition : MonoBehaviour
         }
     }
 
-    // Method to convert string key codes to Unity KeyCode
-    KeyCode GetKeyCode(string key)
+    // Check conditions
+    public bool CheckConditions()
     {
-        KeyCode keyCode;
-        if (Enum.TryParse(key, out keyCode))
-        {
-            return keyCode;
-        }
-        else
-        {
-            Debug.LogWarning("Invalid key code: " + key);
-            return KeyCode.None;
-        }
+        if (!GetGuestTrigger() && !GetAuthentication() && MainMenuCircleTransition.instance.animator.GetBool("isExpanded") && !PauseMenu.instance.gameIsPaused && !SettingsMenu.instance.InputLockMode)
+            return true;
+        return false;
+    }
+
+    // Guest
+    public bool GetGuestTrigger()
+    {
+        return animator.GetBool("GuestPlayTrigger");
+    }
+    public void SetGuestTrigger(bool trigger)
+    {
+        animator.SetBool("GuestPlayTrigger", trigger);
     }
 
     // Level Selection
@@ -206,7 +199,7 @@ public class MainMenuTransition : MonoBehaviour
 
         if (animator.GetBool("isGuest") && !GetCustomSong() && !GetSettings())
         {
-            animator.SetBool("GuestPlayTrigger", true);
+            SetGuestTrigger(true);
             Guest.instance.guestCanvas.alpha = 1;
         }
     }
@@ -223,6 +216,7 @@ public class MainMenuTransition : MonoBehaviour
     {
         SetPlay(false);
     }
+
     // Tutorial
     public void TutorialButton()
     {
@@ -258,6 +252,21 @@ public class MainMenuTransition : MonoBehaviour
         SetSettings(false);
     }
 
+    // Song synchronization
+    public void SyncButton()
+    {
+        SetSync(true);
+        SetSettings(false);
+    }
+    public bool GetSync()
+    {
+        return animator.GetBool("SyncTrigger");
+    }
+    public void SetSync(bool trigger)
+    {
+        animator.SetBool("SyncTrigger", trigger);
+    }
+
     // Custom Song creation
     public void CustomSongButton()
     {
@@ -278,6 +287,7 @@ public class MainMenuTransition : MonoBehaviour
     {
         SetCustomSong(false);
     }
+
     // Authentication
     public void AuthenticationButton()
     {
@@ -296,21 +306,6 @@ public class MainMenuTransition : MonoBehaviour
     public void BackMainMenuAuthentication()
     {
         SetCustomSong(false);
-    }
-
-    // Song synchronization
-    public void SyncButton()
-    {
-        SetSync(true);
-        SetSettings(false);
-    }
-    public bool GetSync()
-    {
-        return animator.GetBool("SyncTrigger");
-    }
-    public void SetSync(bool trigger)
-    {
-        animator.SetBool("SyncTrigger", trigger);
     }
 
     // Transitions

@@ -4054,7 +4054,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!82 &1126425009
 AudioSource:
   m_ObjectHideFlags: 0
@@ -4070,7 +4070,7 @@ AudioSource:
   m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
-  Mute: 1
+  Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
@@ -7892,10 +7892,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0fc1bc35e71a714b948fa32c950830f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  backgroundMusic: {fileID: 282741392}
+  noteHitSound: {fileID: 1126425009}
   bpm: 65
   tryNotes: 0
   tutorialDone: 0
-  backgroundMusic: {fileID: 282741392}
 --- !u!1 &1882586342
 GameObject:
   m_ObjectHideFlags: 0
