@@ -5,9 +5,11 @@ using UnityEngine;
 public class RandomMusicPlayer : MonoBehaviour
 {
     [Header("------- Music -------")]
+    [Tooltip("Array of music clips to choose from")]
     public AudioClip[] MusicArray;
-    private AudioSource audioSource;
+    private AudioSource audioSource; // Reference to the AudioSource component
 
+    // Method to get a random music clip from the MusicArray
     private AudioClip GetRandomClip()
     {
         return MusicArray[Random.Range(0, MusicArray.Length)];
@@ -15,18 +17,23 @@ public class RandomMusicPlayer : MonoBehaviour
 
     void Start()
     {
+        // Find and assign the AudioSource component
         audioSource = FindAnyObjectByType<AudioSource>();
-        audioSource.loop = false;
-        Time.timeScale = 1.0f;
-        audioSource.pitch = 1.0f;
-        Application.runInBackground = true;
+
+        // Configure AudioSource settings
+        audioSource.loop = false; // Disable looping
+        Time.timeScale = 1.0f; // Set time scale to normal speed
+        audioSource.pitch = 1.0f; // Set pitch to normal speed
+        Application.runInBackground = true; // Allow the application to run in the background
     }
 
     // Update is called once per frame
     void Update()
     {
+        // Check if the audio source is not playing, the game is not paused, and custom song is not selected
         if (!audioSource.isPlaying && !PauseMenu.instance.gameIsPaused && !MainMenuTransition.instance.GetCustomSong())
         {
+            // Get a random music clip and play it
             audioSource.clip = GetRandomClip();
             audioSource.Play();
         }

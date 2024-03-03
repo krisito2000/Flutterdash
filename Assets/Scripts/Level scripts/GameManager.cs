@@ -1,13 +1,8 @@
 using Firebase.Database;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Drawing.Printing;
-using System.Security.Policy;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.TerrainTools;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -15,47 +10,66 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     [Header("------- Sound -------")]
+    [Tooltip("The level music")]
     public AudioSource music;
+    [Tooltip("Sound played when a note is hit")]
     public AudioSource noteHitSound;
+    [Tooltip("Speed of the level")]
     public float levelSpeed;
 
     [Header("------- Note manager -------")]
-    public float bpm;
-    private bool startMusic;
+    public float bpm;  // Beats per minute (controlls the note movement speed)
+    private bool startMusic;  // Flag indicating whether music has started
+    [Tooltip("The reference to the notes")]
     public GameObject Notes;
+    [Tooltip("Reference to the note movement class")]
     public NoteMovement NoteMovement;
+    [Tooltip("UI text prompting player to press any key to start")]
     public Text pressAnyKey;
+    [Tooltip("Animator for circle animation")]
     public Animator circleAnimator;
 
     [Header("------- Score -------")]
+    [Tooltip("UI text displaying current score")]
     public Text scoreText;
+    [Tooltip("UI text displaying final score in results")]
     public Text resultsScoreText;
-    private int currentScore;
-    private int scorePerNote;
+    private int currentScore; // Current score
+    private int scorePerNote; // Score gained per note hit
 
+    // Score thresholds for different note timings
     private float scoreEarly;
     private float scoreEarlyPerfect;
     private float scorePerfect;
     private float scoreLatePerfect;
     private float scoreLate;
 
-    private int noteStreak;
+    private int noteStreak; // Current streak of consecutive notes hit
+    [Tooltip("Best streak achieved")]
     public int bestStreak;
+    [Tooltip("UI text displaying current streak")]
     public Text streakText;
+    [Tooltip("Number of attempts made by the player")]
     public int attempts;
 
     [Header("------- Multiplier -------")]
+    [Tooltip("UI text displaying current multiplier")]
     public Text multiplierText;
+    [Tooltip("Background sprite for multiplier UI")]
     public SpriteRenderer multiplierBackground;
-    private int currentMultiplier;
-    private int multiplierTracker;
+    private int currentMultiplier; // Current multiplier value
+    private int multiplierTracker; // Tracks progression towards increasing multiplier
+    [Tooltip("Thresholds for the number of notes you need to click to increase the multiplier")]
     public int[] multiplierThresholds;
 
-    public Text speedMultiplier;
+    [Tooltip("UI text displaying speed multiplier")]
+    public Text speedMultiplier; 
 
     [Header("------- Results -------")]
+    [Tooltip("Animator for results screen")]
     public Animator resultsAnimation;
 
+    // Counters for different note timings
     private int earlyCounter;
     private int earlyPerfectCounter;
     private int perfectCounter;
@@ -63,6 +77,7 @@ public class GameManager : MonoBehaviour
     private int lateCounter;
     private int missedCounter;
 
+    // UI text elements displaying counters for different note timings
     public Text earlyText;
     public Text earlyPerfectText;
     public Text perfectText;
@@ -77,8 +92,10 @@ public class GameManager : MonoBehaviour
     public GameObject Hearth4;
 
     [Header("------- Health system -------")]
+    [Tooltip("Current health of the player")]
     public float currentHealth;
 
+    // Healing values for different note timings
     public float earlyHitHeal;
     public float earlyPerfectHitHeal;
     public float perfectHitHeal;
@@ -88,10 +105,12 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        // Initializing GameManager instance and background application running
         instance = this;
         Application.runInBackground = true;
         music.enabled = false;
 
+        // Adjusting level speed based on settings
         levelSpeed = PauseMenu.instance.speedUpPercentage / 100f;
 
         if (levelSpeed != 1)
@@ -107,16 +126,9 @@ public class GameManager : MonoBehaviour
         Time.timeScale = levelSpeed;
         music.pitch = levelSpeed;
 
-        //music.volume = //audio mixer;
-
-        // Perfect            light blue  350
-        // EPerfect/LPerfect  green       150
-        // Early/Late         yellow      75
-        // Missed             red         0
-
+        // Initializing score variables and fetching attempts from database
         scoreText.text = "0";
         noteStreak = 0;
-
         currentHealth = 100f;
 
         scoreEarly = 75 * levelSpeed;
@@ -129,40 +141,9 @@ public class GameManager : MonoBehaviour
         FetchAttemptsFromDatabase();
     }
 
-    void FetchAttemptsFromDatabase()
-    {
-        string currentSceneName = SceneManager.GetActiveScene().name;
-        string playerName = Guest.instance.LoginAs.text;
-
-        // Create a reference to the location of attempts in the database
-        var attemptsLocation = DatabaseManager.instance.databaseReference.Child("Users")
-                                                                         .Child(playerName)
-                                                                         .Child("Levels")
-                                                                         .Child(currentSceneName)
-                                                                         .Child("Attempts");
-
-        // Fetch attempts value from the database
-        attemptsLocation.GetValueAsync().ContinueWith(task =>
-        {
-            if (task.IsCompleted)
-            {
-                DataSnapshot snapshot = task.Result;
-                if (snapshot.Exists)
-                {
-                    // Update attempts with the value from the database
-                    attempts = int.Parse(snapshot.Value.ToString());
-                }
-                else
-                {
-                    // If attempts node does not exist, set attempts to 0
-                    attempts = 0;
-                }
-            }
-        });
-    }
-
     void Update()
-    { 
+    {
+        // Checking for game start
         if (!startMusic)
         {
             if (Input.anyKeyDown && !Input.GetKeyDown(KeyCode.Escape) && !PauseMenu.instance.gameIsPaused)
@@ -182,6 +163,8 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+
+        // Handling hearth UI based on player health
         if (currentHealth >= 100f)
         {
             Hearth1.SetActive(true);
@@ -212,17 +195,19 @@ public class GameManager : MonoBehaviour
         }
         else if (currentHealth <= 0f)
         {
+            // Game over conditions
             Hearth1.SetActive(false);
             Hearth2.SetActive(false);
             Hearth3.SetActive(false);
             Hearth4.SetActive(false);
-            
+
             Notes.SetActive(false);
             music.Stop();
             pressAnyKey.text = "You're Dead";
 
             if (resultsAnimation != null)
             {
+                // Displaying results
                 Statistics();
             }
             else
@@ -231,17 +216,49 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        // Updating best streak achieved
         if (noteStreak >= bestStreak)
         {
             bestStreak = noteStreak;
         }
     }
+
+    // Fetching player attempts from the database
+    void FetchAttemptsFromDatabase()
+    {
+        string currentSceneName = SceneManager.GetActiveScene().name;
+        string playerName = Guest.instance.LoginAs.text;
+
+        // Reference to attempts in the database
+        var attemptsLocation = DatabaseManager.instance.databaseReference.Child("Users")
+                                                                         .Child(playerName)
+                                                                         .Child("Levels")
+                                                                         .Child(currentSceneName)
+                                                                         .Child("Attempts");
+
+        // Fetching attempts value
+        attemptsLocation.GetValueAsync().ContinueWith(task =>
+        {
+            if (task.IsCompleted)
+            {
+                DataSnapshot snapshot = task.Result;
+                if (snapshot.Exists)
+                {
+                    attempts = int.Parse(snapshot.Value.ToString());
+                }
+                else
+                {
+                    attempts = 0;
+                }
+            }
+        });
+    }
+    // Updating attempts in the database
     void UpdateAttemptsInDatabase()
     {
         string currentSceneName = SceneManager.GetActiveScene().name;
         string playerName = Guest.instance.LoginAs.text;
 
-        // Create a reference to the location where attempts will be stored
         if (!Guest.instance.guest)
         {
             var attemptsLocation = DatabaseManager.instance.databaseReference.Child("Users")
@@ -250,16 +267,15 @@ public class GameManager : MonoBehaviour
                                                                              .Child(currentSceneName)
                                                                              .Child("Attempts");
 
-            // Update attempts value in the database
             attemptsLocation.SetValueAsync(attempts);
         }
     }
 
+    // Displaying statistics at the end of the game
     public void Statistics()
     {
         resultsAnimation.SetBool("isTriggered", true);
 
-        // Update UI elements
         earlyText.text = earlyCounter.ToString();
         earlyPerfectText.text = earlyPerfectCounter.ToString();
         perfectText.text = perfectCounter.ToString();
@@ -269,6 +285,7 @@ public class GameManager : MonoBehaviour
         resultsScoreText.text = currentScore.ToString();
     }
 
+    // Healing function for the player
     public void Heal(float damageHeal)
     {
         currentHealth += damageHeal;
@@ -278,9 +295,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Handling multiplier UI background color
     public void MultiplierBackground()
     {
-        //Multiplier background color change
         if (currentMultiplier == 1)
         {
             multiplierBackground.color = Color.gray;
@@ -308,9 +325,10 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Function called when a note is hit
     public void NoteHit()
     {
-        // Multiplier
+        // Handling multiplier
         if (currentMultiplier / 2 < multiplierThresholds.Length)
         {
             multiplierTracker++;
@@ -324,6 +342,7 @@ public class GameManager : MonoBehaviour
 
         multiplierText.text = "x" + currentMultiplier;
 
+        // Updating score and UI elements
         currentScore += scorePerNote * currentMultiplier;
         scoreText.text = $"{currentScore}";
         MultiplierBackground();
@@ -331,6 +350,7 @@ public class GameManager : MonoBehaviour
         streakText.text = noteStreak + "x";
     }
 
+    // Functions for different note timings
     public void EarlyHit()
     {
         earlyCounter++;
@@ -346,7 +366,7 @@ public class GameManager : MonoBehaviour
     public void EarlyPerfectHit()
     {
         earlyPerfectCounter++;
-        noteStreak ++;
+        noteStreak++;
 
         currentScore += (int)(scoreEarlyPerfect * currentMultiplier);
         NoteHit();
@@ -406,6 +426,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("Missed");
     }
 
+    // Function to restart the scene
     public void RestartScene()
     {
         Scene currentScene = SceneManager.GetActiveScene();
@@ -413,29 +434,26 @@ public class GameManager : MonoBehaviour
         Destroy(gameObject);
     }
 
+    // Function to load the main menu
     public void LoadMainMenu()
     {
         SceneManager.LoadScene(0);
         Destroy(gameObject);
     }
 
+    // Ensuring only one instance of GameManager exists in the scene
     void Awake()
     {
-        // Ensure there is only one instance of the GameManager script in the scene.
         if (instance == null)
         {
-            // Set the instance to this GameManager if it's the first one.
             instance = this;
         }
         else
         {
-            // Destroy the existing instance if a new one is detected.
             Destroy(instance.gameObject);
-            // Set the instance to the new GameManager.
             instance = this;
         }
 
-        // Keep this GameObject alive throughout the entire game.
         DontDestroyOnLoad(gameObject);
     }
 }

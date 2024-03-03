@@ -1,41 +1,44 @@
 using UnityEngine;
 
-public class NewBehaviourScript : MonoBehaviour
+public class ButtonController : MonoBehaviour
 {
     [Header("------- Images -------")]
     private SpriteRenderer theSR;
+    [Tooltip("Default sprite image")]
     public Sprite defaultImg;
-    public Sprite pressedImg;
+    [Tooltip("Sprite image when button is pressed")]
+    public Sprite pressedImg; // 
 
     [Header("------- Keys -------")]
-    public KeyToPress keyToPress;
-    public enum KeyToPress { Up, Left, Down, Right }
+    [Tooltip("The direction that the circle is")]
+    public Direction keyToPress;
+    public enum Direction { Up, Left, Down, Right } // Enum for different keys
 
     void Start()
     {
-        // Getting the SpriteRenderer of the component
+        // Getting the SpriteRenderer component from the GameObject
         theSR = GetComponent<SpriteRenderer>();
     }
 
     void Update()
     {
-        if (!PauseMenu.instance.gameIsPaused)
+        if (!PauseMenu.instance.gameIsPaused) // Check if the game is not paused
         {
-            // Check if the button is being held down
-            if ((keyToPress == KeyToPress.Up && InputSystemController.instance.UpCircleClicked) ||
-                (keyToPress == KeyToPress.Down && InputSystemController.instance.DownCircleClicked) ||
-                (keyToPress == KeyToPress.Left && InputSystemController.instance.LeftCircleClicked) ||
-                (keyToPress == KeyToPress.Right && InputSystemController.instance.RightCircleClicked))
+            // Check if the corresponding button is being held down
+            if ((keyToPress == Direction.Up && InputSystemController.instance.UpCircleClicked) ||
+                (keyToPress == Direction.Down && InputSystemController.instance.DownCircleClicked) ||
+                (keyToPress == Direction.Left && InputSystemController.instance.LeftCircleClicked) ||
+                (keyToPress == Direction.Right && InputSystemController.instance.RightCircleClicked))
             {
-                theSR.sprite = pressedImg; // Set pressed image when button is held
+                theSR.sprite = pressedImg; // Set the sprite to pressed image when the button is held down
             }
-            // Check if the button was released
-            else if ((keyToPress == KeyToPress.Up && InputSystemController.instance.UpCircleRelease) ||
-                     (keyToPress == KeyToPress.Down && InputSystemController.instance.DownCircleRelease) ||
-                     (keyToPress == KeyToPress.Left && InputSystemController.instance.LeftCircleRelease) ||
-                     (keyToPress == KeyToPress.Right && InputSystemController.instance.RightCircleRelease))
+            // Check if the corresponding button was released
+            else if ((keyToPress == Direction.Up && InputSystemController.instance.UpCircleRelease) ||
+                     (keyToPress == Direction.Down && InputSystemController.instance.DownCircleRelease) ||
+                     (keyToPress == Direction.Left && InputSystemController.instance.LeftCircleRelease) ||
+                     (keyToPress == Direction.Right && InputSystemController.instance.RightCircleRelease))
             {
-                theSR.sprite = defaultImg; // Revert to default image when button is released
+                theSR.sprite = defaultImg; // Revert the sprite to default image when the button is released
             }
         }
     }

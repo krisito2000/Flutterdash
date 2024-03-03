@@ -11,62 +11,63 @@ public class NoteObject : MonoBehaviour
 {
     public static NoteObject instance;
 
+    // Flag indicating whether the note has been triggered by the circle
     [Header("------- Note verification -------")]
+    [Tooltip("Indicator for the note that has been triggered in the collider")]
     public bool circleTrigger = false;
-    private bool noteExited = false;
+    private bool noteExited = false; // Flag indicating whether the note has exited the circle
+    [Tooltip("Collider representing the circle area")]
     public CircleCollider2D circleCollider;
-    
-    public KeyCode keyToPressKeyCode;
 
+    [Tooltip("The note")]
     public Transform circle;
 
+    [Tooltip("Enum representing the key to press for this note")]
     public enum KeyToPress { Up, Left, Down, Right }
     public KeyToPress keyToPress;
 
-    private static List<NoteObject> activeNotes = new List<NoteObject>();
+    private static List<NoteObject> activeNotes = new List<NoteObject>(); // List of active notes in the circle collider
+    [Tooltip("Indicates whether this note is the last note in the level")]
     public bool isTheLastNote;
+    [Tooltip("Unique identifier for the note")]
     public float noteID;
 
     void Start()
     {
         instance = this;
     }
+
+    void Update()
+    {
+        // Check if the corresponding circle is clicked
+        if ((InputSystemController.instance.UpCircleClicked && keyToPress == KeyToPress.Up && !PauseMenu.instance.gameIsPaused) ||
+            (InputSystemController.instance.DownCircleClicked && keyToPress == KeyToPress.Down && !PauseMenu.instance.gameIsPaused) ||
+            (InputSystemController.instance.LeftCircleClicked && keyToPress == KeyToPress.Left && !PauseMenu.instance.gameIsPaused) ||
+            (InputSystemController.instance.RightCircleClicked && keyToPress == KeyToPress.Right && !PauseMenu.instance.gameIsPaused))
+        {
+            Pressed(); // Handle the press event
+        }
+    }
+
     private void Pressed()
     {
-        NoteObject closestNote = GetClosestNote();
+        NoteObject closestNote = GetClosestNote(); // Get the closest note to the circle
 
         if (closestNote == this)
         {
             noteExited = true;
-            NoteAccuracy();
-
-            GameManager.instance.noteHitSound.Play();
+            NoteAccuracy(); // Determine the accuracy of the note press
+            GameManager.instance.noteHitSound.Play(); // Play the note hit sound
         }
-    }
-
-    void Update()
-    {
-        if ((InputSystemController.instance.UpCircleClicked && keyToPress == KeyToPress.Up && !PauseMenu.instance.gameIsPaused) || 
-            (InputSystemController.instance.DownCircleClicked && keyToPress == KeyToPress.Down && !PauseMenu.instance.gameIsPaused) || 
-            (InputSystemController.instance.LeftCircleClicked && keyToPress == KeyToPress.Left && !PauseMenu.instance.gameIsPaused) || 
-            (InputSystemController.instance.RightCircleClicked && keyToPress == KeyToPress.Right && !PauseMenu.instance.gameIsPaused))
-        {
-            Pressed();
-        }
-        //// For when you spam the note to take damage (does not work)
-        //if (!circleTrigger && transform.position.x != 0 && transform.position.y != 0)
-        //{
-        //    GameManager.instance.currentHealth += GameManager.instance.missedHitHeal;
-        //}
     }
 
     private NoteObject GetClosestNote()
     {
-        NoteObject closestNote = null;
-        float closestDistance = float.MaxValue;
-        Vector2 circlePosition = circle.position;
+        NoteObject closestNote = null; // Initialize the closest note variable
+        float closestDistance = float.MaxValue; // Initialize the closest distance variable to a high value
+        Vector2 circlePosition = circle.position; // Get the position of the circle
 
-        foreach (NoteObject note in activeNotes)
+        foreach (NoteObject note in activeNotes) // Iterate through all active notes
         {
             if (!note.circleTrigger)
             {
@@ -74,26 +75,31 @@ public class NoteObject : MonoBehaviour
                 continue;
             }
 
+            // Calculate the distance between the current note and the circle
             float distance = Vector2.Distance(note.transform.position, circlePosition);
 
+            // Check if the current note is closer than the previously closest note
             if (distance < closestDistance)
             {
-                closestDistance = distance;
-                closestNote = note;
+                closestDistance = distance; // Update the closest distance
+                closestNote = note; // Update the closest note
             }
         }
 
-        return closestNote;
+        return closestNote; // Return the closest note to the circle
     }
+
 
     private void NoteAccuracy()
     {
         float distanceDetection = Vector2.Distance(transform.position, circle.position);
+
+        // Check if this is the last note and the username is not empty
         if (isTheLastNote && !string.IsNullOrEmpty(DatabaseManager.instance.username))
         {
             string currentSceneName = SceneManager.GetActiveScene().name;
 
-            GameManager.instance.Statistics();
+            GameManager.instance.Statistics(); // Update game statistics
 
             // Get the best speed location in the database
             var speedLocation = DatabaseManager.instance.databaseReference
@@ -224,32 +230,28 @@ public class NoteObject : MonoBehaviour
             });
         }
 
-        //if (noteAnimation)
-        //{
-        //    AnimationManager.instance.NoteAnimation();
-        //}
-
+        // Determine note accuracy based on distance to the circle
         // EL
         if (distanceDetection >= 0.774)
         {
-            GameManager.instance.EarlyHit();
-            this.gameObject.SetActive(false);
+            GameManager.instance.EarlyHit(); // Handle early hit
+            this.gameObject.SetActive(false); // Deactivate the note object
         }
-        // ELPerfect  0.263
+        // ELPerfect
         else if (distanceDetection >= 0.263)
         {
-            GameManager.instance.EarlyPerfectHit();
-            this.gameObject.SetActive(false);
+            GameManager.instance.EarlyPerfectHit(); // Handle early perfect hit
+            this.gameObject.SetActive(false); // Deactivate the note object
         }
-        // Perfect  0.116
+        // Perfect
         else
         {
-            GameManager.instance.PerfectHit();
-            this.gameObject.SetActive(false);
+            GameManager.instance.PerfectHit(); // Handle perfect hit
+            this.gameObject.SetActive(false); // Deactivate the note object
         }
-        // TODO: Create Late and Late Perfect
     }
 
+    // Get the score from the GameManager
     private int GetScore()
     {
         // Parse the string score to an int
@@ -266,21 +268,25 @@ public class NoteObject : MonoBehaviour
         }
     }
 
+    // Handle OnTriggerEnter2D event
     private void OnTriggerEnter2D(Collider2D other)
     {
+        // Check if the collider is tagged as an activator and matches the circle collider tag
         if (other.gameObject.CompareTag("Activator") && other.gameObject.tag == circleCollider.tag)
         {
             circleTrigger = true;
             noteExited = false;
             if (!activeNotes.Contains(this))
             {
-                activeNotes.Add(this);
+                activeNotes.Add(this); // Add this note to the list of active notes
             }
         }
     }
 
+    // Handle OnTriggerExit2D event
     private void OnTriggerExit2D(Collider2D other)
     {
+        // Check if the collider is tagged as an activator and matches the circle collider tag
         if (other.gameObject.CompareTag("Activator") && other.gameObject.tag == circleCollider.tag)
         {
             circleTrigger = false;
@@ -288,13 +294,13 @@ public class NoteObject : MonoBehaviour
             {
                 noteExited = true;
                 Debug.Log("Note missed: " + this.gameObject.name);
-                GameManager.instance.NoteMissed();
-                activeNotes.Remove(this);
-                gameObject.SetActive(false);
+                GameManager.instance.NoteMissed(); // Handle note missed event
+                activeNotes.Remove(this); // Remove this note from the list of active notes
+                gameObject.SetActive(false); // Deactivate the note object
             }
             if (isTheLastNote)
             {
-                GameManager.instance.Statistics();
+                GameManager.instance.Statistics(); // Update game statistics
             }
         }
     }

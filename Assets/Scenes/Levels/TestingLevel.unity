@@ -1726,7 +1726,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1081515706300857431, guid: b11d4dda37e9c644d8c80793c88ffb7a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.811
+      value: 2.7
       objectReference: {fileID: 0}
     - target: {fileID: 1081515706300857431, guid: b11d4dda37e9c644d8c80793c88ffb7a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1762,7 +1762,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4823105947715267692, guid: b11d4dda37e9c644d8c80793c88ffb7a, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4714,9 +4714,11 @@ MonoBehaviour:
   loginPassword: {fileID: 0}
   loginButtonText: {fileID: 0}
   TutorialBestScoreText: {fileID: 0}
+  TutorialAttemptsText: {fileID: 0}
   TutorialBestSpeedText: {fileID: 0}
   TutorialBestStreakText: {fileID: 0}
   Level1BestScoreText: {fileID: 0}
+  Level1AttemptsText: {fileID: 0}
   Level1BestSpeedText: {fileID: 0}
   Level1BestStreakText: {fileID: 0}
 --- !u!4 &658925661
@@ -10291,6 +10293,7 @@ MonoBehaviour:
   resultsScoreText: {fileID: 2027101582}
   bestStreak: 0
   streakText: {fileID: 52613999}
+  attempts: 0
   multiplierText: {fileID: 1511027003}
   multiplierBackground: {fileID: 1831022437}
   multiplierThresholds: 0100000001000000010000000100000001000000
