@@ -12,7 +12,6 @@ public class SceneLoader : MonoBehaviour
     [Tooltip("Reference to the loading screen")]
     public GameObject LoadingScreen;
 
-
     void Start()
     {
         instance = this; 

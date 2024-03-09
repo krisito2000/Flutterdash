@@ -51,8 +51,12 @@ public class SettingsMenu : MonoBehaviour
     [Header("------- Audio -------")]
     public AudioMixer audioMixer;
     public Slider masterSlider;
+    public float masterValue;
     public Slider musicSlider;
+    public float musicValue;
     public Slider hitSoundSlider;
+    public float hitSoundValue;
+
     public Text syncText;
     public Slider syncSlider;
     public UnityEvent<float> onSliderValueChanged = new UnityEvent<float>();
@@ -75,9 +79,12 @@ public class SettingsMenu : MonoBehaviour
         InputLockMode = false;
 
         // Volume
-        onSliderValueChanged.AddListener(SetMasterVolume);
-        onSliderValueChanged.AddListener(SetMusicVolume);
-        onSliderValueChanged.AddListener(SetHitSoundVolume);
+        if (!Guest.instance.guest)
+        {
+            SetMasterVolume(masterValue);
+            SetMusicVolume(musicValue);
+            SetHitSoundVolume(hitSoundValue);
+        }
 
         // Display
         // Resolution
@@ -256,7 +263,7 @@ public class SettingsMenu : MonoBehaviour
         volume = hitSoundSlider.value;
 
         // Set the hit sound volume level in the audio mixer
-        audioMixer.SetFloat("HitSound", volume);
+        audioMixer.SetFloat("NoteHit", volume);
 
         // Save the hit sound volume setting to Firebase
         SaveHitSoundVolumeSetting(volume);

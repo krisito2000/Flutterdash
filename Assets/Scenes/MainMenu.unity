@@ -10503,9 +10503,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 122850675}
   m_Direction: 0
   m_MinValue: -80
-  m_MaxValue: 0
+  m_MaxValue: 20
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 20
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -14527,14 +14527,14 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1306848788}
-  m_LocalRotation: {x: -0, y: -0, z: 0.9064864, w: 0.42223492}
+  m_LocalRotation: {x: -0, y: -0, z: 0.94235444, w: 0.33461645}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.500221, y: 1.500221, z: 1.500221}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2129900358}
   m_Father: {fileID: 1009052956}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 130.048}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 140.902}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -2233, y: -428}
@@ -16013,9 +16013,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1868983620}
   m_Direction: 0
   m_MinValue: -80
-  m_MaxValue: 0
+  m_MaxValue: 20
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 20
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -19161,9 +19161,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 199393263}
   m_Direction: 0
   m_MinValue: -80
-  m_MaxValue: 0
+  m_MaxValue: 20
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 20
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -21002,8 +21002,11 @@ MonoBehaviour:
   RightCircleCanvasGroup: {fileID: 833240888}
   audioMixer: {fileID: 24100000, guid: 50a8903148232a7478b1f7aa15d5f218, type: 2}
   masterSlider: {fileID: 1458877160}
+  masterValue: 0
   musicSlider: {fileID: 1698316497}
+  musicValue: 0
   hitSoundSlider: {fileID: 879185004}
+  hitSoundValue: 0
   syncText: {fileID: 24150680}
   syncSlider: {fileID: 535766193}
   onSliderValueChanged:

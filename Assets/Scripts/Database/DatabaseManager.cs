@@ -141,10 +141,12 @@ public class DatabaseManager : MonoBehaviour
 
         // Reset level statistics texts
         TutorialBestScoreText.text = "Best Score: 0";
+        TutorialAttemptsText.text = "Attempts: 0";
         TutorialBestSpeedText.text = "Best Speed: 0%";
         TutorialBestStreakText.text = "Best Streak: 0";
 
         Level1BestScoreText.text = "Best Score: 0";
+        Level1AttemptsText.text = "Attempts: 0";
         Level1BestSpeedText.text = "Best Speed: 0%";
         Level1BestStreakText.text = "Best Streak: 0";
     }
@@ -423,15 +425,15 @@ public class DatabaseManager : MonoBehaviour
                 var hitSoundSnapshot = volumeSnapshot.Child("HitSound");
 
                 // Extract values from the snapshots
-                float masterVolumeSetting = float.Parse(masterSnapshot.Value.ToString());
-                float musicVolumeSetting = float.Parse(musicSnapshot.Value.ToString());
-                float hitSoundVolumeSetting = float.Parse(hitSoundSnapshot.Value.ToString());
+                SettingsMenu.instance.masterValue = float.Parse(masterSnapshot.Value.ToString());
+                SettingsMenu.instance.musicValue = float.Parse(musicSnapshot.Value.ToString());
+                SettingsMenu.instance.hitSoundValue = float.Parse(hitSoundSnapshot.Value.ToString());
 
                 // Set master volume
                 if (SettingsMenu.instance != null && SettingsMenu.instance.masterSlider != null)
                 {
-                    SettingsMenu.instance.masterSlider.value = masterVolumeSetting;
-                    SettingsMenu.instance.SetMasterVolume(masterVolumeSetting);
+                    SettingsMenu.instance.masterSlider.value = SettingsMenu.instance.masterValue;
+                    SettingsMenu.instance.SetMasterVolume(SettingsMenu.instance.masterValue);
                 }
                 else
                 {
@@ -441,8 +443,8 @@ public class DatabaseManager : MonoBehaviour
                 // Set music volume
                 if (SettingsMenu.instance != null && SettingsMenu.instance.musicSlider != null)
                 {
-                    SettingsMenu.instance.musicSlider.value = musicVolumeSetting;
-                    SettingsMenu.instance.SetMusicVolume(musicVolumeSetting);
+                    SettingsMenu.instance.musicSlider.value = SettingsMenu.instance.musicValue;
+                    SettingsMenu.instance.SetMusicVolume(SettingsMenu.instance.musicValue);
                 }
                 else
                 {
@@ -452,8 +454,8 @@ public class DatabaseManager : MonoBehaviour
                 // Set hitSound volume
                 if (SettingsMenu.instance != null && SettingsMenu.instance.hitSoundSlider != null)
                 {
-                    SettingsMenu.instance.hitSoundSlider.value = hitSoundVolumeSetting;
-                    SettingsMenu.instance.SetHitSoundVolume(hitSoundVolumeSetting);
+                    SettingsMenu.instance.hitSoundSlider.value = SettingsMenu.instance.hitSoundValue;
+                    SettingsMenu.instance.SetHitSoundVolume(SettingsMenu.instance.hitSoundValue);
                 }
                 else
                 {
@@ -462,14 +464,6 @@ public class DatabaseManager : MonoBehaviour
             }
         }
     }
-
-
-
-
-
-
-
-
 
     // Method to logout a user
     public void LogoutUser()
@@ -483,7 +477,6 @@ public class DatabaseManager : MonoBehaviour
         DeleteUserData();
         HideErrorMessage();
     }
-
 
     void HideErrorMessage()
     {
