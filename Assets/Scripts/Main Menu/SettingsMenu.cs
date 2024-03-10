@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 public class SettingsMenu : MonoBehaviour
 {
-    public static SettingsMenu instance;
+    public static SettingsMenu instance = null;
 
     [Header("------- Canvas Groups -------")]
     [Tooltip("The canvas group for the general menu")]
@@ -38,6 +38,7 @@ public class SettingsMenu : MonoBehaviour
     public GameObject lockButton;
     [Tooltip("The text for the lock button")]
     public Text lockButtonText;
+    public TextMeshProUGUI duplicateBindingText;
 
     [Tooltip("The canvas group for the up circle")]
     public CanvasGroup UpCircleCanvasGroup;
@@ -73,8 +74,6 @@ public class SettingsMenu : MonoBehaviour
     [System.Obsolete]
     public void Start()
     {
-        instance = this;
-
         // Input
         InputLockMode = false;
 
@@ -115,7 +114,8 @@ public class SettingsMenu : MonoBehaviour
 
         resolutionsDropdown.AddOptions(resolutionOptions);
 
-        //resolutionsDropdown.value = currentResolutionIndex;
+        // Set the current value of the dropdown to the current resolution index
+        resolutionsDropdown.value = currentResolutionIndex;
         resolutionsDropdown.RefreshShownValue();
 
         // Buttons
@@ -125,6 +125,13 @@ public class SettingsMenu : MonoBehaviour
         ButtonAnimator.SetBool("Display", false);
 
         VSync();
+    }
+    public void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
     }
 
     // General
@@ -201,7 +208,7 @@ public class SettingsMenu : MonoBehaviour
     public void SaveMasterVolumeSetting(float masterVolume)
     {
         // Check if the user is logged in as a guest
-        if (Guest.instance.LoginAs.text == "Login as Guest")
+        if (Guest.instance.guest)
         {
             // If the user is a guest, log a message indicating they are not logged in
             Debug.Log("User not logged in");
@@ -237,7 +244,7 @@ public class SettingsMenu : MonoBehaviour
     public void SaveMusicVolumeSetting(float musicVolume)
     {
         // Check if the user is logged in as a guest
-        if (Guest.instance.LoginAs.text == "Login as Guest")
+        if (Guest.instance.guest)
         {
             // If the user is a guest, log a message indicating they are not logged in
             Debug.Log("User not logged in");
@@ -273,7 +280,7 @@ public class SettingsMenu : MonoBehaviour
     public void SaveHitSoundVolumeSetting(float hitSoundVolume)
     {
         // Check if the user is logged in as a guest
-        if (Guest.instance.LoginAs.text == "Login as Guest")
+        if (Guest.instance.guest)
         {
             // If the user is a guest, log a message indicating they are not logged in
             Debug.Log("User not logged in");

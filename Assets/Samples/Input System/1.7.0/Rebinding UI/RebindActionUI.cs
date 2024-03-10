@@ -298,9 +298,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
 
             // Configure the rebind.
             m_RebindOperation = action.PerformInteractiveRebinding(bindingIndex)
-                .WithControlsExcluding("<Mouse>/leftButton")
-                .WithControlsExcluding("<Mouse>/rightButton")
-                .WithControlsExcluding("<Pointer>/position")
+                .WithControlsExcluding("Mouse")
                 .OnCancel(
                     operation =>
                     {
@@ -318,13 +316,13 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                         m_RebindStopEvent?.Invoke(this, operation);
 
                         // Check for duplicate bindings
-                        //if (CheckDuplicateBindings(action, bindingIndex, allCompositeParts))
-                        //{
-                        //    action.RemoveBindingOverride(bindingIndex);
-                        //    CleanUp();
-                        //    PerformInteractiveRebind(action, bindingIndex, allCompositeParts);
-                        //    return;
-                        //}
+                        if (CheckDuplicateBindings(action, bindingIndex, allCompositeParts))
+                        {
+                            action.RemoveBindingOverride(bindingIndex);
+                            CleanUp();
+                            PerformInteractiveRebind(action, bindingIndex, allCompositeParts);
+                            return;
+                        }
 
                         UpdateBindingDisplay();
                         CleanUp();
@@ -371,12 +369,12 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
 
             foreach (InputBinding binding in action.actionMap.bindings)
             {
-                if (binding.action == newBinding.action)
+                if (bindingIndex != -1 && binding.action == newBinding.action && bindingIndex != action.bindings.IndexOf(b => b == binding))
                 {
                     continue;
                 }
 
-                if (binding.effectivePath == newBinding.effectivePath)
+                if (binding.effectivePath == newBinding.effectivePath && bindingIndex != action.bindings.IndexOf(b => b == binding))
                 {
                     Debug.Log($"Duplicate binding found: {newBinding.effectivePath}");
                     return true;
@@ -385,9 +383,11 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
 
             if (allCompositeParts)
             {
-                for (int i = 1; i < bindingIndex; i++)
+                for (int i = 0; i < action.bindings.Count; ++i)
                 {
-                    if (action.bindings[i].effectivePath == newBinding.overridePath)
+                    if (i == bindingIndex) continue; // Skip the current binding being checked
+
+                    if (action.bindings[i].effectivePath == newBinding.effectivePath)
                     {
                         Debug.Log($"Duplicate binding found: {newBinding.effectivePath}");
                         return true;
@@ -397,6 +397,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
 
             return false;
         }
+
 
         protected void OnEnable()
         {
@@ -460,11 +461,11 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
         [Tooltip("Text label that will receive the name of the action. Optional. Set to None to have the "
             + "rebind UI not show a label for the action.")]
         [SerializeField]
-        private TMPro.TextMeshProUGUI m_ActionLabel;
+        private TextMeshProUGUI m_ActionLabel;
 
         [Tooltip("Text label that will receive the current, formatted binding string.")]
         [SerializeField]
-        private TMPro.TextMeshProUGUI m_BindingText;
+        private TextMeshProUGUI m_BindingText;
 
         [Tooltip("Optional UI that will be shown while a rebind is in progress.")]
         [SerializeField]
@@ -472,7 +473,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
 
         [Tooltip("Optional text label that will be updated with prompt for user input.")]
         [SerializeField]
-        private TMPro.TextMeshProUGUI m_RebindText;
+        private TextMeshProUGUI m_RebindText;
 
         [Tooltip("Optional bool field which allows you to OVERRIDE the action label your own text")]
         [SerializeField]
@@ -510,7 +511,13 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             UpdateBindingDisplay();
         }
 
-        #endif
+        private void Start()
+        {
+            UpdateActionLabel();
+            UpdateBindingDisplay();
+        }
+
+#endif
 
         private void UpdateActionLabel()
         {
