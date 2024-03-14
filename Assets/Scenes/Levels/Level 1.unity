@@ -483,7 +483,7 @@ MonoBehaviour:
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay
   m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
+  m_Camera: {fileID: 57049582}
 --- !u!1001 &71172883
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3148,7 +3148,6 @@ GameObject:
   - component: {fileID: 510610833}
   - component: {fileID: 510610836}
   - component: {fileID: 510610835}
-  - component: {fileID: 510610837}
   m_Layer: 5
   m_Name: LeftCircle
   m_TagString: Untagged
@@ -3272,36 +3271,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 510610832}
   m_CullTransparentMesh: 1
---- !u!114 &510610837
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 510610832}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc11d99b1a6682f4cbc4aba1fcd9ac5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Action: {fileID: 3468541197857163489, guid: c62a9d329a3cc284e93099056f62fb1f, type: 3}
-  m_BindingId: 250127e3-669a-4c33-afd1-acbf0ee2fd99
-  m_DisplayStringOptions: 0
-  m_ActionLabel: {fileID: 0}
-  m_BindingText: {fileID: 510610835}
-  m_RebindOverlay: {fileID: 0}
-  m_RebindText: {fileID: 0}
-  m_OverRideActionLabel: 0
-  m_ActionLabelString: 
-  m_UpdateBindingUIEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_RebindStartEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_RebindStopEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1001 &511075326
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4540,7 +4509,6 @@ GameObject:
   - component: {fileID: 829115394}
   - component: {fileID: 829115397}
   - component: {fileID: 829115396}
-  - component: {fileID: 829115398}
   m_Layer: 5
   m_Name: RightCircle
   m_TagString: Untagged
@@ -4664,36 +4632,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 829115393}
   m_CullTransparentMesh: 1
---- !u!114 &829115398
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 829115393}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc11d99b1a6682f4cbc4aba1fcd9ac5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Action: {fileID: -8518221356158355357, guid: c62a9d329a3cc284e93099056f62fb1f, type: 3}
-  m_BindingId: bb2a9602-2e62-4198-adbe-fc77816554ab
-  m_DisplayStringOptions: 0
-  m_ActionLabel: {fileID: 0}
-  m_BindingText: {fileID: 829115396}
-  m_RebindOverlay: {fileID: 0}
-  m_RebindText: {fileID: 0}
-  m_OverRideActionLabel: 0
-  m_ActionLabelString: 
-  m_UpdateBindingUIEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_RebindStartEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_RebindStopEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1001 &836230386
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4857,7 +4795,6 @@ GameObject:
   - component: {fileID: 855581720}
   - component: {fileID: 855581723}
   - component: {fileID: 855581722}
-  - component: {fileID: 855581724}
   m_Layer: 5
   m_Name: DownCircle
   m_TagString: Untagged
@@ -4981,36 +4918,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 855581719}
   m_CullTransparentMesh: 1
---- !u!114 &855581724
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 855581719}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc11d99b1a6682f4cbc4aba1fcd9ac5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Action: {fileID: 8465375541836057191, guid: c62a9d329a3cc284e93099056f62fb1f, type: 3}
-  m_BindingId: 3717aa96-4717-4aa3-89c1-53f7c08ed2b2
-  m_DisplayStringOptions: 0
-  m_ActionLabel: {fileID: 0}
-  m_BindingText: {fileID: 855581722}
-  m_RebindOverlay: {fileID: 0}
-  m_RebindText: {fileID: 0}
-  m_OverRideActionLabel: 0
-  m_ActionLabelString: 
-  m_UpdateBindingUIEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_RebindStartEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_RebindStopEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1001 &866998789
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5311,7 +5218,6 @@ GameObject:
   - component: {fileID: 899430070}
   - component: {fileID: 899430073}
   - component: {fileID: 899430072}
-  - component: {fileID: 899430074}
   m_Layer: 5
   m_Name: UpCircle
   m_TagString: Untagged
@@ -5435,36 +5341,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 899430069}
   m_CullTransparentMesh: 1
---- !u!114 &899430074
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 899430069}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc11d99b1a6682f4cbc4aba1fcd9ac5d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Action: {fileID: 3385590977201534350, guid: c62a9d329a3cc284e93099056f62fb1f, type: 3}
-  m_BindingId: cc42df62-1206-48e4-87c0-3234d38b9801
-  m_DisplayStringOptions: 0
-  m_ActionLabel: {fileID: 0}
-  m_BindingText: {fileID: 899430072}
-  m_RebindOverlay: {fileID: 0}
-  m_RebindText: {fileID: 0}
-  m_OverRideActionLabel: 0
-  m_ActionLabelString: 
-  m_UpdateBindingUIEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_RebindStartEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_RebindStopEvent:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1001 &901496377
 PrefabInstance:
   m_ObjectHideFlags: 0

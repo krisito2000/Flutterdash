@@ -3,7 +3,9 @@ using Google.MiniJSON;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using TMPro;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Events;
@@ -78,12 +80,6 @@ public class SettingsMenu : MonoBehaviour
         InputLockMode = false;
 
         // Volume
-        if (!Guest.instance.guest)
-        {
-            SetMasterVolume(masterValue);
-            SetMusicVolume(musicValue);
-            SetHitSoundVolume(hitSoundValue);
-        }
 
         // Display
         // Resolution
@@ -126,6 +122,64 @@ public class SettingsMenu : MonoBehaviour
 
         VSync();
     }
+
+    // Method to load volume settings from Firebase
+    public void LoadVolumeSettings()
+    {
+        // Check if the user is logged in
+        if (Guest.instance.guest)
+        {
+            // If the user is a guest, log a message indicating they are not logged in
+            Debug.Log("User not logged in");
+        }
+        else
+        {
+            // If the user is not a guest, retrieve the player's username
+            string playerUsername = DatabaseManager.instance.username;
+
+            // Get a reference to the volume settings node in the Firebase database
+            DatabaseReference volumeSettingsRef = DatabaseManager.instance.databaseReference
+                .Child("Users")
+                .Child(playerUsername)
+                .Child("Settings")
+                .Child("Volume");
+
+            if (!Guest.instance.guest)
+            {
+                // Read the volume settings from Firebase
+                volumeSettingsRef.GetValueAsync().ContinueWith(task =>
+                {
+                    if (task.IsCompleted)
+                    {
+                        DataSnapshot snapshot = task.Result;
+
+                        // Check if the snapshot exists and has children
+                        if (snapshot != null && snapshot.HasChildren)
+                        {
+                            // Get the values of master, music, and hit sound values from the snapshot
+                            masterValue = float.Parse(snapshot.Child("Master").Value.ToString());
+                            musicValue = float.Parse(snapshot.Child("Music").Value.ToString());
+                            hitSoundValue = float.Parse(snapshot.Child("HitSound").Value.ToString());
+
+                            // Update the values of the sliders with the loaded values
+                            CheckDatabaseMasterVolume(masterValue);
+                            CheckDatabaseMusicVolume(musicValue);
+                            CheckDatabaseHitSoundVolume(hitSoundValue);
+                        }
+                        else
+                        {
+                            Debug.Log("Volume settings not found in Firebase");
+                        }
+                    }
+                    else if (task.IsFaulted)
+                    {
+                        Debug.LogError("Failed to load volume settings from Firebase: " + task.Exception);
+                    }
+                });
+            }
+        }
+    }
+
     public void Awake()
     {
         if (instance == null)
@@ -192,16 +246,22 @@ public class SettingsMenu : MonoBehaviour
     }
 
     // Method to set the master volume level
-    public void SetMasterVolume(float volume)
+    public void SetMasterVolume()
     {
         // Retrieve the volume value from the master slider
-        volume = masterSlider.value;
+        float setValue = masterSlider.value;
 
         // Set the master volume level in the audio mixer
-        audioMixer.SetFloat("Master", volume);
+        audioMixer.SetFloat("Master", setValue);
 
         // Save the master volume setting to Firebase
-        SaveMasterVolumeSetting(volume);
+        SaveMasterVolumeSetting(setValue);
+    }
+
+    public void CheckDatabaseMasterVolume(float volume)
+    {
+        masterSlider.value = volume;
+        audioMixer.SetFloat("Master", volume);
     }
 
     // Method to save the master volume setting to Firebase
@@ -216,7 +276,7 @@ public class SettingsMenu : MonoBehaviour
         else
         {
             // If the user is not a guest, retrieve the player's username
-            string playerUsername = Guest.instance.LoginAs.text;
+            string playerUsername = DatabaseManager.instance.username;
 
             // Set the master volume setting in the Firebase database under the user's settings
             DatabaseManager.instance.databaseReference
@@ -238,6 +298,12 @@ public class SettingsMenu : MonoBehaviour
 
         // Save the music volume setting to Firebase
         SaveMusicVolumeSetting(volume);
+    }
+
+    public void CheckDatabaseMusicVolume(float volume)
+    {
+        musicSlider.value = volume;
+        audioMixer.SetFloat("Music", volume);
     }
 
     // Method to save the music volume setting to Firebase
@@ -274,6 +340,12 @@ public class SettingsMenu : MonoBehaviour
 
         // Save the hit sound volume setting to Firebase
         SaveHitSoundVolumeSetting(volume);
+    }
+
+    public void CheckDatabaseHitSoundVolume(float volume)
+    {
+        hitSoundSlider.value = volume;
+        audioMixer.SetFloat("NoteHit", volume);
     }
 
     // Method to save the hit sound volume setting to Firebase

@@ -82,10 +82,23 @@ public class DatabaseManager : MonoBehaviour
 
     public DatabaseReference databaseReference;
 
-    // Start is called before the first frame update
-    private void Start()
+    void Awake()
     {
-        instance = this; // Set the singleton instance to this instance of DatabaseManager
+        // Ensure there is only one instance of the GameManager script in the scene.
+        if (instance == null)
+        {
+            // Set the instance to this GameManager if it's the first one.
+            instance = this;
+        }
+        else
+        {
+            // Destroy the existing instance if a new one is detected.
+            Destroy(instance.gameObject);
+        }
+
+        // Keep this GameObject alive throughout the entire game.
+        DontDestroyOnLoad(gameObject);
+
         databaseReference = FirebaseDatabase.DefaultInstance.RootReference; // Set the database reference to the root reference of Firebase
 
         // Check if the user data file exists
@@ -415,53 +428,7 @@ public class DatabaseManager : MonoBehaviour
                 SettingsMenu.instance.fullscreenToggle.isOn = fullscreenSetting;
                 SettingsMenu.instance.VSyncToggle.isOn = vsyncSetting;
             }
-
-            // Retrieve volume settings
-            var volumeSnapshot = settingsSnapshot.Child("Volume");
-            if (volumeSnapshot.Exists)
-            {
-                var masterSnapshot = volumeSnapshot.Child("Master");
-                var musicSnapshot = volumeSnapshot.Child("Music");
-                var hitSoundSnapshot = volumeSnapshot.Child("HitSound");
-
-                // Extract values from the snapshots
-                SettingsMenu.instance.masterValue = float.Parse(masterSnapshot.Value.ToString());
-                SettingsMenu.instance.musicValue = float.Parse(musicSnapshot.Value.ToString());
-                SettingsMenu.instance.hitSoundValue = float.Parse(hitSoundSnapshot.Value.ToString());
-
-                // Set master volume
-                if (SettingsMenu.instance != null && SettingsMenu.instance.masterSlider != null)
-                {
-                    SettingsMenu.instance.masterSlider.value = SettingsMenu.instance.masterValue;
-                    SettingsMenu.instance.SetMasterVolume(SettingsMenu.instance.masterValue);
-                }
-                else
-                {
-                    Debug.LogError("masterSlider is null in SettingsMenu.");
-                }
-
-                // Set music volume
-                if (SettingsMenu.instance != null && SettingsMenu.instance.musicSlider != null)
-                {
-                    SettingsMenu.instance.musicSlider.value = SettingsMenu.instance.musicValue;
-                    SettingsMenu.instance.SetMusicVolume(SettingsMenu.instance.musicValue);
-                }
-                else
-                {
-                    Debug.LogError("musicSlider is null in SettingsMenu.");
-                }
-
-                // Set hitSound volume
-                if (SettingsMenu.instance != null && SettingsMenu.instance.hitSoundSlider != null)
-                {
-                    SettingsMenu.instance.hitSoundSlider.value = SettingsMenu.instance.hitSoundValue;
-                    SettingsMenu.instance.SetHitSoundVolume(SettingsMenu.instance.hitSoundValue);
-                }
-                else
-                {
-                    Debug.LogError("hitSoundSlider is null in SettingsMenu.");
-                }
-            }
+            SettingsMenu.instance.LoadVolumeSettings();
         }
     }
 
@@ -476,6 +443,14 @@ public class DatabaseManager : MonoBehaviour
         // Delete user data and hide error messages
         DeleteUserData();
         HideErrorMessage();
+    }
+
+    void ShowErrorMessage(string message)
+    {
+        Authentication.instance.ErrorMessage.alpha = 1;
+        Authentication.instance.ErrorMessage.interactable = true;
+        Authentication.instance.ErrorMessage.blocksRaycasts = true;
+        // Show the error message text in your Canvas Group
     }
 
     void HideErrorMessage()
@@ -536,14 +511,6 @@ public class DatabaseManager : MonoBehaviour
         }
     }
 
-    void ShowErrorMessage(string message)
-    {
-        Authentication.instance.ErrorMessage.alpha = 1;
-        Authentication.instance.ErrorMessage.interactable = true;
-        Authentication.instance.ErrorMessage.blocksRaycasts = true;
-        // Show the error message text in your Canvas Group
-    }
-
     // Coroutine to load level statistics for a user
     private IEnumerator LoadLevelStats(string username, string levelName, Text bestScoreText, Text attemptsText, Text bestSpeedText, Text bestStreakText)
     {
@@ -582,23 +549,5 @@ public class DatabaseManager : MonoBehaviour
             // Log a warning if data for the level is not found
             Debug.LogWarning(levelName + " data not found for user: " + username);
         }
-    }
-
-    void Awake()
-    {
-        // Ensure there is only one instance of the GameManager script in the scene.
-        if (instance == null)
-        {
-            // Set the instance to this GameManager if it's the first one.
-            instance = this;
-        }
-        else
-        {
-            // Destroy the existing instance if a new one is detected.
-            Destroy(instance.gameObject);
-        }
-
-        // Keep this GameObject alive throughout the entire game.
-        DontDestroyOnLoad(gameObject);
     }
 }

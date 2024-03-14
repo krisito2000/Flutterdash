@@ -18,10 +18,10 @@ public class Guest : MonoBehaviour
     [Tooltip("Indication whether you are logged in as guest")]
     public bool guest;
 
-    // Start is called before the first frame update
-    void Start()
+    public void Awake()
     {
-        instance = this;
+        if (instance == null)
+            instance = this;
     }
 
     // Update is called once per frame
