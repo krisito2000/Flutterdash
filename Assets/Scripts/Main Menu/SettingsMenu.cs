@@ -162,9 +162,9 @@ public class SettingsMenu : MonoBehaviour
                             hitSoundValue = float.Parse(snapshot.Child("HitSound").Value.ToString());
 
                             // Update the values of the sliders with the loaded values
-                            CheckDatabaseMasterVolume(masterValue);
-                            CheckDatabaseMusicVolume(musicValue);
-                            CheckDatabaseHitSoundVolume(hitSoundValue);
+                            CheckDatabaseAudioVolume(masterValue, masterSlider, "Master");
+                            CheckDatabaseAudioVolume(musicValue, musicSlider, "Music");
+                            CheckDatabaseAudioVolume(hitSoundValue, hitSoundSlider, "HitSound");
                         }
                         else
                         {
@@ -255,101 +255,42 @@ public class SettingsMenu : MonoBehaviour
         audioMixer.SetFloat("Master", setValue);
 
         // Save the master volume setting to Firebase
-        SaveMasterVolumeSetting(setValue);
-    }
-
-    public void CheckDatabaseMasterVolume(float volume)
-    {
-        masterSlider.value = volume;
-        audioMixer.SetFloat("Master", volume);
-    }
-
-    // Method to save the master volume setting to Firebase
-    public void SaveMasterVolumeSetting(float masterVolume)
-    {
-        // Check if the user is logged in as a guest
-        if (Guest.instance.guest)
-        {
-            // If the user is a guest, log a message indicating they are not logged in
-            Debug.Log("User not logged in");
-        }
-        else
-        {
-            // If the user is not a guest, retrieve the player's username
-            string playerUsername = DatabaseManager.instance.username;
-
-            // Set the master volume setting in the Firebase database under the user's settings
-            DatabaseManager.instance.databaseReference
-                .Child("Users").Child(playerUsername).Child("Settings").Child("Volume").Child("Master").SetValueAsync(masterVolume);
-
-            // Log a message indicating the master volume setting was saved to Firebase
-            Debug.Log("Master volume setting saved to Firebase!");
-        }
+        SaveAudioVolumeSettings(setValue, "Master");
     }
 
     // Method to set the music volume level
-    public void SetMusicVolume(float volume)
+    public void SetMusicVolume()
     {
         // Retrieve the volume value from the music slider
-        volume = musicSlider.value;
+        float setValue = musicSlider.value;
 
         // Set the music volume level in the audio mixer
-        audioMixer.SetFloat("Music", volume);
+        audioMixer.SetFloat("Music", setValue);
 
         // Save the music volume setting to Firebase
-        SaveMusicVolumeSetting(volume);
-    }
-
-    public void CheckDatabaseMusicVolume(float volume)
-    {
-        musicSlider.value = volume;
-        audioMixer.SetFloat("Music", volume);
-    }
-
-    // Method to save the music volume setting to Firebase
-    public void SaveMusicVolumeSetting(float musicVolume)
-    {
-        // Check if the user is logged in as a guest
-        if (Guest.instance.guest)
-        {
-            // If the user is a guest, log a message indicating they are not logged in
-            Debug.Log("User not logged in");
-        }
-        else
-        {
-            // If the user is not a guest, retrieve the player's username
-            string playerUsername = Guest.instance.LoginAs.text;
-
-            // Set the music volume setting in the Firebase database under the user's settings
-            DatabaseManager.instance.databaseReference
-                .Child("Users").Child(playerUsername).Child("Settings").Child("Volume").Child("Music").SetValueAsync(musicVolume);
-
-            // Log a message indicating the music volume setting was saved to Firebase
-            Debug.Log("Music volume setting saved to Firebase!");
-        }
+        SaveAudioVolumeSettings(setValue, "Music");
     }
 
     // Method to set the hit sound volume level
-    public void SetHitSoundVolume(float volume)
+    public void SetHitSoundVolume()
     {
         // Retrieve the volume value from the hit sound slider
-        volume = hitSoundSlider.value;
+        float setValue = hitSoundSlider.value;
 
         // Set the hit sound volume level in the audio mixer
-        audioMixer.SetFloat("NoteHit", volume);
+        audioMixer.SetFloat("NoteHit", setValue);
 
         // Save the hit sound volume setting to Firebase
-        SaveHitSoundVolumeSetting(volume);
+        SaveAudioVolumeSettings(setValue, "HitSound");
     }
 
-    public void CheckDatabaseHitSoundVolume(float volume)
+    public void CheckDatabaseAudioVolume(float volume, Slider slider, string soundType)
     {
-        hitSoundSlider.value = volume;
-        audioMixer.SetFloat("NoteHit", volume);
+        slider.value = volume;
+        audioMixer.SetFloat(soundType, volume);
     }
 
-    // Method to save the hit sound volume setting to Firebase
-    public void SaveHitSoundVolumeSetting(float hitSoundVolume)
+    public void SaveAudioVolumeSettings(float soundVolume, string soundType)
     {
         // Check if the user is logged in as a guest
         if (Guest.instance.guest)
@@ -359,15 +300,17 @@ public class SettingsMenu : MonoBehaviour
         }
         else
         {
-            // If the user is not a guest, retrieve the player's username
-            string playerUsername = Guest.instance.LoginAs.text;
-
             // Set the hit sound volume setting in the Firebase database under the user's settings
             DatabaseManager.instance.databaseReference
-                .Child("Users").Child(playerUsername).Child("Settings").Child("Volume").Child("HitSound").SetValueAsync(hitSoundVolume);
+                .Child("Users")
+                .Child(DatabaseManager.instance.username)
+                .Child("Settings")
+                .Child("Volume")
+                .Child(soundType)
+                .SetValueAsync(soundVolume);
 
             // Log a message indicating the hit sound volume setting was saved to Firebase
-            Debug.Log("HitSound volume setting saved to Firebase!");
+            Debug.Log("Volume setting saved to Firebase!");
         }
     }
 
