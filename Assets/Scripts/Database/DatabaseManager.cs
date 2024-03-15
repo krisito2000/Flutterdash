@@ -134,8 +134,8 @@ public class DatabaseManager : MonoBehaviour
     // Load statistics for all levels
     public void LoadEveryLevelStats()
     {
-        StartCoroutine(LoadLevelStats(Guest.instance.LoginAs.text, "TutorialLevel", TutorialBestScoreText, TutorialAttemptsText, TutorialBestSpeedText, TutorialBestStreakText));
-        StartCoroutine(LoadLevelStats(Guest.instance.LoginAs.text, "Level 1", Level1BestScoreText, Level1AttemptsText, Level1BestSpeedText, Level1BestStreakText));
+        StartCoroutine(LoadLevelStats(username, "TutorialLevel", TutorialBestScoreText, TutorialAttemptsText, TutorialBestSpeedText, TutorialBestStreakText));
+        StartCoroutine(LoadLevelStats(username, "Level 1", Level1BestScoreText, Level1AttemptsText, Level1BestSpeedText, Level1BestStreakText));
     }
 
     // Save user data to file
@@ -213,7 +213,6 @@ public class DatabaseManager : MonoBehaviour
             Debug.LogWarning("User does not exist in the database: " + username);
         }
     }
-
 
     // Create user
     // Method to create a new user
@@ -364,8 +363,8 @@ public class DatabaseManager : MonoBehaviour
         // Start coroutines to get user data and load user settings
         StartCoroutine(GetUserAndPassword(enteredUsername, hashedPassword));
         StartCoroutine(LoadUserSettings(enteredUsername));
+        LoadEveryLevelStats();
     }
-
 
     // Load user settings
     // Coroutine to load user settings from the database

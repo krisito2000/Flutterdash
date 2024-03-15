@@ -227,7 +227,7 @@ public class GameManager : MonoBehaviour
     void FetchAttemptsFromDatabase()
     {
         string currentSceneName = SceneManager.GetActiveScene().name;
-        string playerName = Guest.instance.LoginAs.text;
+        string playerName = DatabaseManager.instance.username;
 
         // Reference to attempts in the database
         var attemptsLocation = DatabaseManager.instance.databaseReference.Child("Users")
@@ -257,7 +257,7 @@ public class GameManager : MonoBehaviour
     void UpdateAttemptsInDatabase()
     {
         string currentSceneName = SceneManager.GetActiveScene().name;
-        string playerName = Guest.instance.LoginAs.text;
+        string playerName = DatabaseManager.instance.username;
 
         if (!Guest.instance.guest)
         {

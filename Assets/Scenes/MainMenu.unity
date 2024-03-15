@@ -2557,7 +2557,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!114 &182129575 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2233109675526487451, guid: 1dcf5293fc2746749a54f2fdb907c3a5, type: 3}
@@ -3602,6 +3602,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1281776371}
     m_Modifications:
+    - target: {fileID: 112540704290588831, guid: 1dcf5293fc2746749a54f2fdb907c3a5, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 844b8e8902aea0546b99f65d8b4878aa, type: 3}
+    - target: {fileID: 2233109675526487451, guid: 1dcf5293fc2746749a54f2fdb907c3a5, type: 3}
+      propertyPath: isOn
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2233109675526487451, guid: 1dcf5293fc2746749a54f2fdb907c3a5, type: 3}
       propertyPath: offImage
       value: 

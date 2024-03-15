@@ -20,6 +20,8 @@ public class Guest : MonoBehaviour
 
     public void Awake()
     {
+        guest = true;
+
         if (instance == null)
             instance = this;
     }

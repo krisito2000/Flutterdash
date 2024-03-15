@@ -119,65 +119,6 @@ public class SettingsMenu : MonoBehaviour
         ButtonAnimator.SetBool("Input", false);
         ButtonAnimator.SetBool("Audio", false);
         ButtonAnimator.SetBool("Display", false);
-
-        VSync();
-    }
-
-    // Method to load volume settings from Firebase
-    public void LoadVolumeSettings()
-    {
-        // Check if the user is logged in
-        if (Guest.instance.guest)
-        {
-            // If the user is a guest, log a message indicating they are not logged in
-            Debug.Log("User not logged in");
-        }
-        else
-        {
-            // If the user is not a guest, retrieve the player's username
-            string playerUsername = DatabaseManager.instance.username;
-
-            // Get a reference to the volume settings node in the Firebase database
-            DatabaseReference volumeSettingsRef = DatabaseManager.instance.databaseReference
-                .Child("Users")
-                .Child(playerUsername)
-                .Child("Settings")
-                .Child("Volume");
-
-            if (!Guest.instance.guest)
-            {
-                // Read the volume settings from Firebase
-                volumeSettingsRef.GetValueAsync().ContinueWith(task =>
-                {
-                    if (task.IsCompleted)
-                    {
-                        DataSnapshot snapshot = task.Result;
-
-                        // Check if the snapshot exists and has children
-                        if (snapshot != null && snapshot.HasChildren)
-                        {
-                            // Get the values of master, music, and hit sound values from the snapshot
-                            masterValue = float.Parse(snapshot.Child("Master").Value.ToString());
-                            musicValue = float.Parse(snapshot.Child("Music").Value.ToString());
-                            hitSoundValue = float.Parse(snapshot.Child("HitSound").Value.ToString());
-
-                            // Update the values of the sliders with the loaded values
-                            CheckDatabaseAudioVolume(masterValue, masterSlider, "Master");
-                            CheckDatabaseAudioVolume(musicValue, musicSlider, "Music");
-                            CheckDatabaseAudioVolume(hitSoundValue, hitSoundSlider, "HitSound");
-                        }
-                        else
-                        {
-                            Debug.Log("Volume settings not found in Firebase");
-                        }
-                    }
-                    else if (task.IsFaulted)
-                    {
-                        Debug.LogError("Failed to load volume settings from Firebase: " + task.Exception);
-                    }
-                });
-            }
-        }
     }
 
     public void Awake()
@@ -237,6 +178,63 @@ public class SettingsMenu : MonoBehaviour
     }
 
     // Audio
+    // Method to load volume settings from Firebase
+    public void LoadVolumeSettings()
+    {
+        // Check if the user is logged in
+        if (Guest.instance.guest)
+        {
+            // If the user is a guest, log a message indicating they are not logged in
+            Debug.Log("User not logged in");
+        }
+        else
+        {
+            // If the user is not a guest, retrieve the player's username
+            string playerUsername = DatabaseManager.instance.username;
+
+            // Get a reference to the volume settings node in the Firebase database
+            DatabaseReference volumeSettingsRef = DatabaseManager.instance.databaseReference
+                .Child("Users")
+                .Child(playerUsername)
+                .Child("Settings")
+                .Child("Volume");
+
+            if (!Guest.instance.guest)
+            {
+                // Read the volume settings from Firebase
+                volumeSettingsRef.GetValueAsync().ContinueWith(task =>
+                {
+                    if (task.IsCompleted)
+                    {
+                        DataSnapshot snapshot = task.Result;
+
+                        // Check if the snapshot exists and has children
+                        if (snapshot != null && snapshot.HasChildren)
+                        {
+                            // Get the values of master, music, and hit sound values from the snapshot
+                            masterValue = float.Parse(snapshot.Child("Master").Value.ToString());
+                            musicValue = float.Parse(snapshot.Child("Music").Value.ToString());
+                            hitSoundValue = float.Parse(snapshot.Child("HitSound").Value.ToString());
+
+                            // Update the values of the sliders with the loaded values
+                            CheckDatabaseAudioVolume(masterValue, masterSlider, "Master");
+                            CheckDatabaseAudioVolume(musicValue, musicSlider, "Music");
+                            CheckDatabaseAudioVolume(hitSoundValue, hitSoundSlider, "HitSound");
+                        }
+                        else
+                        {
+                            Debug.Log("Volume settings not found in Firebase");
+                        }
+                    }
+                    else if (task.IsFaulted)
+                    {
+                        Debug.LogError("Failed to load volume settings from Firebase: " + task.Exception);
+                    }
+                });
+            }
+        }
+    }
+
     public void AudioButton()
     {
         ButtonAnimator.SetBool("General", false);
@@ -327,7 +325,6 @@ public class SettingsMenu : MonoBehaviour
         syncText.text = $"{ms} ms";
     }
 
-
     // Display
     public void DisplayButton()
     {
@@ -351,7 +348,7 @@ public class SettingsMenu : MonoBehaviour
     public void SaveFullscreenSetting(bool isFullscreen)
     {
         // Check if the user is logged in
-        if (Guest.instance.LoginAs.text == "Login as Guest")
+        if (Guest.instance.guest)
         {
             // If the user is not logged in, log a message indicating so
             Debug.Log("User not logged in");
@@ -359,7 +356,7 @@ public class SettingsMenu : MonoBehaviour
         else
         {
             // If the user is logged in, retrieve the player's username
-            string playerUsername = Guest.instance.LoginAs.text;
+            string playerUsername = DatabaseManager.instance.username;
 
             // Set the fullscreen setting in the Firebase database under the player's settings
             DatabaseManager.instance.databaseReference
@@ -397,7 +394,7 @@ public class SettingsMenu : MonoBehaviour
     public void SaveResolutionSetting(string resolutionData)
     {
         // Check if the user is logged in
-        if (Guest.instance.LoginAs.text == "Login as Guest")
+        if (Guest.instance.guest)
         {
             // If the user is not logged in, log a message indicating so
             Debug.Log("User not logged in");
@@ -405,7 +402,7 @@ public class SettingsMenu : MonoBehaviour
         else
         {
             // If the user is logged in, retrieve the player's username
-            string playerUsername = Guest.instance.LoginAs.text;
+            string playerUsername = DatabaseManager.instance.username;
 
             // Set the resolution setting in the Firebase database under the player's settings
             DatabaseManager.instance.databaseReference
@@ -449,7 +446,7 @@ public class SettingsMenu : MonoBehaviour
         else
         {
             // If the user is logged in, retrieve the player's username
-            string playerUsername = Guest.instance.LoginAs.text;
+            string playerUsername = DatabaseManager.instance.username;
 
             // Set the VSync setting in the Firebase database under the player's settings
             DatabaseManager.instance.databaseReference
