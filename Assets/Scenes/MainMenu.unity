@@ -3145,7 +3145,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: v0.0.19 (Alpha)
+  m_Text: v0.0.20 (Alpha)
 --- !u!222 &262927682
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -18981,6 +18981,7 @@ GameObject:
   - component: {fileID: 1668887248}
   - component: {fileID: 1668887249}
   - component: {fileID: 1668887250}
+  - component: {fileID: 1668887251}
   m_Layer: 5
   m_Name: UpCircle
   m_TagString: Untagged
@@ -19145,6 +19146,21 @@ MonoBehaviour:
   m_RebindStopEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1668887251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1668887244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d150f088d0d334991c3cf4772fd615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputActionAsset: {fileID: -944628639613478452, guid: c62a9d329a3cc284e93099056f62fb1f, type: 3}
+  currentKeyText: {fileID: 40551295}
+  keyToPress: 0
 --- !u!1 &1672377019
 GameObject:
   m_ObjectHideFlags: 0

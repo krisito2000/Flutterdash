@@ -3148,8 +3148,9 @@ GameObject:
   - component: {fileID: 510610833}
   - component: {fileID: 510610836}
   - component: {fileID: 510610835}
+  - component: {fileID: 510610837}
   m_Layer: 5
-  m_Name: LeftCircle
+  m_Name: LeftCircleText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3162,7 +3163,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 510610832}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3194,7 +3195,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: A
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3271,6 +3272,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 510610832}
   m_CullTransparentMesh: 1
+--- !u!114 &510610837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 510610832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d150f088d0d334991c3cf4772fd615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputActionAsset: {fileID: -944628639613478452, guid: c62a9d329a3cc284e93099056f62fb1f, type: 3}
+  currentKeyText: {fileID: 510610835}
+  keyToPress: 1
 --- !u!1001 &511075326
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4509,8 +4525,9 @@ GameObject:
   - component: {fileID: 829115394}
   - component: {fileID: 829115397}
   - component: {fileID: 829115396}
+  - component: {fileID: 829115398}
   m_Layer: 5
-  m_Name: RightCircle
+  m_Name: RightCircleText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4555,7 +4572,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: D
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4632,6 +4649,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 829115393}
   m_CullTransparentMesh: 1
+--- !u!114 &829115398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 829115393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d150f088d0d334991c3cf4772fd615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputActionAsset: {fileID: -944628639613478452, guid: c62a9d329a3cc284e93099056f62fb1f, type: 3}
+  currentKeyText: {fileID: 829115396}
+  keyToPress: 3
 --- !u!1001 &836230386
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4795,8 +4827,9 @@ GameObject:
   - component: {fileID: 855581720}
   - component: {fileID: 855581723}
   - component: {fileID: 855581722}
+  - component: {fileID: 855581724}
   m_Layer: 5
-  m_Name: DownCircle
+  m_Name: DownCircleText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4809,7 +4842,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 855581719}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4841,7 +4874,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: S
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4918,6 +4951,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 855581719}
   m_CullTransparentMesh: 1
+--- !u!114 &855581724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 855581719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d150f088d0d334991c3cf4772fd615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputActionAsset: {fileID: -944628639613478452, guid: c62a9d329a3cc284e93099056f62fb1f, type: 3}
+  currentKeyText: {fileID: 855581722}
+  keyToPress: 2
 --- !u!1001 &866998789
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5218,8 +5266,9 @@ GameObject:
   - component: {fileID: 899430070}
   - component: {fileID: 899430073}
   - component: {fileID: 899430072}
+  - component: {fileID: 899430074}
   m_Layer: 5
-  m_Name: UpCircle
+  m_Name: UpCircleText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5232,7 +5281,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 899430069}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5264,7 +5313,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: W
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5341,6 +5390,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 899430069}
   m_CullTransparentMesh: 1
+--- !u!114 &899430074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899430069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d150f088d0d334991c3cf4772fd615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputActionAsset: {fileID: -944628639613478452, guid: c62a9d329a3cc284e93099056f62fb1f, type: 3}
+  currentKeyText: {fileID: 899430072}
+  keyToPress: 0
 --- !u!1001 &901496377
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9704,8 +9768,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 899430070}
-  - {fileID: 510610833}
   - {fileID: 855581720}
+  - {fileID: 510610833}
   - {fileID: 829115394}
   m_Father: {fileID: 1155046652}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

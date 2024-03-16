@@ -134,8 +134,11 @@ public class DatabaseManager : MonoBehaviour
     // Load statistics for all levels
     public void LoadEveryLevelStats()
     {
-        StartCoroutine(LoadLevelStats(username, "TutorialLevel", TutorialBestScoreText, TutorialAttemptsText, TutorialBestSpeedText, TutorialBestStreakText));
-        StartCoroutine(LoadLevelStats(username, "Level 1", Level1BestScoreText, Level1AttemptsText, Level1BestSpeedText, Level1BestStreakText));
+        if (!Guest.instance.guest)
+        {
+            StartCoroutine(LoadLevelStats(username, "TutorialLevel", TutorialBestScoreText, TutorialAttemptsText, TutorialBestSpeedText, TutorialBestStreakText));
+            StartCoroutine(LoadLevelStats(username, "Level 1", Level1BestScoreText, Level1AttemptsText, Level1BestSpeedText, Level1BestStreakText));
+        }
     }
 
     // Save user data to file
