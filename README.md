@@ -1,5 +1,10 @@
 # Flutterdash
 
+## Contact
+
+Gmail: flutterdashofficial@gmail.com
+
+
 ## Usage Policy
 
 No Way by BIMINI
