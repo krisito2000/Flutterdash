@@ -26,8 +26,6 @@ public class GameManager : MonoBehaviour
     public NoteMovement NoteMovement;
     [Tooltip("UI text prompting player to press any key to start")]
     public Text pressAnyKey;
-    [Tooltip("Animator for circle animation")]
-    public Animator circleAnimator;
 
     [Header("------- Score -------")]
     [Tooltip("UI text displaying current score")]
@@ -86,10 +84,26 @@ public class GameManager : MonoBehaviour
     public Text missedText;
 
     [Header("------- Hearths -------")]
-    public GameObject Hearth1;
-    public GameObject Hearth2;
-    public GameObject Hearth3;
-    public GameObject Hearth4;
+    [Header("Hearth 1")]
+    public GameObject Hearth1TopLeftHalf;
+    public GameObject Hearth1TopRightHalf;
+    public GameObject Hearth1BottomLeftHalf;
+    public GameObject Hearth1BottomRightHalf;
+    [Header("Hearth 2")]
+    public GameObject Hearth2TopLeftHalf;
+    public GameObject Hearth2TopRightHalf;
+    public GameObject Hearth2BottomLeftHalf;
+    public GameObject Hearth2BottomRightHalf;
+    [Header("Hearth 3")]
+    public GameObject Hearth3TopLeftHalf;
+    public GameObject Hearth3TopRightHalf;
+    public GameObject Hearth3BottomLeftHalf;
+    public GameObject Hearth3BottomRightHalf;
+    [Header("Hearth 4")]
+    public GameObject Hearth4TopLeftHalf;
+    public GameObject Hearth4TopRightHalf;
+    public GameObject Hearth4BottomLeftHalf;
+    public GameObject Hearth4BottomRightHalf;
 
     [Header("------- Health system -------")]
     [Tooltip("Current health of the player")]
@@ -157,49 +171,97 @@ public class GameManager : MonoBehaviour
                     attempts++;
                     UpdateAttemptsInDatabase();
                 }
-                if (circleAnimator != null)
-                {
-                    circleAnimator.SetBool("isTriggered", true);
-                }
             }
         }
 
         // Handling hearth UI based on player health
-        if (currentHealth >= 100f)
+        if (currentHealth == 100f)
         {
-            Hearth1.SetActive(true);
-            Hearth2.SetActive(true);
-            Hearth3.SetActive(true);
-            Hearth4.SetActive(true);
+            HearthsSet(SetHearthsArray(16));
         }
-        else if (currentHealth >= 75f && currentHealth < 100f)
+        else if (currentHealth >= 93.75f && currentHealth < 100f)
         {
-            Hearth1.SetActive(false);
-            Hearth2.SetActive(true);
-            Hearth3.SetActive(true);
-            Hearth4.SetActive(true);
+            HearthsSet(SetHearthsArray(15));
         }
-        else if (currentHealth >= 50f && currentHealth < 75f)
+        else if (currentHealth >= 87.5f && currentHealth < 93.75f)
         {
-            Hearth1.SetActive(false);
-            Hearth2.SetActive(false);
-            Hearth3.SetActive(true);
-            Hearth4.SetActive(true);
+            HearthsSet(SetHearthsArray(14));
         }
-        else if (currentHealth >= 25f && currentHealth < 0f)
+        else if (currentHealth >= 81.25f && currentHealth < 87.5f)
         {
-            Hearth1.SetActive(false);
-            Hearth2.SetActive(false);
-            Hearth3.SetActive(false);
-            Hearth4.SetActive(true);
+            HearthsSet(SetHearthsArray(13));
+        }
+        else if (currentHealth >= 75f && currentHealth < 81.25f)
+        {
+            HearthsSet(SetHearthsArray(12));
+        }
+        else if (currentHealth >= 68.75f && currentHealth < 75f)
+        {
+            HearthsSet(SetHearthsArray(11));
+        }
+        else if (currentHealth >= 62.5f && currentHealth < 68.75f)
+        {
+            HearthsSet(SetHearthsArray(10));
+        }
+        else if (currentHealth >= 56.25f && currentHealth < 62.5f)
+        {
+            HearthsSet(SetHearthsArray(9));
+        }
+        else if (currentHealth >= 50f && currentHealth < 56.25f)
+        {
+            HearthsSet(SetHearthsArray(8));
+        }
+        else if (currentHealth >= 43.75f && currentHealth < 50f)
+        {
+            HearthsSet(SetHearthsArray(7));
+        }
+        else if (currentHealth >= 37.5f && currentHealth < 43.75f)
+        {
+            HearthsSet(SetHearthsArray(6));
+        }
+        else if (currentHealth >= 31.25f && currentHealth < 37.5f)
+        {
+            HearthsSet(SetHearthsArray(5));
+        }
+        else if (currentHealth >= 25f && currentHealth < 31.25f)
+        {
+            HearthsSet(SetHearthsArray(4));
+        }
+        else if (currentHealth >= 18.75f && currentHealth < 25f)
+        {
+            HearthsSet(SetHearthsArray(3));
+        }
+        else if (currentHealth >= 12.5f && currentHealth < 18.75f)
+        {
+            HearthsSet(SetHearthsArray(2));
+        }
+        else if (currentHealth >= 6.25f && currentHealth < 12.5f)
+        {
+            HearthsSet(SetHearthsArray(1));
+        }
+        else if (currentHealth > 0f && currentHealth < 6.25f)
+        {
+            HearthsSet(SetHearthsArray(0));
         }
         else if (currentHealth <= 0f)
         {
             // Game over conditions
-            Hearth1.SetActive(false);
-            Hearth2.SetActive(false);
-            Hearth3.SetActive(false);
-            Hearth4.SetActive(false);
+            Hearth1TopLeftHalf.SetActive(false);
+            Hearth1TopRightHalf.SetActive(false);
+            Hearth1BottomLeftHalf.SetActive(false);
+            Hearth1BottomRightHalf.SetActive(false);
+            Hearth2TopLeftHalf.SetActive(false);
+            Hearth2TopRightHalf.SetActive(false);
+            Hearth2BottomLeftHalf.SetActive(false);
+            Hearth2BottomRightHalf.SetActive(false);
+            Hearth3TopLeftHalf.SetActive(false);
+            Hearth3TopRightHalf.SetActive(false);
+            Hearth3BottomLeftHalf.SetActive(false);
+            Hearth3BottomRightHalf.SetActive(false);
+            Hearth4TopLeftHalf.SetActive(false);
+            Hearth4TopRightHalf.SetActive(false);
+            Hearth4BottomLeftHalf.SetActive(false);
+            Hearth4BottomRightHalf.SetActive(false);
 
             Notes.SetActive(false);
             music.Stop();
@@ -215,8 +277,61 @@ public class GameManager : MonoBehaviour
                 Debug.Log("resultsAnimation is null. Cannot set animation parameter.");
             }
         }
+        UpdateBestStreak();
+    }
 
-        // Updating best streak achieved
+    bool[] SetHearthsArray(int activeCount)
+    {
+        if (activeCount < 0 || activeCount > 16)
+        {
+            Debug.LogError("Invalid number of active hearths specified.");
+            return null;
+        }
+
+        bool[] states = new bool[16];
+
+        for (int i = 0; i < 16 - activeCount; i++)
+        {
+            states[i] = false;
+        }
+
+        for (int i = 16 - activeCount; i < 16; i++)
+        {
+            states[i] = true;
+        }
+
+        return states;
+    }
+
+    void HearthsSet(bool[] hearthStates)
+    {
+        if (hearthStates == null || hearthStates.Length != 16)
+        {
+            Debug.LogError("Invalid hearth states provided.");
+            return;
+        }
+
+        Hearth1TopLeftHalf.SetActive(hearthStates[0]);
+        Hearth1TopRightHalf.SetActive(hearthStates[1]);
+        Hearth1BottomLeftHalf.SetActive(hearthStates[2]);
+        Hearth1BottomRightHalf.SetActive(hearthStates[3]);
+        Hearth2TopLeftHalf.SetActive(hearthStates[4]);
+        Hearth2TopRightHalf.SetActive(hearthStates[5]);
+        Hearth2BottomLeftHalf.SetActive(hearthStates[6]);
+        Hearth2BottomRightHalf.SetActive(hearthStates[7]);
+        Hearth3TopLeftHalf.SetActive(hearthStates[8]);
+        Hearth3TopRightHalf.SetActive(hearthStates[9]);
+        Hearth3BottomLeftHalf.SetActive(hearthStates[10]);
+        Hearth3BottomRightHalf.SetActive(hearthStates[11]);
+        Hearth4TopLeftHalf.SetActive(hearthStates[12]);
+        Hearth4TopRightHalf.SetActive(hearthStates[13]);
+        Hearth4BottomLeftHalf.SetActive(hearthStates[14]);
+        Hearth4BottomRightHalf.SetActive(hearthStates[15]);
+    }
+
+    // Updating best streak achieved
+    void UpdateBestStreak()
+    {
         if (noteStreak >= bestStreak)
         {
             bestStreak = noteStreak;
@@ -253,6 +368,7 @@ public class GameManager : MonoBehaviour
             }
         });
     }
+
     // Updating attempts in the database
     void UpdateAttemptsInDatabase()
     {
@@ -385,29 +501,6 @@ public class GameManager : MonoBehaviour
         Heal(perfectHitHeal);
 
         Debug.Log("Perfect Hit");
-    }
-
-    public void LatePerfectHit()
-    {
-        latePerfectCounter++;
-        noteStreak++;
-
-        currentScore += (int)(scoreLatePerfect * currentMultiplier);
-        NoteHit();
-        Heal(latePerfectHitHeal);
-
-        Debug.Log("Late Perfect Hit");
-    }
-    public void LateHit()
-    {
-        lateCounter++;
-        noteStreak = 0;
-
-        currentScore += (int)(scoreLate * currentMultiplier);
-        NoteHit();
-        Heal(lateHitHeal);
-
-        Debug.Log("Late Hit");
     }
 
     public void NoteMissed()
