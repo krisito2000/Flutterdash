@@ -231,14 +231,19 @@ public class NoteObject : MonoBehaviour
         }
 
         // Determine note accuracy based on distance to the circle
+        if (distanceDetection > 0.774)
+        {
+            GameManager.instance.NoteMissed(); // Handle missed note
+            Debug.Log("Take dmg");
+        }
         // EL
-        if (distanceDetection >= 0.774)
+        else if (distanceDetection <= 0.774 && distanceDetection > 0.263)
         {
             GameManager.instance.EarlyHit(); // Handle early hit
             this.gameObject.SetActive(false); // Deactivate the note object
         }
         // ELPerfect
-        else if (distanceDetection >= 0.263)
+        else if (distanceDetection <= 0.263 && distanceDetection > 0.15)
         {
             GameManager.instance.EarlyPerfectHit(); // Handle early perfect hit
             this.gameObject.SetActive(false); // Deactivate the note object
@@ -304,4 +309,5 @@ public class NoteObject : MonoBehaviour
             }
         }
     }
+
 }

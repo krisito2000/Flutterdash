@@ -34,7 +34,7 @@ public class NoteMovement : MonoBehaviour
     void Update()
     {
         // Check if any key is pressed to start the game
-        if (Input.anyKeyDown)
+        if (Input.anyKeyDown && !Input.GetKeyDown(KeyCode.Escape))
         {
             gameStart = true;
         }
