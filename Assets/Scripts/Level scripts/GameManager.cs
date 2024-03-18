@@ -36,11 +36,9 @@ public class GameManager : MonoBehaviour
     private int scorePerNote; // Score gained per note hit
 
     // Score thresholds for different note timings
-    private float scoreEarly;
-    private float scoreEarlyPerfect;
-    private float scorePerfect;
-    private float scoreLatePerfect;
-    private float scoreLate;
+    public float scorePerfect;
+    public float scoreEarlyPerfect;
+    public float scoreEarly;
 
     private int noteStreak; // Current streak of consecutive notes hit
     [Tooltip("Best streak achieved")]
@@ -68,19 +66,15 @@ public class GameManager : MonoBehaviour
     public Animator resultsAnimation;
 
     // Counters for different note timings
-    private int earlyCounter;
-    private int earlyPerfectCounter;
     private int perfectCounter;
-    private int latePerfectCounter;
-    private int lateCounter;
+    private int earlyPerfectCounter;
+    private int earlyCounter;
     private int missedCounter;
 
     // UI text elements displaying counters for different note timings
-    public Text earlyText;
-    public Text earlyPerfectText;
     public Text perfectText;
-    public Text latePerfectText;
-    public Text lateText;
+    public Text earlyPerfectText;
+    public Text earlyText;
     public Text missedText;
 
     [Header("------- Hearths -------")]
@@ -110,11 +104,9 @@ public class GameManager : MonoBehaviour
     public float currentHealth;
 
     // Healing values for different note timings
-    public float earlyHitHeal;
-    public float earlyPerfectHitHeal;
     public float perfectHitHeal;
-    public float latePerfectHitHeal;
-    public float lateHitHeal;
+    public float earlyPerfectHitHeal;
+    public float earlyHitHeal;
     public float missedHitHeal;
 
     void Start()
@@ -145,11 +137,10 @@ public class GameManager : MonoBehaviour
         noteStreak = 0;
         currentHealth = 100f;
 
-        scoreEarly = 75 * levelSpeed;
-        scoreEarlyPerfect = 150 * levelSpeed;
-        scorePerfect = 350 * levelSpeed;
-        scoreLatePerfect = 150 * levelSpeed;
-        scoreLate = 75 * levelSpeed;
+        scorePerfect *= levelSpeed;
+        scoreEarlyPerfect *= levelSpeed;
+        scoreEarly *= levelSpeed;
+        
         currentMultiplier = 1;
 
         FetchAttemptsFromDatabase();
@@ -392,11 +383,10 @@ public class GameManager : MonoBehaviour
     {
         resultsAnimation.SetBool("isTriggered", true);
 
-        earlyText.text = earlyCounter.ToString();
-        earlyPerfectText.text = earlyPerfectCounter.ToString();
         perfectText.text = perfectCounter.ToString();
-        latePerfectText.text = latePerfectCounter.ToString();
-        lateText.text = lateCounter.ToString();
+        earlyPerfectText.text = earlyPerfectCounter.ToString();
+        earlyText.text = earlyCounter.ToString();
+        
         missedText.text = missedCounter.ToString();
         resultsScoreText.text = currentScore.ToString();
     }
