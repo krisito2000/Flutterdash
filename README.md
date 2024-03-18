@@ -3,14 +3,14 @@
 
 1. **Accessing and Downloading the Release:**
    - Navigate to the "Releases" section of this GitHub repository.
-   - Locate the latest release containing the file "Flutterdash.zip".
    - Click on the release to expand its details.
-   - Find the "Flutterdash.zip" file and click on it to begin the download.
+   - Locate the file named "Flutterdash.rar".
+   - Find the "Flutterdash.rar" file and click on it to begin the download.
 
 ### How to Extract the ZIP File
 
 2. **Extracting the ZIP File:**
-   - Once downloaded, locate the "Flutterdash.zip" file in your Downloads folder or the directory you chose.
+   - Once downloaded, locate the "Flutterdash.rar" file in your Downloads folder or the directory you chose.
    - To extract its contents, you'll need a file extraction tool. You can use one of the following:
      - [WinRAR](https://www.win-rar.com/download.html)
      - [7-Zip](https://www.7-zip.org/download.html)
