@@ -35,6 +35,8 @@ public class NoteObject : MonoBehaviour
     void Start()
     {
         instance = this;
+
+        noteID = transform.position.z;
     }
 
     void Update()
@@ -56,10 +58,32 @@ public class NoteObject : MonoBehaviour
         if (closestNote == this)
         {
             noteExited = true;
-            NoteAccuracy(); // Determine the accuracy of the note press
-            GameManager.instance.noteHitSound.Play(); // Play the note hit sound
+
+            // Check if this note has the lowest ID among active notes
+            bool isLowestID = IsLowestID();
+
+            if (isLowestID)
+            {
+                NoteAccuracy(); // Determine the accuracy of the note press
+                activeNotes.Remove(this); // Remove this note from the list of active notes
+                GameManager.instance.noteHitSound.Play(); // Play the note hit sound
+            }
         }
     }
+    private bool IsLowestID()
+    {
+        foreach (NoteObject note in activeNotes)
+        {
+            if (note.noteID < this.noteID)
+            {
+                // If any note has a lower ID, return false
+                return false;
+            }
+        }
+        // If no other note has a lower ID, return true
+        return true;
+    }
+
 
     private NoteObject GetClosestNote()
     {
