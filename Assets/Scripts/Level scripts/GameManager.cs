@@ -394,11 +394,11 @@ public class GameManager : MonoBehaviour
     // Healing function for the player
     public void Heal(float damageHeal)
     {
-        currentHealth += damageHeal;
-        if (currentHealth >= 100f)
-        {
-            currentHealth = 100f;
-        }
+        //currentHealth += damageHeal;
+        //if (currentHealth >= 100f)
+        //{
+        //    currentHealth = 100f;
+        //}
     }
 
     // Handling multiplier UI background color
