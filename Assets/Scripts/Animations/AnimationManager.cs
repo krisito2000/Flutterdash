@@ -10,7 +10,7 @@ public class AnimationManager : MonoBehaviour
     [Header("------- Animaton -------")]
     [Tooltip("The type animation you want to manage")]
     public AnimationType animationtype;
-    public enum AnimationType { SongShower, FadeAnimation }
+    public enum AnimationType { SongShower, FadeAnimation, TutorialAnimation }
 
     [Tooltip("The animation")]
     public Animator transition;
@@ -42,6 +42,10 @@ public class AnimationManager : MonoBehaviour
                 // Circle text fade animation
                 case AnimationType.FadeAnimation:
                     StartCoroutine(AnimationTrigger(fadeTimer));
+                    break;
+                case AnimationType.TutorialAnimation:
+                    if (Input.anyKeyDown && !Input.GetKeyDown(KeyCode.Escape) && !PauseMenu.instance.gameIsPaused)
+                        transition.SetBool("isTriggered", true);
                     break;
             }
         }

@@ -16,11 +16,6 @@ public class NoteObject : MonoBehaviour
     [Tooltip("Indicator for the note that has been triggered in the collider")]
     public bool circleTrigger = false;
     private bool noteExited = false; // Flag indicating whether the note has exited the circle
-    [Tooltip("Collider representing the circle area")]
-    public CircleCollider2D circleCollider;
-
-    [Tooltip("The note")]
-    public Transform circle;
 
     [Tooltip("Enum representing the key to press for this note")]
     public enum KeyToPress { Up, Left, Down, Right }
@@ -32,11 +27,39 @@ public class NoteObject : MonoBehaviour
     [Tooltip("Unique identifier for the note")]
     public float noteID;
 
+    [Header("------- Compass circle -------")]
+    [Tooltip("Collider representing the circle area")]
+    public CircleCollider2D circleCollider;
+    [Tooltip("The compass circle")]
+    public Transform circle;
+
+    [Header("Animations")]
+    public ParticleSystem onClickParticle;
+    
+
     void Start()
     {
         instance = this;
-
         noteID = transform.position.z;
+
+        switch (keyToPress)
+        {
+            case KeyToPress.Up:
+                onClickParticle = GameObject.Find("UpCircleParticle").GetComponent<ParticleSystem>();
+                break;
+            case KeyToPress.Left:
+                onClickParticle = GameObject.Find("LeftCircleParticle").GetComponent<ParticleSystem>();
+                break;
+            case KeyToPress.Down:
+                onClickParticle = GameObject.Find("DownCircleParticle").GetComponent<ParticleSystem>();
+                break;
+            case KeyToPress.Right:
+                onClickParticle = GameObject.Find("RightCircleParticle").GetComponent<ParticleSystem>();
+                break;
+            default:
+                Debug.LogError("Invalid KeyToPress enum value.");
+                break;
+        }
     }
 
     void Update()
@@ -65,8 +88,6 @@ public class NoteObject : MonoBehaviour
             if (isLowestID)
             {
                 NoteAccuracy(); // Determine the accuracy of the note press
-                activeNotes.Remove(this); // Remove this note from the list of active notes
-                GameManager.instance.noteHitSound.Play(); // Play the note hit sound
             }
         }
     }
@@ -258,26 +279,43 @@ public class NoteObject : MonoBehaviour
         if (distanceDetection > 0.682)
         {
             GameManager.instance.NoteMissed(); // Handle missed note
-            Debug.Log("Take dmg");
+            Debug.Log("Too early");
         }
         // EL
         else if (distanceDetection <= 0.682 && distanceDetection > 0.304)
         {
+            NoteParticles(Color.yellow);
             GameManager.instance.EarlyHit(); // Handle early hit
-            this.gameObject.SetActive(false); // Deactivate the note object
+            NoteBeingClicked();
         }
         // ELPerfect
         else if (distanceDetection <= 0.304 && distanceDetection > 0.2)
         {
+            NoteParticles(new Color(1.0f, 0.64f, 0.0f));
             GameManager.instance.EarlyPerfectHit(); // Handle early perfect hit
-            this.gameObject.SetActive(false); // Deactivate the note object
+            NoteBeingClicked();
         }
         // Perfect
         else
         {
+            NoteParticles(Color.green);
             GameManager.instance.PerfectHit(); // Handle perfect hit
-            this.gameObject.SetActive(false); // Deactivate the note object
+            NoteBeingClicked();
         }
+    }
+
+    private void NoteBeingClicked()
+    {
+        activeNotes.Remove(this);
+        GameManager.instance.noteHitSound.Play();
+        gameObject.SetActive(false);
+    }
+
+    private void NoteParticles(Color color)
+    {
+        var mainModule = onClickParticle.main;
+        mainModule.startColor = new ParticleSystem.MinMaxGradient(color);
+        onClickParticle.Play();
     }
 
     // Get the score from the GameManager
