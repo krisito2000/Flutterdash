@@ -135,6 +135,18 @@ public class PauseMenu : MonoBehaviour
         speedUpText.text = $"{speedUpPercentage}%";
     }
 
+    public void DoneButtonSpeedUp()
+    {
+        if (SceneManager.GetActiveScene().buildIndex != 0)
+        {
+            Retry();
+        }
+        else
+        {
+            Resume();
+        }
+    }
+
     // Retry the current level
     public void Retry()
     {

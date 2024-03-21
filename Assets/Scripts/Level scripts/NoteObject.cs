@@ -24,8 +24,8 @@ public class NoteObject : MonoBehaviour
     private static List<NoteObject> activeNotes = new List<NoteObject>(); // List of active notes in the circle collider
     [Tooltip("Indicates whether this note is the last note in the level")]
     public bool isTheLastNote;
-    [Tooltip("Unique identifier for the note")]
-    public float noteID;
+    //[Tooltip("Unique identifier for the note")]
+    //public float noteID;
 
     [Header("------- Compass circle -------")]
     [Tooltip("Collider representing the circle area")]
@@ -40,7 +40,7 @@ public class NoteObject : MonoBehaviour
     void Start()
     {
         instance = this;
-        noteID = transform.position.z;
+        //noteID = transform.position.z;
 
         switch (keyToPress)
         {
@@ -82,29 +82,9 @@ public class NoteObject : MonoBehaviour
         {
             noteExited = true;
 
-            // Check if this note has the lowest ID among active notes
-            bool isLowestID = IsLowestID();
-
-            if (isLowestID)
-            {
-                NoteAccuracy(); // Determine the accuracy of the note press
-            }
+            NoteAccuracy();
         }
     }
-    private bool IsLowestID()
-    {
-        foreach (NoteObject note in activeNotes)
-        {
-            if (note.noteID < this.noteID)
-            {
-                // If any note has a lower ID, return false
-                return false;
-            }
-        }
-        // If no other note has a lower ID, return true
-        return true;
-    }
-
 
     private NoteObject GetClosestNote()
     {

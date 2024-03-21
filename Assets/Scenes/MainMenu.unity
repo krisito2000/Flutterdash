@@ -4841,8 +4841,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1645273784}
-        m_TargetAssemblyTypeName: PauseMenu, Scripts
-        m_MethodName: Retry
+        m_TargetAssemblyTypeName: PauseMenu, Assembly-CSharp
+        m_MethodName: DoneButtonSpeedUp
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
