@@ -120,92 +120,7 @@ public class NoteObject : MonoBehaviour
             string currentSceneName = SceneManager.GetActiveScene().name;
 
             GameManager.instance.Statistics(); // Update game statistics
-
-            // Get the best speed location in the database
-            var speedLocation = DatabaseManager.instance.databaseReference
-                                    .Child("Users")
-                                    .Child(Guest.instance.LoginAs.text)
-                                    .Child("Levels")
-                                    .Child(currentSceneName)
-                                    .Child("BestSpeed");
-
-            // Retrieve the current best speed from the database
-            speedLocation.GetValueAsync().ContinueWith(speedTask =>
-            {
-                if (speedTask.IsFaulted)
-                {
-                    Debug.LogError("Failed to retrieve best speed: " + speedTask.Exception.Message);
-                    return;
-                }
-
-                DataSnapshot speedSnapshot = speedTask.Result;
-                float databaseBestSpeed = speedSnapshot.Exists ? float.Parse(speedSnapshot.Value.ToString()) : 0f;
-
-                float currentSpeed = PauseMenu.instance.speedUpPercentage;
-
-                if (currentSpeed > databaseBestSpeed)
-                {
-                    // If the current speed in the game is greater than the best speed in the database, update the database with the new speed
-                    speedLocation.SetValueAsync(currentSpeed).ContinueWith(speedSaveTask =>
-                    {
-                        if (speedSaveTask.IsFaulted)
-                        {
-                            Debug.LogError("Failed to save best speed: " + speedSaveTask.Exception.Message);
-                            return;
-                        }
-
-                        Debug.Log("Best speed saved successfully!");
-                    });
-                }
-                else
-                {
-                    // If the current speed in the game is not better, do nothing
-                    Debug.Log("Current speed is not better than the best speed in the database.");
-                }
-            });
-
-            // Update best streak and best score
-            // Get the best streak location in the database
-            var streakLocation = DatabaseManager.instance.databaseReference.Child("Users")
-                                    .Child(Guest.instance.LoginAs.text)
-                                    .Child("Levels")
-                                    .Child(currentSceneName)
-                                    .Child("BestStreak");
-
-            // Retrieve the current best streak from the database
-            streakLocation.GetValueAsync().ContinueWith(streakTask =>
-            {
-                if (streakTask.IsFaulted)
-                {
-                    Debug.LogError("Failed to retrieve best streak: " + streakTask.Exception.Message);
-                    return;
-                }
-
-                DataSnapshot streakSnapshot = streakTask.Result;
-                int databaseBestStreak = streakSnapshot.Exists ? int.Parse(streakSnapshot.Value.ToString()) : 0;
-
-                int currentStreak = GameManager.instance.bestStreak;
-
-                if (currentStreak > databaseBestStreak)
-                {
-                    // If the best streak in the game is greater than the best streak in the database, update the database with the new streak
-                    streakLocation.SetValueAsync(currentStreak).ContinueWith(streakSaveTask =>
-                    {
-                        if (streakSaveTask.IsFaulted)
-                        {
-                            Debug.LogError("Failed to save best streak: " + streakSaveTask.Exception.Message);
-                            return;
-                        }
-
-                        Debug.Log("Best streak saved successfully!");
-                    });
-                }
-                else
-                {
-                    // If the current streak in the game is not better, do nothing
-                    Debug.Log("Current streak is not better than the best streak in the database.");
-                }
-            });
+            
 
             // Get the best score location in the database
             var scoreLocation = DatabaseManager.instance.databaseReference.Child("Users")
@@ -239,8 +154,79 @@ public class NoteObject : MonoBehaviour
                             return;
                         }
 
+                        // Get the best speed location in the database
+                        var speedLocation = DatabaseManager.instance.databaseReference
+                                                .Child("Users")
+                                                .Child(Guest.instance.LoginAs.text)
+                                                .Child("Levels")
+                                                .Child(currentSceneName)
+                                                .Child("BestSpeed");
+
+                        // Retrieve the current best speed from the database
+                        speedLocation.GetValueAsync().ContinueWith(speedTask =>
+                        {
+                            if (speedTask.IsFaulted)
+                            {
+                                Debug.LogError("Failed to retrieve best speed: " + speedTask.Exception.Message);
+                                return;
+                            }
+
+                            DataSnapshot speedSnapshot = speedTask.Result;
+                            float databaseBestSpeed = speedSnapshot.Exists ? float.Parse(speedSnapshot.Value.ToString()) : 0f;
+                            float currentSpeed = PauseMenu.instance.speedUpPercentage;
+
+                            // If the best streak in the game is greater than the best streak in the database, update the database with the new streak
+                            speedLocation.SetValueAsync(currentSpeed).ContinueWith(speedSaveTask =>
+                            {
+                                if (speedSaveTask.IsFaulted)
+                                {
+                                    Debug.LogError("Failed to save best streak: " + speedSaveTask.Exception.Message);
+                                    return;
+                                }
+
+                                Debug.Log("Best streak saved successfully!");
+                            });
+                        });
+
+                        // Update best streak and best score
+                        // Get the best streak location in the database
+                        var streakLocation = DatabaseManager.instance.databaseReference.Child("Users")
+                                                .Child(Guest.instance.LoginAs.text)
+                                                .Child("Levels")
+                                                .Child(currentSceneName)
+                                                .Child("BestStreak");
+
+                        // Retrieve the current best streak from the database
+                        streakLocation.GetValueAsync().ContinueWith(streakTask =>
+                        {
+                            if (streakTask.IsFaulted)
+                            {
+                                Debug.LogError("Failed to retrieve best streak: " + streakTask.Exception.Message);
+                                return;
+                            }
+
+                            DataSnapshot streakSnapshot = streakTask.Result;
+                            int databaseBestStreak = streakSnapshot.Exists ? int.Parse(streakSnapshot.Value.ToString()) : 0;
+
+                            int currentStreak = GameManager.instance.bestStreak;
+
+                            // If the best streak in the game is greater than the best streak in the database, update the database with the new streak
+                            streakLocation.SetValueAsync(currentStreak).ContinueWith(streakSaveTask =>
+                            {
+                                if (streakSaveTask.IsFaulted)
+                                {
+                                    Debug.LogError("Failed to save best streak: " + streakSaveTask.Exception.Message);
+                                    return;
+                                }
+
+                                Debug.Log("Best streak saved successfully!");
+                            });
+                        });
+
                         Debug.Log("Best score saved successfully!");
                     });
+
+
                 }
                 else
                 {

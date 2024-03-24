@@ -131,6 +131,33 @@ public class DatabaseManager : MonoBehaviour
         }
     }
 
+    public async Task<DataSnapshot> RetrieveDatabaseValueAsync(string valueName)
+    {
+        // Construct the database path for the specified value
+        var valueLocation = databaseReference
+            .Child("Users")
+            .Child(username)
+            .Child("Levels")
+            .Child(SceneManager.GetActiveScene().name)
+            .Child(valueName);
+
+        // Retrieve the value from the database
+        return await valueLocation.GetValueAsync();
+    }
+
+    public async Task SaveToDatabase(string valueName, object value)
+    {
+        // Construct the database path for the specified value
+        var valueLocation = databaseReference
+            .Child("Users")
+            .Child(username)
+            .Child("Levels")
+            .Child(SceneManager.GetActiveScene().name)
+            .Child(valueName);
+
+        await valueLocation.SetValueAsync(value);
+    }
+
     // Load statistics for all levels
     public void LoadEveryLevelStats()
     {
@@ -142,7 +169,7 @@ public class DatabaseManager : MonoBehaviour
     }
 
     // Save user data to file
-    private void SaveUserData(string username, string hashedPassword)
+    private void SaveUserDataInTXT(string username, string hashedPassword)
     {
         string userData = $"{username}:{hashedPassword}\n";
         this.username = username;
@@ -150,7 +177,7 @@ public class DatabaseManager : MonoBehaviour
     }
 
     // Delete user data
-    private void DeleteUserData()
+    private void DeleteUserDataFromTXT()
     {
         System.IO.File.WriteAllText(userDataFilePath, "");
         username = null;
@@ -345,7 +372,7 @@ public class DatabaseManager : MonoBehaviour
 
             // Save user data to local file
             databaseReference.Child("Users").Child(username).Child("Authentication").SetRawJsonValueAsync(json);
-            SaveUserData(RegisterUsernameField.text, PasswordHashSystem.HashPassword(RegisterPasswordField.text));
+            SaveUserDataInTXT(RegisterUsernameField.text, PasswordHashSystem.HashPassword(RegisterPasswordField.text));
 
             // Return to authentication screen
             Authentication.instance.RegisterReturnButton();
@@ -357,7 +384,7 @@ public class DatabaseManager : MonoBehaviour
     public void LoginUser()
     {
         // Delete any existing user data
-        DeleteUserData();
+        DeleteUserDataFromTXT();
 
         // Get the entered username and hashed password
         string enteredUsername = loginUsername.text;
@@ -443,7 +470,7 @@ public class DatabaseManager : MonoBehaviour
         Authentication.instance.animator.SetBool("login", true);
 
         // Delete user data and hide error messages
-        DeleteUserData();
+        DeleteUserDataFromTXT();
         HideErrorMessage();
     }
 
@@ -452,6 +479,8 @@ public class DatabaseManager : MonoBehaviour
         Authentication.instance.ErrorMessage.alpha = 1;
         Authentication.instance.ErrorMessage.interactable = true;
         Authentication.instance.ErrorMessage.blocksRaycasts = true;
+
+        Debug.Log(message);
         // Show the error message text in your Canvas Group
     }
 
@@ -497,8 +526,8 @@ public class DatabaseManager : MonoBehaviour
                 Guest.instance.LoginAs.text = username;
                 loginButtonText.text = "Logout";
                 MainMenuTransition.instance.animator.SetBool("AuthenticationTrigger", false);
-                DeleteUserData();
-                SaveUserData(loginUsername.text, PasswordHashSystem.HashPassword(loginPassword.text));
+                DeleteUserDataFromTXT();
+                SaveUserDataInTXT(loginUsername.text, PasswordHashSystem.HashPassword(loginPassword.text));
             }
             else
             {
