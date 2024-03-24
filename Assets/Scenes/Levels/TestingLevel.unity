@@ -10512,7 +10512,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1339535206
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11109,7 +11109,7 @@ MonoBehaviour:
   perfectHitHeal: 5
   earlyPerfectHitHeal: 1.5
   earlyHitHeal: -2.5
-  missedHitHeal: -25
+  missedHitHeal: -20
 --- !u!4 &1420531616
 Transform:
   m_ObjectHideFlags: 0

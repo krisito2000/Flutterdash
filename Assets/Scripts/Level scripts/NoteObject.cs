@@ -76,42 +76,37 @@ public class NoteObject : MonoBehaviour
 
     private void Pressed()
     {
-        NoteObject closestNote = GetClosestNote(); // Get the closest note to the circle
-
+        NoteObject closestNote = GetClosestNote();
         if (closestNote == this)
         {
             noteExited = true;
-
             NoteAccuracy();
         }
     }
 
     private NoteObject GetClosestNote()
     {
-        NoteObject closestNote = null; // Initialize the closest note variable
-        float closestDistance = float.MaxValue; // Initialize the closest distance variable to a high value
-        Vector2 circlePosition = circle.position; // Get the position of the circle
+        NoteObject closestNote = null;
+        float closestDistance = float.MaxValue;
+        Vector2 circlePosition = circle.position;
 
-        foreach (NoteObject note in activeNotes) // Iterate through all active notes
+        foreach (NoteObject note in activeNotes)
         {
             if (!note.circleTrigger)
             {
-                // Skip notes that can't be pressed.
                 continue;
             }
 
-            // Calculate the distance between the current note and the circle
             float distance = Vector2.Distance(note.transform.position, circlePosition);
-
-            // Check if the current note is closer than the previously closest note
             if (distance < closestDistance)
             {
-                closestDistance = distance; // Update the closest distance
-                closestNote = note; // Update the closest note
+                closestDistance = distance;
+                closestNote = note;
+                break;
             }
         }
 
-        return closestNote; // Return the closest note to the circle
+        return closestNote;
     }
 
 
