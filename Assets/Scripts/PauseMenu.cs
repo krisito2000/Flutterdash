@@ -153,9 +153,7 @@ public class PauseMenu : MonoBehaviour
         // Unload unused assets to free memory
         Resources.UnloadUnusedAssets();
 
-        // Deactivate pause menu canvas and speed up menu canvas, then resume gameplay
-        pauseMenuCanvas.SetActive(false);
-        speedUpMenuCanvas.SetActive(false);
+        // Resume the game from the pause menu
         Resume();
 
         // Reload the current scene asynchronously
