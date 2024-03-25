@@ -71,7 +71,6 @@ public class MainMenuTransition : MonoBehaviour
                     PlayButton();
                     SetGuestTrigger(false);
                 }
-                DatabaseManager.instance.LoadEveryLevelStats();
             }
             else if (InputSystemController.instance.RightCircleClicked)
             {

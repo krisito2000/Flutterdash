@@ -84,19 +84,16 @@ public class DatabaseManager : MonoBehaviour
 
     void Awake()
     {
-        // Ensure there is only one instance of the GameManager script in the scene.
         if (instance == null)
         {
-            // Set the instance to this GameManager if it's the first one.
             instance = this;
         }
         else
         {
-            // Destroy the existing instance if a new one is detected.
             Destroy(instance.gameObject);
+            instance = this;
         }
 
-        // Keep this GameObject alive throughout the entire game.
         DontDestroyOnLoad(gameObject);
 
         databaseReference = FirebaseDatabase.DefaultInstance.RootReference; // Set the database reference to the root reference of Firebase
@@ -129,6 +126,11 @@ public class DatabaseManager : MonoBehaviour
                 }
             }
         }
+    }
+
+    void Start()
+    {
+        LoadEveryLevelStats();
     }
 
     public async Task<DataSnapshot> RetrieveDatabaseValueAsync(string valueName)
@@ -524,6 +526,7 @@ public class DatabaseManager : MonoBehaviour
                 // Log in the user if passwords match
                 Authentication.instance.animator.SetBool("login", false);
                 Guest.instance.LoginAs.text = username;
+                Guest.instance.guest = false;
                 loginButtonText.text = "Logout";
                 MainMenuTransition.instance.animator.SetBool("AuthenticationTrigger", false);
                 DeleteUserDataFromTXT();
