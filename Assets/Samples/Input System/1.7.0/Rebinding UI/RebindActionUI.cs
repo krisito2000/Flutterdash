@@ -299,6 +299,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
             // Configure the rebind.
             m_RebindOperation = action.PerformInteractiveRebinding(bindingIndex)
                 .WithControlsExcluding("Mouse")
+                .WithCancelingThrough("<Keyboard>/escape")
                 .OnCancel(
                     operation =>
                     {
@@ -323,6 +324,7 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
                             PerformInteractiveRebind(action, bindingIndex, allCompositeParts);
                             return;
                         }
+                        m_DuplicateBindingText.text = "";
 
                         UpdateBindingDisplay();
                         CleanUp();
@@ -376,7 +378,8 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
 
                 if (binding.effectivePath == newBinding.effectivePath && bindingIndex != action.bindings.IndexOf(b => b == binding))
                 {
-                    Debug.Log($"Duplicate binding found: {newBinding.effectivePath}");
+                    Debug.Log($"Duplicate binding found: {newBinding.effectivePath}, {action.bindings.IndexOf(b => b == binding)}");
+                    m_DuplicateBindingText.text = $"An existing binding is using the path '{newBinding.effectivePath}')";
                     return true;
                 }
             }
@@ -474,6 +477,10 @@ namespace UnityEngine.InputSystem.Samples.RebindUI
         [Tooltip("Optional text label that will be updated with prompt for user input.")]
         [SerializeField]
         private TextMeshProUGUI m_RebindText;
+
+        [Tooltip("Optional text label that will be displayed when a duplicate binding is detected.")]
+        [SerializeField]
+        private TextMeshProUGUI m_DuplicateBindingText;
 
         [Tooltip("Optional bool field which allows you to OVERRIDE the action label your own text")]
         [SerializeField]

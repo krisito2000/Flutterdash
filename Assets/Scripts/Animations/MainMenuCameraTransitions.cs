@@ -25,7 +25,11 @@ public class MainMenuTransition : MonoBehaviour
         {
             if (InputSystemController.instance.UpCircleClicked)
             {
-                SetTutorial(false);
+                if (GetTutorial())
+                {
+                    SetTutorial(false);
+                    return;
+                }
                 if (!GetSettings() && !GetCustomSong() && !GetPlay() && !GetAuthentication() && !GetSync())
                 {
                     if (Guest.instance.guest)
@@ -35,10 +39,6 @@ public class MainMenuTransition : MonoBehaviour
                     }
                     PlayButton();
                 }
-                if (GetAuthentication())
-                {
-                    SetAuthentication(false);
-                }
                 if (GetTransitionSettings())
                 {
                     if (GetSettings())
@@ -46,6 +46,7 @@ public class MainMenuTransition : MonoBehaviour
                         BackMainMenuSettings();
                         PlayButton();
                         SetGuestTrigger(false);
+                        Guest.instance.guestCanvas.alpha = 0;
                     }
                 }
                 if (GetSettings())
@@ -54,6 +55,7 @@ public class MainMenuTransition : MonoBehaviour
                     BackMainMenuSettings();
                     PlayButton();
                     SetGuestTrigger(false);
+                    Guest.instance.guestCanvas.alpha = 0;
                 }
                 if (GetTransitionCustom())
                 {
@@ -62,6 +64,7 @@ public class MainMenuTransition : MonoBehaviour
                         BackMainMenuCustomSong();
                         PlayButton();
                         SetGuestTrigger(false);
+                        Guest.instance.guestCanvas.alpha = 0;
                     }
                 }
                 if (GetCustomSong())
@@ -70,11 +73,16 @@ public class MainMenuTransition : MonoBehaviour
                     BackMainMenuCustomSong();
                     PlayButton();
                     SetGuestTrigger(false);
+                    Guest.instance.guestCanvas.alpha = 0;
                 }
             }
             else if (InputSystemController.instance.RightCircleClicked)
             {
-                SetTutorial(false);
+                if (GetTutorial())
+                {
+                    SetTutorial(false);
+                    return;
+                }
                 if (!GetSettings() && !GetCustomSong() && !GetPlay() && !GetSync())
                 {
                     SettingsButton();
@@ -111,7 +119,11 @@ public class MainMenuTransition : MonoBehaviour
             }
             else if (InputSystemController.instance.LeftCircleClicked)
             {
-                SetTutorial(false);
+                if (GetTutorial())
+                {
+                    SetTutorial(false);
+                    return;
+                }
                 if (!GetCustomSong() && !GetSettings() && !GetPlay() && !GetSync())
                 {
                     CustomSongButton();
@@ -155,6 +167,11 @@ public class MainMenuTransition : MonoBehaviour
             }
             else if (InputSystemController.instance.DownCircleClicked)
             {
+                if (GetTutorial())
+                {
+                    SetTutorial(false);
+                    return;
+                }
                 SetTutorial(false);
                 Guest.instance.guestCanvas.alpha = 0;
                 if (!GetPlay() && !GetSync() && !GetSettings())

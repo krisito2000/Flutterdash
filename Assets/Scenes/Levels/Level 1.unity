@@ -3106,6 +3106,7 @@ GameObject:
   - component: {fileID: 510610833}
   - component: {fileID: 510610836}
   - component: {fileID: 510610835}
+  - component: {fileID: 510610837}
   m_Layer: 5
   m_Name: LeftCircle
   m_TagString: Untagged
@@ -3152,7 +3153,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: A
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3229,6 +3230,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 510610832}
   m_CullTransparentMesh: 1
+--- !u!114 &510610837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 510610832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d150f088d0d334991c3cf4772fd615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputActionAsset: {fileID: -944628639613478452, guid: c62a9d329a3cc284e93099056f62fb1f, type: 3}
+  currentKeyText: {fileID: 510610835}
+  keyToPress: 1
 --- !u!1001 &511075326
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4817,6 +4833,7 @@ GameObject:
   - component: {fileID: 829115394}
   - component: {fileID: 829115397}
   - component: {fileID: 829115396}
+  - component: {fileID: 829115398}
   m_Layer: 5
   m_Name: RightCircle
   m_TagString: Untagged
@@ -4863,7 +4880,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: D
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4940,6 +4957,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 829115393}
   m_CullTransparentMesh: 1
+--- !u!114 &829115398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 829115393}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d150f088d0d334991c3cf4772fd615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputActionAsset: {fileID: -944628639613478452, guid: c62a9d329a3cc284e93099056f62fb1f, type: 3}
+  currentKeyText: {fileID: 829115396}
+  keyToPress: 3
 --- !u!1 &829784271
 GameObject:
   m_ObjectHideFlags: 0
@@ -5175,6 +5207,7 @@ GameObject:
   - component: {fileID: 855581720}
   - component: {fileID: 855581723}
   - component: {fileID: 855581722}
+  - component: {fileID: 855581724}
   m_Layer: 5
   m_Name: DownCircle
   m_TagString: Untagged
@@ -5221,7 +5254,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: S
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5298,6 +5331,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 855581719}
   m_CullTransparentMesh: 1
+--- !u!114 &855581724
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 855581719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d150f088d0d334991c3cf4772fd615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputActionAsset: {fileID: -944628639613478452, guid: c62a9d329a3cc284e93099056f62fb1f, type: 3}
+  currentKeyText: {fileID: 855581722}
+  keyToPress: 2
 --- !u!4 &860079539 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3374337263513519891, guid: 6790bbc324e1f8841a81e28f329d7e28, type: 3}
@@ -5549,6 +5597,7 @@ GameObject:
   - component: {fileID: 899430070}
   - component: {fileID: 899430073}
   - component: {fileID: 899430072}
+  - component: {fileID: 899430074}
   m_Layer: 5
   m_Name: UpCircle
   m_TagString: Untagged
@@ -5595,7 +5644,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: W
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5672,6 +5721,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 899430069}
   m_CullTransparentMesh: 1
+--- !u!114 &899430074
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 899430069}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9d150f088d0d334991c3cf4772fd615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputActionAsset: {fileID: -944628639613478452, guid: c62a9d329a3cc284e93099056f62fb1f, type: 3}
+  currentKeyText: {fileID: 899430072}
+  keyToPress: 0
 --- !u!1 &912842557
 GameObject:
   m_ObjectHideFlags: 0
@@ -7747,7 +7811,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 727594019006753399, guid: bc6f33e4db38fad448d0baa78e567484, type: 3}
       propertyPath: m_Offset.x
-      value: -22
+      value: -18.42
       objectReference: {fileID: 0}
     - target: {fileID: 2230731665906789832, guid: bc6f33e4db38fad448d0baa78e567484, type: 3}
       propertyPath: m_Name
@@ -8624,7 +8688,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1368442145591834260, guid: 9aed1a8fe91c6564ab5353054eeb556c, type: 3}
       propertyPath: m_Offset.x
-      value: 22
+      value: 18.42
       objectReference: {fileID: 0}
     - target: {fileID: 2720664786835466717, guid: 9aed1a8fe91c6564ab5353054eeb556c, type: 3}
       propertyPath: m_RootOrder
@@ -9978,7 +10042,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 390727578346334344, guid: 6790bbc324e1f8841a81e28f329d7e28, type: 3}
       propertyPath: m_Offset.y
-      value: -22
+      value: -18.42
       objectReference: {fileID: 0}
     - target: {fileID: 2756219374420275438, guid: 6790bbc324e1f8841a81e28f329d7e28, type: 3}
       propertyPath: secondaryKey
@@ -11295,7 +11359,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7581781775850032206, guid: caccd27d3a7027d4a83f23bcda005caf, type: 3}
       propertyPath: m_Offset.y
-      value: 22
+      value: 18.42
       objectReference: {fileID: 0}
     - target: {fileID: 8668913115523104742, guid: caccd27d3a7027d4a83f23bcda005caf, type: 3}
       propertyPath: secondaryKey

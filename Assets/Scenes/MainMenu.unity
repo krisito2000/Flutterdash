@@ -1981,6 +1981,7 @@ MonoBehaviour:
   m_BindingText: {fileID: 1426630534}
   m_RebindOverlay: {fileID: 1239681487}
   m_RebindText: {fileID: 692491543}
+  m_DuplicateBindingText: {fileID: 1313573506}
   m_OverRideActionLabel: 0
   m_ActionLabelString: 
   m_UpdateBindingUIEvent:
@@ -10044,6 +10045,7 @@ MonoBehaviour:
   m_BindingText: {fileID: 1862571569}
   m_RebindOverlay: {fileID: 1239681487}
   m_RebindText: {fileID: 692491543}
+  m_DuplicateBindingText: {fileID: 1313573506}
   m_OverRideActionLabel: 0
   m_ActionLabelString: 
   m_UpdateBindingUIEvent:
@@ -10803,7 +10805,7 @@ MonoBehaviour:
   m_MinValue: -80
   m_MaxValue: 0
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: -10
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -15014,7 +15016,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+  m_fontColor: {r: 1, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -15031,8 +15033,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 10.7
-  m_fontSizeBase: 10.7
+  m_fontSize: 7.23
+  m_fontSizeBase: 7.23
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -19028,6 +19030,7 @@ MonoBehaviour:
   m_BindingText: {fileID: 40551295}
   m_RebindOverlay: {fileID: 1239681487}
   m_RebindText: {fileID: 692491543}
+  m_DuplicateBindingText: {fileID: 1313573506}
   m_OverRideActionLabel: 0
   m_ActionLabelString: 
   m_UpdateBindingUIEvent:
@@ -19598,7 +19601,7 @@ MonoBehaviour:
   m_MinValue: -80
   m_MaxValue: 0
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: -10
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
@@ -21882,6 +21885,7 @@ MonoBehaviour:
   m_BindingText: {fileID: 530121640}
   m_RebindOverlay: {fileID: 1239681487}
   m_RebindText: {fileID: 692491543}
+  m_DuplicateBindingText: {fileID: 1313573506}
   m_OverRideActionLabel: 0
   m_ActionLabelString: 
   m_UpdateBindingUIEvent:

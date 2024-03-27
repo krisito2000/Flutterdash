@@ -5320,7 +5320,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7581781775850032206, guid: caccd27d3a7027d4a83f23bcda005caf, type: 3}
       propertyPath: m_Offset.y
-      value: 22
+      value: 18.42
       objectReference: {fileID: 0}
     - target: {fileID: 8668913115523104742, guid: caccd27d3a7027d4a83f23bcda005caf, type: 3}
       propertyPath: keyToPress
@@ -5750,7 +5750,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 390727578346334344, guid: 6790bbc324e1f8841a81e28f329d7e28, type: 3}
       propertyPath: m_Offset.y
-      value: -22
+      value: -18.42
       objectReference: {fileID: 0}
     - target: {fileID: 2756219374420275438, guid: 6790bbc324e1f8841a81e28f329d7e28, type: 3}
       propertyPath: keyToPress
@@ -10171,7 +10171,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1368442145591834260, guid: 9aed1a8fe91c6564ab5353054eeb556c, type: 3}
       propertyPath: m_Offset.x
-      value: 22
+      value: 18.42
       objectReference: {fileID: 0}
     - target: {fileID: 1368442145591834260, guid: 9aed1a8fe91c6564ab5353054eeb556c, type: 3}
       propertyPath: m_Offset.y
@@ -12937,7 +12937,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4823105947715267692, guid: b11d4dda37e9c644d8c80793c88ffb7a, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7485066177503996557, guid: b11d4dda37e9c644d8c80793c88ffb7a, type: 3}
       propertyPath: onClickParticle
@@ -13463,7 +13463,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 727594019006753399, guid: bc6f33e4db38fad448d0baa78e567484, type: 3}
       propertyPath: m_Offset.x
-      value: -22
+      value: -18.42
       objectReference: {fileID: 0}
     - target: {fileID: 2230731665906789832, guid: bc6f33e4db38fad448d0baa78e567484, type: 3}
       propertyPath: m_Name

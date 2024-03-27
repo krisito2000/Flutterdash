@@ -218,31 +218,37 @@ public class DatabaseManager : MonoBehaviour
 
         // Get the data snapshot
         DataSnapshot snapshot = userData.Result;
-
-        // Check if the snapshot exists
-        if (snapshot != null && snapshot.Exists)
+        try
         {
-            // Get the stored password from the snapshot
-            string storedPassword = snapshot.Child("password").Value.ToString();
-
-            // Compare stored password with the entered password
-            if (storedPassword == enteredPassword)
+            // Check if the snapshot exists
+            if (snapshot != null && snapshot.Exists)
             {
-                // Update UI and load user settings if passwords match
-                loginButtonText.text = "Logout";
-                Guest.instance.LoginAs.text = username;
-                StartCoroutine(LoadUserSettings(username));
+                // Get the stored password from the snapshot
+                string storedPassword = snapshot.Child("password").Value.ToString();
+
+                // Compare stored password with the entered password
+                if (storedPassword == enteredPassword)
+                {
+                    // Update UI and load user settings if passwords match
+                    loginButtonText.text = "Logout";
+                    Guest.instance.LoginAs.text = username;
+                    StartCoroutine(LoadUserSettings(username));
+                }
+                else
+                {
+                    // Log a warning if passwords don't match
+                    Debug.LogWarning("Stored password does not match entered password for user: " + username);
+                }
             }
             else
             {
-                // Log a warning if passwords don't match
-                Debug.LogWarning("Stored password does not match entered password for user: " + username);
+                // Log a warning if user doesn't exist in the database
+                Debug.LogWarning("User does not exist in the database: " + username);
             }
         }
-        else
+        catch (Exception e)
         {
-            // Log a warning if user doesn't exist in the database
-            Debug.LogWarning("User does not exist in the database: " + username);
+            Debug.LogError("Failed to check user data: " + e.Message);
         }
     }
 

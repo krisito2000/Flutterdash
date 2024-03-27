@@ -80,6 +80,9 @@ public class SettingsMenu : MonoBehaviour
         InputLockMode = false;
 
         // Volume
+        audioMixer.SetFloat("Master", masterSlider.value);
+        audioMixer.SetFloat("Music", musicSlider.value);
+        audioMixer.SetFloat("NoteHit", hitSoundSlider.value);
 
         // Display
         // Resolution
@@ -179,58 +182,65 @@ public class SettingsMenu : MonoBehaviour
 
     // Audio
     // Method to load volume settings from Firebase
-    public void LoadVolumeSettings()
+    public async void LoadVolumeSettings()
     {
-        // Check if the user is logged in
+        // Check user login status
         if (Guest.instance.guest)
         {
-            // If the user is a guest, log a message indicating they are not logged in
             Debug.Log("User not logged in");
+            return; // Exit the function early if user is a guest
         }
-        else
+
+        string playerUsername = DatabaseManager.instance.username;
+
+        try
         {
-            // If the user is not a guest, retrieve the player's username
-            string playerUsername = DatabaseManager.instance.username;
+            // Build Firebase reference with null check
+            DatabaseReference volumeSettingsRef = DatabaseManager.instance.databaseReference?.Child("Users")
+                                                    .Child(playerUsername)
+                                                    .Child("Settings")
+                                                    .Child("Volume");
 
-            // Get a reference to the volume settings node in the Firebase database
-            DatabaseReference volumeSettingsRef = DatabaseManager.instance.databaseReference
-                .Child("Users")
-                .Child(playerUsername)
-                .Child("Settings")
-                .Child("Volume");
-
-            // Read the volume settings from Firebase
-            volumeSettingsRef.GetValueAsync().ContinueWith(task =>
+            if (volumeSettingsRef == null)
             {
-                if (task.IsCompleted)
-                {
-                    DataSnapshot snapshot = task.Result;
+                Debug.LogError("Failed to create Firebase reference for volume settings");
+                return; // Exit the function if reference creation fails
+            }
 
-                    // Check if the snapshot exists and has children
-                    if (snapshot != null && snapshot.HasChildren)
-                    {
-                        // Get the values of master, music, and hit sound values from the snapshot
-                        masterValue = float.Parse(snapshot.Child("Master").Value.ToString());
-                        musicValue = float.Parse(snapshot.Child("Music").Value.ToString());
-                        hitSoundValue = float.Parse(snapshot.Child("HitSound").Value.ToString());
+            // Read volume settings asynchronously
+            DataSnapshot snapshot = await volumeSettingsRef.GetValueAsync();
 
-                        // Update the values of the sliders with the loaded values
-                        CheckDatabaseAudioVolume(masterValue, masterSlider, "Master");
-                        CheckDatabaseAudioVolume(musicValue, musicSlider, "Music");
-                        CheckDatabaseAudioVolume(hitSoundValue, hitSoundSlider, "HitSound");
-                    }
-                    else
-                    {
-                        Debug.Log("Volume settings not found in Firebase");
-                    }
-                }
-                else if (task.IsFaulted)
+            // Check snapshot existence and children
+            if (snapshot != null && snapshot.HasChildren)
+            {
+                try
                 {
-                    Debug.LogError("Failed to load volume settings from Firebase: " + task.Exception);
+                    masterValue = float.Parse(snapshot.Child("Master").Value.ToString());
+                    musicValue = float.Parse(snapshot.Child("Music").Value.ToString());
+                    hitSoundValue = float.Parse(snapshot.Child("HitSound").Value.ToString());
                 }
-            });
+                catch (FormatException e)
+                {
+                    Debug.LogError($"Error parsing volume data from Firebase: {e.Message}");
+                    // Consider providing default values or informative errors here
+                }
+
+                // Update slider values
+                CheckDatabaseAudioVolume(masterValue, masterSlider, "Master");
+                CheckDatabaseAudioVolume(musicValue, musicSlider, "Music");
+                CheckDatabaseAudioVolume(hitSoundValue, hitSoundSlider, "HitSound");
+            }
+            else
+            {
+                Debug.Log("Volume settings not found in Firebase");
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Unexpected error loading volume settings: {e.Message}");
         }
     }
+
 
     public void AudioButton()
     {
