@@ -1,59 +1,86 @@
+using Firebase;
 using Firebase.Database;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class NoteObject : MonoBehaviour
 {
     public static NoteObject instance;
 
+    // Flag indicating whether the note has been triggered by the circle
     [Header("------- Note verification -------")]
+    [Tooltip("Indicator for the note that has been triggered in the collider")]
     public bool circleTrigger = false;
-    private bool noteExited = false;
+    private bool noteExited = false; // Flag indicating whether the note has exited the circle
+
+    [Tooltip("Enum representing the key to press for this note")]
+    public enum KeyToPress { Up, Left, Down, Right }
+    public KeyToPress keyToPress;
+
+    private static List<NoteObject> activeNotes = new List<NoteObject>(); // List of active notes in the circle collider
+    [Tooltip("Indicates whether this note is the last note in the level")]
+    public bool isTheLastNote;
+    //[Tooltip("Unique identifier for the note")]
+    //public float noteID;
+
+    [Header("------- Compass circle -------")]
+    [Tooltip("Collider representing the circle area")]
     public CircleCollider2D circleCollider;
-    public KeyCode keyToPress;
-    public KeyCode secondaryKey;
+    [Tooltip("The compass circle")]
     public Transform circle;
 
-    [Header("------- Animation -------")]
-    public bool noteAnimation;
-    public enum SpinDirection { Left, Right }
-    public SpinDirection direction;
-
-    [Header("------- Note indentification -------")]
-    private static List<NoteObject> activeNotes = new List<NoteObject>();
-    public bool isTheLastNote;
-    public float noteID;
+    [Header("Animations")]
+    public ParticleSystem onClickParticle;
+    
 
     void Start()
     {
         instance = this;
+        //noteID = transform.position.z;
 
-        // Assign an ID based on Z-axis
-        noteID = transform.position.z * 1000;
+        switch (keyToPress)
+        {
+            case KeyToPress.Up:
+                onClickParticle = GameObject.Find("UpCircleParticle").GetComponent<ParticleSystem>();
+                break;
+            case KeyToPress.Left:
+                onClickParticle = GameObject.Find("LeftCircleParticle").GetComponent<ParticleSystem>();
+                break;
+            case KeyToPress.Down:
+                onClickParticle = GameObject.Find("DownCircleParticle").GetComponent<ParticleSystem>();
+                break;
+            case KeyToPress.Right:
+                onClickParticle = GameObject.Find("RightCircleParticle").GetComponent<ParticleSystem>();
+                break;
+            default:
+                Debug.LogError("Invalid KeyToPress enum value.");
+                break;
+        }
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(keyToPress) || Input.GetKeyDown(secondaryKey))
+        // Check if the corresponding circle is clicked
+        if ((InputSystemController.instance.UpCircleClicked && keyToPress == KeyToPress.Up && !PauseMenu.instance.gameIsPaused) ||
+            (InputSystemController.instance.DownCircleClicked && keyToPress == KeyToPress.Down && !PauseMenu.instance.gameIsPaused) ||
+            (InputSystemController.instance.LeftCircleClicked && keyToPress == KeyToPress.Left && !PauseMenu.instance.gameIsPaused) ||
+            (InputSystemController.instance.RightCircleClicked && keyToPress == KeyToPress.Right && !PauseMenu.instance.gameIsPaused))
         {
-            NoteObject closestNote = GetClosestNote();
+            Pressed(); // Handle the press event
+        }
+    }
 
-            if (closestNote == this)
-            {
-                //if (haveAnimation)
-                //{
-                //    noteAnimation.SetBool("isTriggered", true);
-                //}
-                noteExited = true;
-                NoteAccuracy();
-            }
-            //// For when you spam the note to take damage (does not work)
-            //if (!circleTrigger && transform.position.x != 0 && transform.position.y != 0)
-            //{
-            //    GameManager.instance.currentHealth += GameManager.instance.missedHitHeal;
-            //}
+    private void Pressed()
+    {
+        NoteObject closestNote = GetClosestNote();
+        if (closestNote == this)
+        {
+            noteExited = true;
+            NoteAccuracy();
         }
     }
 
@@ -67,115 +94,227 @@ public class NoteObject : MonoBehaviour
         {
             if (!note.circleTrigger)
             {
-                // Skip notes that can't be pressed.
                 continue;
             }
 
             float distance = Vector2.Distance(note.transform.position, circlePosition);
-
             if (distance < closestDistance)
             {
                 closestDistance = distance;
                 closestNote = note;
+                break;
             }
         }
 
         return closestNote;
     }
 
+
     private void NoteAccuracy()
     {
         float distanceDetection = Vector2.Distance(transform.position, circle.position);
-        if (isTheLastNote)
+
+        // Check if this is the last note and the username is not empty
+        if (isTheLastNote && !string.IsNullOrEmpty(DatabaseManager.instance.username))
         {
             string currentSceneName = SceneManager.GetActiveScene().name;
 
-            GameManager.instance.Statistics();
+            GameManager.instance.Statistics(); // Update game statistics
+            
 
-            // Get the best speed location in the database
-            var speedLocation = DatabaseManager.instance.databaseReference.Child("Users")
+            // Get the best score location in the database
+            var scoreLocation = DatabaseManager.instance.databaseReference.Child("Users")
                                     .Child(Guest.instance.LoginAs.text)
                                     .Child("Levels")
                                     .Child(currentSceneName)
-                                    .Child("BestSpeed");
+                                    .Child("BestScore");
 
-            // Retrieve the current best speed from the database
-            speedLocation.GetValueAsync().ContinueWith(speedTask =>
+            // Retrieve the current best score from the database
+            scoreLocation.GetValueAsync().ContinueWith(scoreTask =>
             {
-                if (speedTask.IsFaulted)
+                if (scoreTask.IsFaulted)
                 {
-                    Debug.LogError("Failed to retrieve best speed: " + speedTask.Exception.Message);
+                    Debug.LogError("Failed to retrieve best score: " + scoreTask.Exception.Message);
                     return;
                 }
 
-                DataSnapshot speedSnapshot = speedTask.Result;
-                int databaseBestSpeed = speedSnapshot.Exists ? int.Parse(speedSnapshot.Value.ToString()) : 0;
+                DataSnapshot scoreSnapshot = scoreTask.Result;
+                int databaseBestScore = scoreSnapshot.Exists ? int.Parse(scoreSnapshot.Value.ToString()) : 0;
 
-                int currentSpeed = PauseMenu.instance.speedUpPercentage;
+                int currentScore = GetScore();
 
-                if (currentSpeed > databaseBestSpeed)
+                if (currentScore > databaseBestScore)
                 {
-                    // If the current speed in the game is greater than the best speed in the database, update the database with the new speed
-                    speedLocation.SetValueAsync(currentSpeed).ContinueWith(speedSaveTask =>
+                    // If the current score in the game is greater than the best score in the database, update the database with the new score
+                    scoreLocation.SetValueAsync(currentScore).ContinueWith(scoreSaveTask =>
                     {
-                        if (speedSaveTask.IsFaulted)
+                        if (scoreSaveTask.IsFaulted)
                         {
-                            Debug.LogError("Failed to save best speed: " + speedSaveTask.Exception.Message);
+                            Debug.LogError("Failed to save best score: " + scoreSaveTask.Exception.Message);
                             return;
                         }
 
-                        Debug.Log("Best speed saved successfully!");
+                        // Get the best speed location in the database
+                        var speedLocation = DatabaseManager.instance.databaseReference
+                                                .Child("Users")
+                                                .Child(Guest.instance.LoginAs.text)
+                                                .Child("Levels")
+                                                .Child(currentSceneName)
+                                                .Child("BestSpeed");
+
+                        // Retrieve the current best speed from the database
+                        speedLocation.GetValueAsync().ContinueWith(speedTask =>
+                        {
+                            if (speedTask.IsFaulted)
+                            {
+                                Debug.LogError("Failed to retrieve best speed: " + speedTask.Exception.Message);
+                                return;
+                            }
+
+                            DataSnapshot speedSnapshot = speedTask.Result;
+                            float databaseBestSpeed = speedSnapshot.Exists ? float.Parse(speedSnapshot.Value.ToString()) : 0f;
+                            float currentSpeed = PauseMenu.instance.speedUpPercentage;
+
+                            // If the best streak in the game is greater than the best streak in the database, update the database with the new streak
+                            speedLocation.SetValueAsync(currentSpeed).ContinueWith(speedSaveTask =>
+                            {
+                                if (speedSaveTask.IsFaulted)
+                                {
+                                    Debug.LogError("Failed to save best streak: " + speedSaveTask.Exception.Message);
+                                    return;
+                                }
+
+                                Debug.Log("Best streak saved successfully!");
+                            });
+                        });
+
+                        // Update best streak and best score
+                        // Get the best streak location in the database
+                        var streakLocation = DatabaseManager.instance.databaseReference.Child("Users")
+                                                .Child(Guest.instance.LoginAs.text)
+                                                .Child("Levels")
+                                                .Child(currentSceneName)
+                                                .Child("BestStreak");
+
+                        // Retrieve the current best streak from the database
+                        streakLocation.GetValueAsync().ContinueWith(streakTask =>
+                        {
+                            if (streakTask.IsFaulted)
+                            {
+                                Debug.LogError("Failed to retrieve best streak: " + streakTask.Exception.Message);
+                                return;
+                            }
+
+                            DataSnapshot streakSnapshot = streakTask.Result;
+                            int databaseBestStreak = streakSnapshot.Exists ? int.Parse(streakSnapshot.Value.ToString()) : 0;
+
+                            int currentStreak = GameManager.instance.bestStreak;
+
+                            // If the best streak in the game is greater than the best streak in the database, update the database with the new streak
+                            streakLocation.SetValueAsync(currentStreak).ContinueWith(streakSaveTask =>
+                            {
+                                if (streakSaveTask.IsFaulted)
+                                {
+                                    Debug.LogError("Failed to save best streak: " + streakSaveTask.Exception.Message);
+                                    return;
+                                }
+
+                                Debug.Log("Best streak saved successfully!");
+                            });
+                        });
+
+                        Debug.Log("Best score saved successfully!");
                     });
+
+
                 }
                 else
                 {
-                    // If the current speed in the game is not better, do nothing
-                    Debug.Log("Current speed is not better than the best speed in the database.");
+                    // If the current score in the game is not better, do nothing
+                    Debug.Log("Current score is not better than the best score in the database.");
                 }
             });
         }
 
-        //if (noteAnimation)
-        //{
-        //    AnimationManager.instance.NoteAnimation();
-        //}
-
+        // Determine note accuracy based on distance to the circle
+        if (distanceDetection > 0.682)
+        {
+            GameManager.instance.NoteMissed(); // Handle missed note
+            Debug.Log("Too early");
+        }
         // EL
-        if (distanceDetection >= 0.774)
+        else if (distanceDetection <= 0.682 && distanceDetection > 0.304)
         {
-            GameManager.instance.EarlyHit();
-            this.gameObject.SetActive(false);
+            NoteParticles(Color.yellow);
+            GameManager.instance.EarlyHit(); // Handle early hit
+            NoteBeingClicked();
         }
-        // ELPerfect  0.263
-        else if (distanceDetection >= 0.263)
+        // ELPerfect
+        else if (distanceDetection <= 0.304 && distanceDetection > 0.2)
         {
-            GameManager.instance.EarlyPerfectHit();
-            this.gameObject.SetActive(false);
+            NoteParticles(new Color(1.0f, 0.64f, 0.0f));
+            GameManager.instance.EarlyPerfectHit(); // Handle early perfect hit
+            NoteBeingClicked();
         }
-        // Perfect  0.116
+        // Perfect
         else
         {
-            GameManager.instance.PerfectHit();
-            this.gameObject.SetActive(false);
+            NoteParticles(Color.green);
+            GameManager.instance.PerfectHit(); // Handle perfect hit
+            NoteBeingClicked();
         }
-        // TODO: Create Late and Late Perfect
     }
 
+    private void NoteBeingClicked()
+    {
+        activeNotes.Remove(this);
+        GameManager.instance.noteHitSound.Play();
+        gameObject.SetActive(false);
+    }
+
+    private void NoteParticles(Color color)
+    {
+        var mainModule = onClickParticle.main;
+        mainModule.startColor = new ParticleSystem.MinMaxGradient(color);
+        onClickParticle.Play();
+    }
+
+    // Get the score from the GameManager
+    private int GetScore()
+    {
+        // Parse the string score to an int
+        int score;
+        if (int.TryParse(GameManager.instance.scoreText.text, out score))
+        {
+            return score;
+        }
+        else
+        {
+            // Handle the case where the conversion fails, perhaps by returning a default value
+            Debug.LogError("Failed to parse score from GameManager: " + GameManager.instance.scoreText.text);
+            return 0; // Default value
+        }
+    }
+
+    // Handle OnTriggerEnter2D event
     private void OnTriggerEnter2D(Collider2D other)
     {
+        // Check if the collider is tagged as an activator and matches the circle collider tag
         if (other.gameObject.CompareTag("Activator") && other.gameObject.tag == circleCollider.tag)
         {
             circleTrigger = true;
             noteExited = false;
             if (!activeNotes.Contains(this))
             {
-                activeNotes.Add(this);
+                activeNotes.Add(this); // Add this note to the list of active notes
             }
         }
     }
 
+    // Handle OnTriggerExit2D event
     private void OnTriggerExit2D(Collider2D other)
     {
+        // Check if the collider is tagged as an activator and matches the circle collider tag
         if (other.gameObject.CompareTag("Activator") && other.gameObject.tag == circleCollider.tag)
         {
             circleTrigger = false;
@@ -183,14 +322,15 @@ public class NoteObject : MonoBehaviour
             {
                 noteExited = true;
                 Debug.Log("Note missed: " + this.gameObject.name);
-                GameManager.instance.NoteMissed();
-                activeNotes.Remove(this);
-                gameObject.SetActive(false);
+                GameManager.instance.NoteMissed(); // Handle note missed event
+                activeNotes.Remove(this); // Remove this note from the list of active notes
+                gameObject.SetActive(false); // Deactivate the note object
             }
             if (isTheLastNote)
             {
-                GameManager.instance.Statistics();
+                GameManager.instance.Statistics(); // Update game statistics
             }
         }
     }
+
 }

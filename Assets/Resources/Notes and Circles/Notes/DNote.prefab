@@ -137,13 +137,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   circleTrigger: 0
-  circleCollider: {fileID: 727594019006753399, guid: bc6f33e4db38fad448d0baa78e567484, type: 3}
-  keyToPress: 100
-  secondaryKey: 275
-  circle: {fileID: 7494824699669170502, guid: bc6f33e4db38fad448d0baa78e567484, type: 3}
-  noteAnimation: 0
-  direction: 0
+  keyToPress: 3
+  isTheLastNote: 0
   noteID: 0
+  circleCollider: {fileID: 727594019006753399, guid: bc6f33e4db38fad448d0baa78e567484, type: 3}
+  circle: {fileID: 7494824699669170502, guid: bc6f33e4db38fad448d0baa78e567484, type: 3}
+  onClickParticle: {fileID: 8333637580216138947, guid: e4d5c8262a33b7646812a5538f768ed2, type: 3}
 --- !u!58 &79495029753654431
 CircleCollider2D:
   m_ObjectHideFlags: 0

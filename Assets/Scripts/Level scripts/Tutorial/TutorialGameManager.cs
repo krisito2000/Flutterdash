@@ -12,8 +12,9 @@ public class TutorialGameManager : MonoBehaviour
 {
     public static TutorialGameManager instance;
 
-    //[Header("------- Sound -------")]
-    //public AudioSource noteHitSound;
+    [Header("------- Sound -------")]
+    public AudioSource backgroundMusic;
+    public AudioSource noteHitSound;
 
     [Header("------- Note manager -------")]
     public float bpm;

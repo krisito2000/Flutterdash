@@ -11,11 +11,6 @@ public class CustomLevelCreator : MonoBehaviour
     public static CustomLevelCreator instance;
     private string copiedSceneName;
 
-
-
-    public Text statusText1;
-    public Text statusText2;
-
     void Start()
     {
         instance = this;
@@ -24,7 +19,7 @@ public class CustomLevelCreator : MonoBehaviour
 
     void CheckForCustomLevelsScene()
     {
-        Scene customLevelsScene = SceneManager.GetSceneByName("Copied_ClearLevel");
+        Scene customLevelsScene = SceneManager.GetSceneByName("ClearLevel");
         if (customLevelsScene.isLoaded)
         {
             // The CustomLevels scene is loaded, perform your actions here...
@@ -58,8 +53,7 @@ public class CustomLevelCreator : MonoBehaviour
     // Method to create a copy of the specified scene and save it in the CustomLevels folder
     public void CopyAndSaveCustomLevel()
     {
-        string sceneToCopy = "ClearLevel"; // Replace with the scene name you want to copy
-        copiedSceneName = "Copied_" + sceneToCopy; // Assign the value here
+        copiedSceneName = $"{DragAndDropReceiver.instance.musicName.text}"; // Assign the value here
 
         string customLevelsFolderPath = Application.persistentDataPath + "/CustomLevels"; // Use persistentDataPath to save in the game's data folder
 
@@ -68,7 +62,7 @@ public class CustomLevelCreator : MonoBehaviour
             Directory.CreateDirectory(customLevelsFolderPath);
         }
 
-        string originalScenePath = Application.dataPath + "/Scenes/Levels/" + sceneToCopy + ".unity";
+        string originalScenePath = Application.dataPath + "/Scenes/Levels/" + DragAndDropReceiver.instance.musicName.text + ".unity";
         string copiedScenePath = customLevelsFolderPath + "/" + copiedSceneName + ".unity";
 
         if (File.Exists(originalScenePath))
@@ -92,8 +86,6 @@ public class CustomLevelCreator : MonoBehaviour
     private void LoadCopiedScene(string sceneName)
     {
         SceneManager.LoadScene("Scenes/Levels/CustomLevels/" + sceneName, LoadSceneMode.Single);
-
-
     }
 
     private void OnEnable()

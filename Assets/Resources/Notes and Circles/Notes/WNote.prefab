@@ -172,10 +172,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   circleTrigger: 0
-  circleCollider: {fileID: 390727578346334344, guid: 6790bbc324e1f8841a81e28f329d7e28, type: 3}
-  keyToPress: 119
-  secondaryKey: 273
-  circle: {fileID: 3374337263513519891, guid: 6790bbc324e1f8841a81e28f329d7e28, type: 3}
-  noteAnimation: 0
-  direction: 0
+  keyToPress: 0
+  isTheLastNote: 0
   noteID: 0
+  circleCollider: {fileID: 390727578346334344, guid: 6790bbc324e1f8841a81e28f329d7e28, type: 3}
+  circle: {fileID: 3374337263513519891, guid: 6790bbc324e1f8841a81e28f329d7e28, type: 3}
+  onClickParticle: {fileID: 3738128684677262794, guid: 3cc873336416d5b42988c21701a4f3f8, type: 3}

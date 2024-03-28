@@ -11,9 +11,10 @@ public class Validations : MonoBehaviour
 
     void Start()
     {
-       instance = this;
+        instance = this;
     }
 
+    // Method to validate registration fields before submitting
     public bool RegisterButton()
     {
         bool isUsernameValid = ValidateUsername();
@@ -21,15 +22,18 @@ public class Validations : MonoBehaviour
         bool isPasswordValid = ValidatePassword();
         bool isConfirmPasswordValid = ValidateConfirmPassword();
 
+        // Return true if all fields are valid, false otherwise
         return isUsernameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid;
     }
 
+    // Method to validate username field
     public bool ValidateUsername()
     {
         if (!string.IsNullOrEmpty(DatabaseManager.instance.RegisterUsernameField.text))
         {
             if (DatabaseManager.instance.RegisterUsernameField.text.Length >= 6)
             {
+                // Username valid
                 DatabaseManager.instance.RegisterUsernameErrorMessage.text = "";
                 DatabaseManager.instance.RegisterUsernameErrorCanvasGroup.alpha = 0;
                 return true;
@@ -38,16 +42,16 @@ public class Validations : MonoBehaviour
         return false;
     }
 
-
+    // Method to validate email field
     public bool ValidateEmail()
     {
         if (!string.IsNullOrEmpty(DatabaseManager.instance.RegisterEmailField.text))
         {
             string emailPattern = @"^(([\w-]+\.)+[\w-]+|([a-zA-Z]{1}|[\w-]{2,}))@"
-                                  // Matches the local part of the email address before the '@' symbol.
-                                  // This section allows word characters, hyphens, periods in the local part.
-                                  // It handles subdomains or a single letter domain name.
-                                  // @ symbol separates the local part from the domain part.
+                                // Matches the local part of the email address before the '@' symbol.
+                                // This section allows word characters, hyphens, periods in the local part.
+                                // It handles subdomains or a single letter domain name.
+                                // @ symbol separates the local part from the domain part.
                                 + @"((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\.([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\."
                                 // Matches the IP address in IPv4 format.
                                 // This section allows numbers in each segment separated by periods.
@@ -70,6 +74,7 @@ public class Validations : MonoBehaviour
         return false;
     }
 
+    // Method to validate password field
     public bool ValidatePassword()
     {
         if (!string.IsNullOrEmpty(DatabaseManager.instance.RegisterPasswordField.text))
@@ -85,6 +90,7 @@ public class Validations : MonoBehaviour
         return false;
     }
 
+    // Method to validate confirm password field
     public bool ValidateConfirmPassword()
     {
         if (DatabaseManager.instance.RegisterConfirmPasswordField.text == DatabaseManager.instance.RegisterPasswordField.text)

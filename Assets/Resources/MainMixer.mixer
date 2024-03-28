@@ -68,8 +68,12 @@ AudioMixerController:
   m_EnableSuspend: 1
   m_UpdateMode: 0
   m_ExposedParameters:
+  - guid: 2256f6b29b3359847807c90a00157060
+    name: NoteHit
   - guid: 95fe52949abd5d343ae415502322d6be
     name: Master
+  - guid: 3da4700ccced61045bfbed23ee59571e
+    name: Music
   m_AudioMixerGroupViews:
   - guids:
     - bf1bac614b818bc4584c22d48a391db8

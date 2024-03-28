@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,10 +11,8 @@ public class MainMenuTransition : MonoBehaviour
     public static MainMenuTransition instance;
 
     [Header("------- Animaton -------")]
+    [Tooltip("The animatior for the movement of the camera")]
     public Animator animator;
-
-    [Header("------- Canvases -------")]
-    public CanvasGroup mainMenuCanvas;
 
     void Start()
     {
@@ -21,25 +21,23 @@ public class MainMenuTransition : MonoBehaviour
 
     void Update()
     {
-        if (mainMenuCanvas == null) return;
-
-        if (mainMenuCanvas.alpha == 1 && !animator.GetBool("GuestPlayTrigger") && MainMenuCircleTransition.instance.animator.GetBool("isExpanded") && !PauseMenu.instance.gameIsPaused)
+        if (CheckConditions())
         {
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            if (InputSystemController.instance.UpCircleClicked)
             {
-                SetTutorial(false);
-                if (!GetSettings() && !GetCustomSong() && !GetPlay() && !GetAuthentication())
+                if (GetTutorial())
+                {
+                    SetTutorial(false);
+                    return;
+                }
+                if (!GetSettings() && !GetCustomSong() && !GetPlay() && !GetAuthentication() && !GetSync())
                 {
                     if (Guest.instance.guest)
                     {
-                        animator.SetBool("GuestPlayTrigger", true);
+                        SetGuestTrigger(true);
                         Guest.instance.guestCanvas.alpha = 1;
                     }
                     PlayButton();
-                }
-                if (GetAuthentication())
-                {
-                    SetAuthentication(false);
                 }
                 if (GetTransitionSettings())
                 {
@@ -47,7 +45,8 @@ public class MainMenuTransition : MonoBehaviour
                     {
                         BackMainMenuSettings();
                         PlayButton();
-                        animator.SetBool("GuestPlayTrigger", false);
+                        SetGuestTrigger(false);
+                        Guest.instance.guestCanvas.alpha = 0;
                     }
                 }
                 if (GetSettings())
@@ -55,7 +54,8 @@ public class MainMenuTransition : MonoBehaviour
                     SetTransitionSettings(true);
                     BackMainMenuSettings();
                     PlayButton();
-                    animator.SetBool("GuestPlayTrigger", false);
+                    SetGuestTrigger(false);
+                    Guest.instance.guestCanvas.alpha = 0;
                 }
                 if (GetTransitionCustom())
                 {
@@ -63,7 +63,8 @@ public class MainMenuTransition : MonoBehaviour
                     {
                         BackMainMenuCustomSong();
                         PlayButton();
-                        animator.SetBool("GuestPlayTrigger", false);
+                        SetGuestTrigger(false);
+                        Guest.instance.guestCanvas.alpha = 0;
                     }
                 }
                 if (GetCustomSong())
@@ -71,17 +72,18 @@ public class MainMenuTransition : MonoBehaviour
                     SetTransitionCustom(true);
                     BackMainMenuCustomSong();
                     PlayButton();
-                    animator.SetBool("GuestPlayTrigger", false);
+                    SetGuestTrigger(false);
+                    Guest.instance.guestCanvas.alpha = 0;
                 }
             }
-            else if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            else if (InputSystemController.instance.RightCircleClicked)
             {
-                SetTutorial(false);
-                if (GetAuthentication())
+                if (GetTutorial())
                 {
-
+                    SetTutorial(false);
+                    return;
                 }
-                else if (!GetSettings() && !GetCustomSong() && !GetPlay())
+                if (!GetSettings() && !GetCustomSong() && !GetPlay() && !GetSync())
                 {
                     SettingsButton();
                 }
@@ -115,14 +117,14 @@ public class MainMenuTransition : MonoBehaviour
                     }
                 }
             }
-            else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            else if (InputSystemController.instance.LeftCircleClicked)
             {
-                SetTutorial(false);
-                if (GetAuthentication())
+                if (GetTutorial())
                 {
-
+                    SetTutorial(false);
+                    return;
                 }
-                else if (!GetCustomSong() && !GetSettings() && !GetPlay() && !GetSync())
+                if (!GetCustomSong() && !GetSettings() && !GetPlay() && !GetSync())
                 {
                     CustomSongButton();
                     BackMainMenuPlay();
@@ -163,8 +165,13 @@ public class MainMenuTransition : MonoBehaviour
                     }
                 }
             }
-            else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            else if (InputSystemController.instance.DownCircleClicked)
             {
+                if (GetTutorial())
+                {
+                    SetTutorial(false);
+                    return;
+                }
                 SetTutorial(false);
                 Guest.instance.guestCanvas.alpha = 0;
                 if (!GetPlay() && !GetSync() && !GetSettings())
@@ -180,16 +187,36 @@ public class MainMenuTransition : MonoBehaviour
             }
         }
     }
+
+    // Check conditions
+    public bool CheckConditions()
+    {
+        if (!GetGuestTrigger() && !GetAuthentication() && MainMenuCircleTransition.instance.animator.GetBool("isExpanded") && !PauseMenu.instance.gameIsPaused && !SettingsMenu.instance.InputLockMode)
+            return true;
+        return false;
+    }
+
+    // Guest
+    public bool GetGuestTrigger()
+    {
+        return animator.GetBool("GuestPlayTrigger");
+    }
+    public void SetGuestTrigger(bool trigger)
+    {
+        animator.SetBool("GuestPlayTrigger", trigger);
+    }
+
     // Level Selection
     public void PlayButton()
     {
         SetPlay(true);
         SetSettings(false);
         SetCustomSong(false);
+        DatabaseManager.instance.LoadEveryLevelStats();
 
         if (animator.GetBool("isGuest") && !GetCustomSong() && !GetSettings())
         {
-            animator.SetBool("GuestPlayTrigger", true);
+            SetGuestTrigger(true);
             Guest.instance.guestCanvas.alpha = 1;
         }
     }
@@ -206,10 +233,12 @@ public class MainMenuTransition : MonoBehaviour
     {
         SetPlay(false);
     }
+
     // Tutorial
     public void TutorialButton()
     {
         SetTutorial(true);
+        DatabaseManager.instance.LoadEveryLevelStats();
     }
     public bool GetTutorial()
     {
@@ -240,6 +269,21 @@ public class MainMenuTransition : MonoBehaviour
         SetSettings(false);
     }
 
+    // Song synchronization
+    public void SyncButton()
+    {
+        SetSync(true);
+        SetSettings(false);
+    }
+    public bool GetSync()
+    {
+        return animator.GetBool("SyncTrigger");
+    }
+    public void SetSync(bool trigger)
+    {
+        animator.SetBool("SyncTrigger", trigger);
+    }
+
     // Custom Song creation
     public void CustomSongButton()
     {
@@ -260,6 +304,7 @@ public class MainMenuTransition : MonoBehaviour
     {
         SetCustomSong(false);
     }
+
     // Authentication
     public void AuthenticationButton()
     {
@@ -278,21 +323,6 @@ public class MainMenuTransition : MonoBehaviour
     public void BackMainMenuAuthentication()
     {
         SetCustomSong(false);
-    }
-
-    // Song synchronization
-    public void SyncButton()
-    {
-        SetSync(true);
-        SetSettings(false);
-    }
-    public bool GetSync()
-    {
-        return animator.GetBool("SyncTrigger");
-    }
-    public void SetSync(bool trigger)
-    {
-        animator.SetBool("SyncTrigger", trigger);
     }
 
     // Transitions
