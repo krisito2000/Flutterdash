@@ -229,6 +229,11 @@ public class SettingsMenu : MonoBehaviour
                 CheckDatabaseAudioVolume(masterValue, masterSlider, "Master");
                 CheckDatabaseAudioVolume(musicValue, musicSlider, "Music");
                 CheckDatabaseAudioVolume(hitSoundValue, hitSoundSlider, "HitSound");
+
+                if (!RandomMusicPlayer.instance.audioSource.isPlaying)
+                {
+                    RandomMusicPlayer.instance.audioSource.Play();
+                }
             }
             else
             {

@@ -11,12 +11,14 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Firebase;
+using Unity.Collections.LowLevel.Unsafe;
+using UnityEngine.Audio;
 
 public class DatabaseManager : MonoBehaviour
 {
     public static DatabaseManager instance;
     // User data file
-    private string userDataFilePath = "userdata.txt";
+    public string userDataFilePath = "userdata.txt";
     [Tooltip("The username of the user")]
     public string username;
 
@@ -426,6 +428,7 @@ public class DatabaseManager : MonoBehaviour
         // Check if the settings snapshot exists
         if (settingsSnapshot != null && settingsSnapshot.Exists)
         {
+            SettingsMenu.instance.LoadVolumeSettings();
             // Retrieve display settings
             var displaySnapshot = settingsSnapshot.Child("Display");
             if (displaySnapshot.Exists)
@@ -465,7 +468,6 @@ public class DatabaseManager : MonoBehaviour
                 SettingsMenu.instance.fullscreenToggle.isOn = fullscreenSetting;
                 SettingsMenu.instance.VSyncToggle.isOn = vsyncSetting;
             }
-            SettingsMenu.instance.LoadVolumeSettings();
         }
     }
 

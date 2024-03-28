@@ -151,7 +151,7 @@ public class PauseMenu : MonoBehaviour
     public void Retry()
     {
         // Unload unused assets to free memory
-        Resources.UnloadUnusedAssets();
+        // Resources.UnloadUnusedAssets();
 
         // Resume the game from the pause menu
         Resume();

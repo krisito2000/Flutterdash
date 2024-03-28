@@ -1197,6 +1197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b8c8f209bdaff4419911447660cdad4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  userDataFilePath: userdata.txt
   username: 
   RegisterUsernameField: {fileID: 21835240}
   RegisterEmailField: {fileID: 1843824089}
@@ -17496,8 +17497,8 @@ MonoBehaviour:
   - {fileID: 8300000, guid: e5414d75e1ba1264e91f48ba6b8f055f, type: 3}
   - {fileID: 8300000, guid: f750db3a9e786a248916eb2f49ef4277, type: 3}
   - {fileID: 8300000, guid: 170b184399eb65d4eab7c955c700c059, type: 3}
-  - {fileID: 8300000, guid: 84846c9b0b36fa74c863469d95d2113c, type: 3}
   - {fileID: 8300000, guid: 06f95cb0b713e154f83342bebf42dd5e, type: 3}
+  audioSource: {fileID: 0}
 --- !u!1 &1530253819
 GameObject:
   m_ObjectHideFlags: 0

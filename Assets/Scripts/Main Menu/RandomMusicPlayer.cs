@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class RandomMusicPlayer : MonoBehaviour
 {
+    public static RandomMusicPlayer instance;
+
     [Header("------- Music -------")]
     [Tooltip("Array of music clips to choose from")]
     public AudioClip[] MusicArray;
-    private AudioSource audioSource; // Reference to the AudioSource component
+    public AudioSource audioSource; // Reference to the AudioSource component
 
     // Method to get a random music clip from the MusicArray
     private AudioClip GetRandomClip()
@@ -17,6 +19,8 @@ public class RandomMusicPlayer : MonoBehaviour
 
     void Start()
     {
+        instance = this;
+
         // Find and assign the AudioSource component
         audioSource = FindAnyObjectByType<AudioSource>();
 
@@ -35,7 +39,10 @@ public class RandomMusicPlayer : MonoBehaviour
         {
             // Get a random music clip and play it
             audioSource.clip = GetRandomClip();
-            audioSource.Play();
+            if (Guest.instance.guest && (!System.IO.File.Exists(DatabaseManager.instance.userDataFilePath) || new System.IO.FileInfo(DatabaseManager.instance.userDataFilePath).Length == 0))
+            {
+                audioSource.Play();
+            }
         }
     }
 }
